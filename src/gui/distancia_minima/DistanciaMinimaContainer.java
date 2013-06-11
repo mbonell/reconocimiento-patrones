@@ -54,7 +54,14 @@ public class DistanciaMinimaContainer {
 	
 	String[] nombreColumnas ={"Peso(g)", "Diámetro(cm)"};
 
-	
+	String[][] data = {
+			{"160",  "5", "0", "0", "0", "0", "0", "0", "0", "0"},
+			{"400", "20", "0", "0", "0", "0", "0", "0", "0", "0"},
+			{"100", "15", "0", "0", "0", "0", "0", "0", "0", "0"},
+			{"500", "30", "0", "0", "0", "0", "0", "0", "0", "0"},
+			{"300", "14", "0", "0", "0", "0", "0", "0", "0", "0"}
+			};
+
 
     public void ventanaDistanciaMinima(JDesktopPane desk){
     	
