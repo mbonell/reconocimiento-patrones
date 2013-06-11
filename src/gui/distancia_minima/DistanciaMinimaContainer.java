@@ -27,7 +27,11 @@ import core.DistanciaMinima;
  */
 public class DistanciaMinimaContainer {
 	
+	JDesktopPane desk;
+	
 	JInternalFrame iframe;
+	JInternalFrame ventanaResultados;
+
 	JPanel panelPatronesIdeales;
 	JPanel panelNuevosPatrones;
 
@@ -49,17 +53,18 @@ public class DistanciaMinimaContainer {
 	JButton btnEliminarPatron = new JButton("-");
 	
 	String[] nombreColumnas ={"Peso(g)", "Diámetro(cm)"};
-	
+
 	
 
     public void ventanaDistanciaMinima(JDesktopPane desk){
     	
+    	this.desk = desk;
     	iframe = new JInternalFrame("Clasificador de pelotas deportivas", true, true, true, true);
 		iframe.setBounds(100, 80, 560, 500);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
 		iframe.setVisible(true);
-		desk.add(iframe);
+		this.desk.add(iframe);
 		iframe.setLayout(null);		
 		
 		//Patrones ideales
@@ -118,7 +123,6 @@ public class DistanciaMinimaContainer {
 		for(String columna : nombreColumnas ){
 			model.addColumn(columna);
 		}
-
 		
 		JScrollPane scrollPane = new JScrollPane(tablaNuevosPatrones);
 		scrollPane.setBounds(30, 30, 400, 120);
@@ -130,8 +134,6 @@ public class DistanciaMinimaContainer {
 		panelNuevosPatrones.add(btnAgregarPatron);
 		panelNuevosPatrones.add(btnEliminarPatron);
 		
-		
-		
 		btnEjecutar.setBounds(270, 400, 170, 50);
 		btnEjecutar.setToolTipText("Evaluar los nuevos patrones");
 		btnEjecutar.setIcon(new ImageIcon("imagenes/lanzar.png"));
@@ -139,7 +141,16 @@ public class DistanciaMinimaContainer {
 		iframe.add(btnEjecutar);
 		
 		iframe.add(panelNuevosPatrones);
-	
 
+    }
+    
+    public void ventanaResultados(){
+    	ventanaResultados = new JInternalFrame("Resultados", true, true, true, true);
+    	ventanaResultados.setBounds(600, 100, 560, 500);
+    	ventanaResultados.setResizable(false);
+    	ventanaResultados.setMaximizable(false);
+    	ventanaResultados.setVisible(true);
+    	this.desk.add(ventanaResultados);
+		ventanaResultados.setLayout(null);	
     }
 }
