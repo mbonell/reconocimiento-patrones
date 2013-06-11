@@ -24,7 +24,11 @@ import core.DistanciaMinima;
  */
 public class DistanciaMinimaContainer {
 	
+	JDesktopPane desk;
+	
 	JInternalFrame iframe;
+	JInternalFrame ventanaResultados;
+
 	JPanel panelPatronesIdeales;
 	JPanel panelNuevosPatrones;
 
@@ -43,23 +47,24 @@ public class DistanciaMinimaContainer {
 	JButton btnEjecutar = new JButton("Evaluar");
 	
 	String[] nombreColumnas ={"Peso(g)", "Diámetro(cm)"};
-	Object[][] data = {
-			{"Mary",	"Campione"},
-			{"Lhucas", "Huml"},
-			{"Kathya", "Walrath"},
-			{"Marcus", "Andrews"},
-			{"Angela", "Lalth"}
+	String[][] data = {
+			{"5",  "1"},
+			{"10", "2"},
+			{"15", "3"},
+			{"20", "4"},
+			{"25", "5"}
 			};
 	
 
     public void ventanaDistanciaMinima(JDesktopPane desk){
     	
+    	this.desk = desk;
     	iframe = new JInternalFrame("Clasificador de pelotas deportivas", true, true, true, true);
 		iframe.setBounds(100, 80, 560, 500);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
 		iframe.setVisible(true);
-		desk.add(iframe);
+		this.desk.add(iframe);
 		iframe.setLayout(null);		
 		
 		//Patrones ideales
@@ -126,5 +131,15 @@ public class DistanciaMinimaContainer {
 		iframe.add(panelNuevosPatrones);
 	
 
+    }
+    
+    public void ventanaResultados(){
+    	ventanaResultados = new JInternalFrame("Resultados", true, true, true, true);
+    	ventanaResultados.setBounds(600, 100, 560, 500);
+    	ventanaResultados.setResizable(false);
+    	ventanaResultados.setMaximizable(false);
+    	ventanaResultados.setVisible(true);
+    	this.desk.add(ventanaResultados);
+		ventanaResultados.setLayout(null);	
     }
 }

@@ -31,7 +31,7 @@ public class DesktopController {
 				DistanciaMinimaController distanciaMinimaController = new DistanciaMinimaController();
 				
 				distanciaMinimaGui.ventanaDistanciaMinima(desk.desk);
-				distanciaMinimaController.listenerIframe(distanciaMinimaGui);
+				distanciaMinimaController.listenerDistanciaMinima(distanciaMinimaGui);
 			}			
 		});
 
@@ -42,14 +42,6 @@ public class DesktopController {
 			}			
 		});
 		
-		/*
-		desk.btnEjecutar.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-
-		}
-			
-		});*/
 		
-
-		}
+	}
 }
