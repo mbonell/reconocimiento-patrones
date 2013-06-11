@@ -1,7 +1,5 @@
 package gui.distancia_minima;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -12,6 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+
 
 import core.DistanciaMinima;
 
@@ -42,14 +45,11 @@ public class DistanciaMinimaContainer {
 	
 	JButton btnEjecutar = new JButton("Evaluar");
 	
+	JButton btnAgregarPatron = new JButton("+");
+	JButton btnEliminarPatron = new JButton("-");
+	
 	String[] nombreColumnas ={"Peso(g)", "Diámetro(cm)"};
-	Object[][] data = {
-			{"Mary",	"Campione"},
-			{"Lhucas", "Huml"},
-			{"Kathya", "Walrath"},
-			{"Marcus", "Andrews"},
-			{"Angela", "Lalth"}
-			};
+	
 	
 
     public void ventanaDistanciaMinima(JDesktopPane desk){
@@ -104,18 +104,33 @@ public class DistanciaMinimaContainer {
 		
 		iframe.add(panelPatronesIdeales);
 		
-		
+
 		//Nuevos patrones
 		panelNuevosPatrones = new JPanel();
 		panelNuevosPatrones.setBorder(BorderFactory.createTitledBorder("Nuevos patrones "));
 		panelNuevosPatrones.setBounds(10, 200, 517, 180);
-		//panelNuevosPatrones.setLayout(null);
+		panelNuevosPatrones.setLayout(null);
 
-		tablaNuevosPatrones = new JTable(data,nombreColumnas);
-		//tablaNuevosPatrones.setPreferredScrollableViewportSize(new Dimension(500, 70));
+		tablaNuevosPatrones = new JTable(new DefaultTableModel());
+		
+		DefaultTableModel model = (DefaultTableModel) tablaNuevosPatrones.getModel();
+		
+		for(String columna : nombreColumnas ){
+			model.addColumn(columna);
+		}
+
+		
 		JScrollPane scrollPane = new JScrollPane(tablaNuevosPatrones);
-		tablaNuevosPatrones.setBounds(10, 230, 517, 200);
+		scrollPane.setBounds(30, 30, 400, 120);
+		
+		btnAgregarPatron.setBounds(440, 50, 25, 25);
+		btnEliminarPatron.setBounds(440, 100, 25, 25);
+		
 		panelNuevosPatrones.add(scrollPane);
+		panelNuevosPatrones.add(btnAgregarPatron);
+		panelNuevosPatrones.add(btnEliminarPatron);
+		
+		
 		
 		btnEjecutar.setBounds(270, 400, 170, 50);
 		btnEjecutar.setToolTipText("Evaluar los nuevos patrones");
