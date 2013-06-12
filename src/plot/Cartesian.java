@@ -18,9 +18,9 @@ public class Cartesian {
 	
 	private Plot2DPanel plot = new Plot2DPanel();
 	
+	
 	public void addPoint(float x, float y){
 		this.addPoint(new Point(x, y) );
-		
 	}
 	
 	public void addPoint( Point point ){
@@ -55,7 +55,6 @@ public class Cartesian {
 				yAxisValues[i]   = points.get(i).getY();
 			}
 		}
-
         
 		plot.addScatterPlot("", Color.green, xAxisValues, yAxisValues);
 		
@@ -78,6 +77,4 @@ public class Cartesian {
 			maxY = point.getY();
 		}
 	}
-	
-	
 }

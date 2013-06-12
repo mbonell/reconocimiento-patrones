@@ -3,8 +3,11 @@ package gui.distancia_minima;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JInternalFrame;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import plot.Cartesian;
 
 import core.DistanciaMinima;
 
@@ -33,9 +36,25 @@ public class DistanciaMinimaController {
 
 		distanciaMinimaGui.btnEjecutar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				DistanciaMinima  distanciaMinima = new DistanciaMinima();
-				distanciaMinima.generarClasificacion( getData( distanciaMinimaGui.tablaNuevosPatrones.getModel() ) );
-				distanciaMinimaGui.ventanaResultados();
+				//DistanciaMinima  distanciaMinima = new DistanciaMinima();
+				//distanciaMinima.generarClasificacion( getData( distanciaMinimaGui.tablaNuevosPatrones.getModel() ) );
+				
+				String[][] data = {
+						{"160",  "5", "0", "0", "0", "0", "0", "0", "0", "0"},
+						{"400", "20", "0", "0", "0", "0", "0", "0", "0", "0"},
+						{"100", "15", "0", "0", "0", "0", "0", "0", "0", "0"},
+						{"500", "30", "0", "0", "0", "0", "0", "0", "0", "0"},
+						{"300", "14", "0", "0", "0", "0", "0", "0", "0", "0"}
+						};
+				
+				Cartesian grafica = new Cartesian();
+				for(String[] row : data){
+					grafica.addPoint( Float.parseFloat(row[0]), Float.parseFloat(row[1]) );
+				}
+				
+				JInternalFrame  window = distanciaMinimaGui.ventanaResultados();
+				
+				window.setContentPane( grafica.plot() );
 			}
 		});
 	}

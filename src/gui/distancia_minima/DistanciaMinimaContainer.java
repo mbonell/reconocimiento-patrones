@@ -54,13 +54,6 @@ public class DistanciaMinimaContainer {
 	
 	String[] nombreColumnas ={"Peso(g)", "Diámetro(cm)"};
 
-	String[][] data = {
-			{"160",  "5", "0", "0", "0", "0", "0", "0", "0", "0"},
-			{"400", "20", "0", "0", "0", "0", "0", "0", "0", "0"},
-			{"100", "15", "0", "0", "0", "0", "0", "0", "0", "0"},
-			{"500", "30", "0", "0", "0", "0", "0", "0", "0", "0"},
-			{"300", "14", "0", "0", "0", "0", "0", "0", "0", "0"}
-			};
 
 
     public void ventanaDistanciaMinima(JDesktopPane desk){
@@ -151,13 +144,16 @@ public class DistanciaMinimaContainer {
 
     }
     
-    public void ventanaResultados(){
+    public JInternalFrame ventanaResultados(){
+    	
     	ventanaResultados = new JInternalFrame("Resultados", true, true, true, true);
     	ventanaResultados.setBounds(600, 100, 560, 500);
     	ventanaResultados.setResizable(false);
     	ventanaResultados.setMaximizable(false);
     	ventanaResultados.setVisible(true);
     	this.desk.add(ventanaResultados);
-		ventanaResultados.setLayout(null);	
+		ventanaResultados.setLayout(null);
+		
+		return ventanaResultados;
     }
 }
