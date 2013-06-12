@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 
 public class PintaImagen implements Border{
 
-    private   BufferedImage image ;
+    private   BufferedImage image;
 
     public PintaImagen(BufferedImage image ) {
         this.image=image;}

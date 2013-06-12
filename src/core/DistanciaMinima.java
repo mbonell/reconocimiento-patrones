@@ -2,7 +2,6 @@ package core;
 
 public class DistanciaMinima {
 	
-	
 	public static double pesoBeisbol = 142;
 	public static double diametroBeisbol = 7;
 
