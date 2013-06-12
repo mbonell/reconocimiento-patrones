@@ -50,7 +50,8 @@ public class DistanciaMinimaContainer {
 			{"300", "14", "0", "0", "0", "0", "0", "0", "0", "0"}
 			};
 
-
+	DistanciaMinima distanciaMinima;
+	
     public void ventanaDistanciaMinima(JDesktopPane desk){
     	
     	this.desk = desk;
@@ -61,6 +62,8 @@ public class DistanciaMinimaContainer {
 		iframe.setVisible(true);
 		this.desk.add(iframe);
 		iframe.setLayout(null);		
+		
+		distanciaMinima = new DistanciaMinima();
 		
 		//Patrones ideales
 		panelPatronesIdeales = new JPanel();
@@ -76,7 +79,7 @@ public class DistanciaMinimaContainer {
 		lblCaracteristicasBeisbol.setBounds(50, 50, 200, 20);
 		panelPatronesIdeales.add(lblCaracteristicasBeisbol);
 		
-		lblValoresBeisbol = new JLabel("[ " + DistanciaMinima.pesoBeisbol + " , " + DistanciaMinima.diametroBeisbol + " ]");
+		lblValoresBeisbol = new JLabel("[ " + distanciaMinima.obtenerPesoBeisbol() + " , " + distanciaMinima.obtenerDiametroBesibol() + " ]");
 		lblValoresBeisbol.setBounds(50, 70, 200, 20);
 		panelPatronesIdeales.add(lblValoresBeisbol);
 		
@@ -93,7 +96,7 @@ public class DistanciaMinimaContainer {
 		lblCaracteristicasFutbol.setBounds(50, 120, 200, 20);
 		panelPatronesIdeales.add(lblCaracteristicasFutbol);
 		
-		lblValoresFutbol = new JLabel("[ " + DistanciaMinima.pesoFutbol + " , " + DistanciaMinima.diametroFutbol + " ]");
+		lblValoresFutbol = new JLabel("[ " + distanciaMinima.obtenerPesoFutbol() + " , " + distanciaMinima.obtenerDiametroFutbol() + " ]");
 		lblValoresFutbol.setBounds(50, 140, 200, 20);
 		panelPatronesIdeales.add(lblValoresFutbol);
 		
@@ -129,7 +132,7 @@ public class DistanciaMinimaContainer {
 		panelNuevosPatrones.add(btnAgregarPatron);
 		panelNuevosPatrones.add(btnEliminarPatron);
 		
-		btnEjecutar.setBounds(270, 400, 170, 50);
+		btnEjecutar.setBounds(420, 400, 100, 30);
 		btnEjecutar.setToolTipText("Evaluar los nuevos patrones");
 
 		iframe.add(btnEjecutar);
