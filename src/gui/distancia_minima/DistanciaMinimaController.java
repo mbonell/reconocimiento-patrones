@@ -2,18 +2,11 @@ package gui.distancia_minima;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
-
 import core.DistanciaMinima;
 
-
-
 public class DistanciaMinimaController {
-	
 	
 
 	public void listenerDistanciaMinima(final DistanciaMinimaContainer distanciaMinimaGui){

@@ -1,6 +1,5 @@
 package gui.distancia_minima;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,21 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-
-
-
 import core.DistanciaMinima;
 
-/**
- * Clase que contiene la declaracion y configuracion de los elementos
- * gráficos para el clasificador de distancia mínima.
- * @author Marcela Bonell Manjarrez
- * @creation 09/07/13
- * @modification 09/07/13
- */
+
 public class DistanciaMinimaContainer {
 	
 	JDesktopPane desk;
@@ -143,7 +131,6 @@ public class DistanciaMinimaContainer {
 		
 		btnEjecutar.setBounds(270, 400, 170, 50);
 		btnEjecutar.setToolTipText("Evaluar los nuevos patrones");
-		btnEjecutar.setIcon(new ImageIcon("imagenes/lanzar.png"));
 
 		iframe.add(btnEjecutar);
 		
