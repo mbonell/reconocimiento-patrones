@@ -2,6 +2,17 @@ package core;
 
 public class DistanciaMinima {
 	
+	public final int PESO = 0;
+	public final int DIAMETRO = 1;
+	public final int DISTANCIA_EUCLIDIANA_BEISBOL = 2;
+	public final int DISTANCIA_EUCLIDIANA_FUTBOL = 3;
+	public final int DISTANCIA_EUCLIDIANA_MINIMA = 4;
+	public final int DISTANCIA_EUCLIDIANA_CLASE = 5;
+	public final int DISTANCIA_MANHATTAN_BEISBOL = 6;
+	public final int DISTANCIA_MANHATTAN_FUTBOL = 7;
+	public final int DISTANCIA_MANHATTAN_MINIMA = 8;
+	public final int DISTANCIA_MANHATTAN_CLASE = 9;
+
 	
 	private double pesoBeisbol = 142;
 	private double diametroBeisbol = 7;
@@ -33,39 +44,39 @@ public class DistanciaMinima {
 		for(int i = 0; i<data.length; i++){
 			
 			//Copiar valores de los nuevos patrones a evaluar
-			resultados[i][0] = data[i][0];
-			resultados[i][1] = data[i][1];
+			resultados[i][PESO] = data[i][PESO];
+			resultados[i][DIAMETRO] = data[i][DIAMETRO];
 			              
 			//Distancia Euclidiana para beisbol
-			double deBeisbol = this.calcularDistanciaEuclidiana(Double.parseDouble(data[i][0]), Double.parseDouble(data[i][1]), this.pesoBeisbol, this.diametroBeisbol);
-			resultados[i][2] = Double.toString(deBeisbol);
+			double deBeisbol = this.calcularDistanciaEuclidiana(Double.parseDouble(data[i][PESO]), Double.parseDouble(data[i][DIAMETRO]), this.pesoBeisbol, this.diametroBeisbol);
+			resultados[i][DISTANCIA_EUCLIDIANA_BEISBOL] = Double.toString(deBeisbol);
 			
 			//Distancia Euclidiana para futbol
-			double deFutbol = this.calcularDistanciaEuclidiana(Double.parseDouble(data[i][0]), Double.parseDouble(data[i][1]), this.pesoFutbol, this.diametroFutbol);
-			resultados[i][3] = Double.toString(deFutbol);
+			double deFutbol = this.calcularDistanciaEuclidiana(Double.parseDouble(data[i][PESO]), Double.parseDouble(data[i][DIAMETRO]), this.pesoFutbol, this.diametroFutbol);
+			resultados[i][DISTANCIA_EUCLIDIANA_FUTBOL] = Double.toString(deFutbol);
 			
 			//Minimo de la Distancia Euclidiana
 			double deMinimo = Math.min(deBeisbol, deFutbol);
-			resultados[i][4] = Double.toString(deMinimo);
+			resultados[i][DISTANCIA_EUCLIDIANA_MINIMA] = Double.toString(deMinimo);
 			
 			//Establecer la clase segun la Distancia Euclidiana
-			resultados[i][5] = (deMinimo == deBeisbol) ? "Beisbol" : "Futbol";
+			resultados[i][DISTANCIA_EUCLIDIANA_CLASE] = (deMinimo == deBeisbol) ? "Beisbol" : "Futbol";
 			
 			
 			//Distancia Manhattan para beisbol
-			double dmBeisbol = this.calcularDistanciaManhattan(Double.parseDouble(data[i][0]), Double.parseDouble(data[i][1]), this.pesoBeisbol, this.diametroBeisbol);
-			resultados[i][6] = Double.toString(dmBeisbol);
+			double dmBeisbol = this.calcularDistanciaManhattan(Double.parseDouble(data[i][PESO]), Double.parseDouble(data[i][DIAMETRO]), this.pesoBeisbol, this.diametroBeisbol);
+			resultados[i][DISTANCIA_MANHATTAN_BEISBOL] = Double.toString(dmBeisbol);
 			
 			//Distancia Manhattan para futbol
-			double dmFutbol = this.calcularDistanciaManhattan(Double.parseDouble(data[i][0]), Double.parseDouble(data[i][1]), this.pesoFutbol, this.diametroFutbol);
-			resultados[i][7] = Double.toString(dmFutbol);
+			double dmFutbol = this.calcularDistanciaManhattan(Double.parseDouble(data[i][PESO]), Double.parseDouble(data[i][DIAMETRO]), this.pesoFutbol, this.diametroFutbol);
+			resultados[i][DISTANCIA_MANHATTAN_FUTBOL] = Double.toString(dmFutbol);
 			
 			//Minimo de la Distancia Euclidiana
 			double dmMinimo = Math.min(dmBeisbol, dmFutbol);
-			resultados[i][8] = Double.toString(dmMinimo);
+			resultados[i][DISTANCIA_MANHATTAN_MINIMA] = Double.toString(dmMinimo);
 			
 			//Establecer la clase segun la Distancia Manhattan
-			resultados[i][9] = (dmMinimo == dmBeisbol) ? "Beisbol" : "Futbol";
+			resultados[i][DISTANCIA_MANHATTAN_CLASE] = (dmMinimo == dmBeisbol) ? "Beisbol" : "Futbol";
 
 			System.out.println(resultados[i][0]);
 			System.out.println(resultados[i][1]);
