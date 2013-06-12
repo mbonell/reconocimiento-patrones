@@ -12,6 +12,8 @@ public class DistanciaMinima {
 	public final int DISTANCIA_MANHATTAN_FUTBOL = 7;
 	public final int DISTANCIA_MANHATTAN_MINIMA = 8;
 	public final int DISTANCIA_MANHATTAN_CLASE = 9;
+	public final String BEISBOL = "Béisbol";
+	public final String FUTBOL = "Fútbol";
 
 	
 	private double pesoBeisbol = 142;
@@ -60,7 +62,7 @@ public class DistanciaMinima {
 			resultados[i][DISTANCIA_EUCLIDIANA_MINIMA] = Double.toString(deMinimo);
 			
 			//Establecer la clase segun la Distancia Euclidiana
-			resultados[i][DISTANCIA_EUCLIDIANA_CLASE] = (deMinimo == deBeisbol) ? "Beisbol" : "Futbol";
+			resultados[i][DISTANCIA_EUCLIDIANA_CLASE] = (deMinimo == deBeisbol) ? BEISBOL : FUTBOL;
 			
 			
 			//Distancia Manhattan para beisbol
@@ -76,18 +78,18 @@ public class DistanciaMinima {
 			resultados[i][DISTANCIA_MANHATTAN_MINIMA] = Double.toString(dmMinimo);
 			
 			//Establecer la clase segun la Distancia Manhattan
-			resultados[i][DISTANCIA_MANHATTAN_CLASE] = (dmMinimo == dmBeisbol) ? "Beisbol" : "Futbol";
+			resultados[i][DISTANCIA_MANHATTAN_CLASE] = (dmMinimo == dmBeisbol) ? BEISBOL : FUTBOL;
 
-			System.out.println(resultados[i][0]);
-			System.out.println(resultados[i][1]);
-			System.out.println(resultados[i][2]);
-			System.out.println(resultados[i][3]);
-			System.out.println(resultados[i][4]);
-			System.out.println(resultados[i][5]);
-			System.out.println(resultados[i][6]);
-			System.out.println(resultados[i][7]);
-			System.out.println(resultados[i][8]);
-			System.out.println(resultados[i][9]);
+			System.out.println(resultados[i][PESO]);
+			System.out.println(resultados[i][DIAMETRO]);
+			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_BEISBOL]);
+			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_FUTBOL]);
+			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_MINIMA]);
+			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_CLASE]);
+			System.out.println(resultados[i][DISTANCIA_MANHATTAN_BEISBOL]);
+			System.out.println(resultados[i][DISTANCIA_MANHATTAN_FUTBOL]);
+			System.out.println(resultados[i][DISTANCIA_MANHATTAN_MINIMA]);
+			System.out.println(resultados[i][DISTANCIA_MANHATTAN_CLASE]);
 
 	
 		}
