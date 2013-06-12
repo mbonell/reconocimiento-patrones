@@ -1,7 +1,9 @@
 package gui.distancia_minima;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 import javax.swing.JInternalFrame;
 import javax.swing.table.DefaultTableModel;
@@ -36,20 +38,18 @@ public class DistanciaMinimaController {
 
 		distanciaMinimaGui.btnEjecutar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				//DistanciaMinima  distanciaMinima = new DistanciaMinima();
-				//distanciaMinima.generarClasificacion( getData( distanciaMinimaGui.tablaNuevosPatrones.getModel() ) );
+				DistanciaMinima  distanciaMinima = new DistanciaMinima();
 				
-				String[][] data = {
-						{"160",  "5", "0", "0", "0", "0", "0", "0", "0", "0"},
-						{"400", "20", "0", "0", "0", "0", "0", "0", "0", "0"},
-						{"100", "15", "0", "0", "0", "0", "0", "0", "0", "0"},
-						{"500", "30", "0", "0", "0", "0", "0", "0", "0", "0"},
-						{"300", "14", "0", "0", "0", "0", "0", "0", "0", "0"}
-						};
+				String[][] data = distanciaMinima.generarClasificacion( getData( distanciaMinimaGui.tablaNuevosPatrones.getModel() ) ); 
 				
 				Cartesian grafica = new Cartesian();
+				
+				HashMap<String, Color> colors = new HashMap<String, Color>();
+				colors.put( distanciaMinima.BEISBOL , Color.green);
+				colors.put( distanciaMinima.FUTBOL , Color.blue);
+				
 				for(String[] row : data){
-					grafica.addPoint( Float.parseFloat(row[0]), Float.parseFloat(row[1]) );
+					grafica.addPoint(colors.get( row[ distanciaMinima.DISTANCIA_EUCLIDIANA_CLASE ]  ) , Float.parseFloat(row[ distanciaMinima.PESO ]), Float.parseFloat(row[ distanciaMinima.DIAMETRO ]) );
 				}
 				
 				JInternalFrame  window = distanciaMinimaGui.ventanaResultados();

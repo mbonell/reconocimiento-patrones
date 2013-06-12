@@ -2,6 +2,7 @@ package plot;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.math.plot.Plot2DPanel;
 
@@ -9,7 +10,9 @@ import plot.cartesian.Point;
 
 public class Cartesian {
 
-	private ArrayList<Point> points = new ArrayList<Point>();
+	private HashMap<Color, ArrayList<Point> > pointCollection = new HashMap<Color, ArrayList<Point> >(); 
+	
+	//private ArrayList<Point> points = new ArrayList<Point>();
 	
 	private float minX = 0;
 	private float maxX = 0;
@@ -19,12 +22,22 @@ public class Cartesian {
 	private Plot2DPanel plot = new Plot2DPanel();
 	
 	
-	public void addPoint(float x, float y){
-		this.addPoint(new Point(x, y) );
+	public void addPoint(Color c, float x, float y){
+		this.addPoint(c, new Point(x, y) );
 	}
 	
-	public void addPoint( Point point ){
-		this.points.add(point);
+	public void addPoint(Color c, Point point ){
+		
+		ArrayList<Point> points;
+		
+		if ( ! pointCollection.containsKey(c) ){
+			pointCollection.put(c, new ArrayList<Point>() );
+		}
+		
+		points = pointCollection.get(c);
+		
+		points.add(point);
+		
 		this.setBoundLimits( point );		
 	}
 	
@@ -39,25 +52,32 @@ public class Cartesian {
 		
 		plot.addLinePlot("a", Color.red, axisx, ceroAxis);
 		plot.addLinePlot("b", Color.red, ceroAxis, axisy);
-
-		double[] xAxisValues = new double[points.size()];
-		double[] yAxisValues = new double[points.size()];
 		
-		if( points.size() == 2 ){
-			xAxisValues[0]   = points.get(0).getX();
-			xAxisValues[1]   = points.get(0).getY();
+		ArrayList<Point> points;
+		
+		for( Color c : pointCollection.keySet() ){
 			
-			yAxisValues[0]   = points.get(1).getX();
-			yAxisValues[1]   = points.get(1).getY();
-		}else{
-			for( int i = 0; i < points.size(); i++ ){
-				xAxisValues[i]   = points.get(i).getX();
-				yAxisValues[i]   = points.get(i).getY();
+			points = pointCollection.get(c);
+
+			double[] xAxisValues = new double[points.size()];
+			double[] yAxisValues = new double[points.size()];
+
+			if( points.size() == 2 ){
+				xAxisValues[0]   = points.get(0).getX();
+				xAxisValues[1]   = points.get(0).getY();
+				
+				yAxisValues[0]   = points.get(1).getX();
+				yAxisValues[1]   = points.get(1).getY();
+			}else{
+				for( int i = 0; i < points.size(); i++ ){
+					xAxisValues[i]   = points.get(i).getX();
+					yAxisValues[i]   = points.get(i).getY();
+				}
 			}
-		}
         
-		plot.addScatterPlot("", Color.green, xAxisValues, yAxisValues);
+		plot.addScatterPlot("", c ,xAxisValues, yAxisValues);
 		
+		}
 		plot.removePlotToolBar();
 		
 		return plot;
