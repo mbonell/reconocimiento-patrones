@@ -26,7 +26,7 @@ public class DistanciaMinimaController {
 		distanciaMinimaGui.btnAgregarPatron.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
 		    	DefaultTableModel temp = (DefaultTableModel) distanciaMinimaGui.tablaNuevosPatrones.getModel();
-				Object nuevo[]= {"-","-"};
+				Object nuevo[]= {"0","0"};
 				temp.addRow(nuevo);
 		    }
 		});
