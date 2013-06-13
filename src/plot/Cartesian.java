@@ -42,9 +42,7 @@ public class Cartesian {
 	}
 	
 	public Plot2DPanel plot(){
-		
-		plot.setFixedBounds(0, minX, maxX);
-		plot.setFixedBounds(1, minY, maxY);
+
 	    
 		double[] axisx = {minX, 0, maxX};
 		double[] axisy = {minY, 0, maxY};
@@ -75,10 +73,15 @@ public class Cartesian {
 				}
 			}
         
-		plot.addScatterPlot("", c ,xAxisValues, yAxisValues);
+			plot.addScatterPlot("", c ,xAxisValues, yAxisValues);
 		
 		}
+			
 		plot.removePlotToolBar();
+		
+		
+		plot.setFixedBounds(0, minX, maxX);
+		plot.setFixedBounds(1, minY, maxY);
 		
 		return plot;
 	}

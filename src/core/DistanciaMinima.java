@@ -82,18 +82,6 @@ public class DistanciaMinima {
 			
 			//Establecer la clase segun la Distancia Manhattan
 			resultados[i][DISTANCIA_MANHATTAN_CLASE] = (dmMinimo == dmBeisbol) ? BEISBOL : FUTBOL;
-
-			System.out.println(resultados[i][PESO]);
-			System.out.println(resultados[i][DIAMETRO]);
-			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_BEISBOL]);
-			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_FUTBOL]);
-			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_MINIMA]);
-			System.out.println(resultados[i][DISTANCIA_EUCLIDIANA_CLASE]);
-			System.out.println(resultados[i][DISTANCIA_MANHATTAN_BEISBOL]);
-			System.out.println(resultados[i][DISTANCIA_MANHATTAN_FUTBOL]);
-			System.out.println(resultados[i][DISTANCIA_MANHATTAN_MINIMA]);
-			System.out.println(resultados[i][DISTANCIA_MANHATTAN_CLASE]);
-
 	
 		}
 		
