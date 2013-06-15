@@ -88,15 +88,14 @@ public class DistanciaMinimaController {
 				plot.setAxisLabel(0, "Peso");
 				plot.setAxisLabel(1, "Diámetro");
 				
-				plot.addLegend("SOUTH");
-				
 				
 				windowPlot.setContentPane( plot );
 				
 				
 				JInternalFrame  windowTable = distanciaMinimaGui.ventanaResultados();
-				windowTable.setBounds(50, 200, 1000, 200);
+				windowTable.setBounds(100, 495, 1100, 200);
 				windowTable.setResizable(true);
+				windowTable.setTitle("Resultados");
 				
 				JTable tabla = new JTable(resultModel);
 				JScrollPane scrollPane = new JScrollPane(tabla);

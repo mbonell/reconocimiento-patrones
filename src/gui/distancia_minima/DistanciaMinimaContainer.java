@@ -1,6 +1,5 @@
 package gui.distancia_minima;
 
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,21 +9,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-
-
-
 import core.DistanciaMinima;
 
-/**
- * Clase que contiene la declaracion y configuracion de los elementos
- * gráficos para el clasificador de distancia mínima.
- * @author Marcela Bonell Manjarrez
- * @creation 09/07/13
- * @modification 09/07/13
- */
+
 public class DistanciaMinimaContainer {
 	
 	JDesktopPane desk;
@@ -61,7 +49,7 @@ public class DistanciaMinimaContainer {
     	
     	this.desk = desk;
     	iframe = new JInternalFrame("Clasificador de pelotas deportivas", true, true, true, true);
-		iframe.setBounds(100, 80, 560, 500);
+		iframe.setBounds(100, 10, 560, 500);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
 		iframe.setVisible(true);
@@ -149,8 +137,8 @@ public class DistanciaMinimaContainer {
     
     public JInternalFrame ventanaResultados(){
     	
-    	ventanaResultados = new JInternalFrame("Resultados", true, true, true, true);
-    	ventanaResultados.setBounds(600, 100, 560, 500);
+    	ventanaResultados = new JInternalFrame("Gráfica", true, true, true, true);
+    	ventanaResultados.setBounds(650, 10, 560, 500);
     	ventanaResultados.setResizable(false);
     	ventanaResultados.setMaximizable(false);
     	ventanaResultados.setVisible(true);
