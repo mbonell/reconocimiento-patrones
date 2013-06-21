@@ -4,47 +4,65 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-
 import org.math.plot.Plot2DPanel;
-
 import plot.Cartesian;
-
-import core.DistanciaMinima;
-
 
 public class PerceptronController {
 	
 
-	public void listenerDistanciaMinima(final PerceptronContainer distanciaMinimaGui){
+	public void listenerPerceptron(final PerceptronContainer perceptronGui){
 
-		distanciaMinimaGui.btnAgregarPatron.addActionListener(new ActionListener() {          
+		perceptronGui.btnAgregarSetAprendizaje.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
-		    	DefaultTableModel temp = (DefaultTableModel) distanciaMinimaGui.tablaNuevosPatrones.getModel();
-				Object nuevo[]= {"0","0"};
+		    	DefaultTableModel temp = (DefaultTableModel) perceptronGui.tablaSetAprendizaje.getModel();
+				Object nuevo[]= {"0","0", "0", "0", "0"};
 				temp.addRow(nuevo);
 		    }
 		});
 
-		distanciaMinimaGui.btnEliminarPatron.addActionListener(new ActionListener() {          
+		perceptronGui.btnEliminarSetAprendizaje.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
-		    	DefaultTableModel temp = (DefaultTableModel) distanciaMinimaGui.tablaNuevosPatrones.getModel();
+		    	DefaultTableModel temp = (DefaultTableModel) perceptronGui.tablaSetAprendizaje.getModel();
 		    	if(temp.getRowCount() > 0){
 		    		temp.removeRow(temp.getRowCount()-1);
 		    	}
 		    }
 		});
 
-		distanciaMinimaGui.btnEjecutar.addActionListener(new ActionListener(){
+		perceptronGui.btnAgregarSetPrueba.addActionListener(new ActionListener() {          
+		    public void actionPerformed(ActionEvent e) {
+		    	DefaultTableModel temp = (DefaultTableModel) perceptronGui.tablaSetPruebas.getModel();
+				Object nuevo[]= {"0","0", "0", "0", "-"};
+				temp.addRow(nuevo);
+		    }
+		});
+
+		perceptronGui.btnEliminarSetPrueba.addActionListener(new ActionListener() {          
+		    public void actionPerformed(ActionEvent e) {
+		    	DefaultTableModel temp = (DefaultTableModel) perceptronGui.tablaSetPruebas.getModel();
+		    	if(temp.getRowCount() > 0){
+		    		temp.removeRow(temp.getRowCount()-1);
+		    	}
+		    }
+		});
+		perceptronGui.btnEntrenar.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				DistanciaMinima  distanciaMinima = new DistanciaMinima();
+				perceptronGui.visibleSalida(false);
+				perceptronGui.lblNoEntrenada.setVisible(true);
+				perceptronGui.lblNoEntrenada.setText("<html><b>Entrenando...</b></html>");
 				
-				String[][] data = distanciaMinima.generarClasificacion( getData( distanciaMinimaGui.tablaNuevosPatrones.getModel() ) ); 
+				//TODO: Codigoooo
+				
+				perceptronGui.lblNoEntrenada.setVisible(false);
+				perceptronGui.visibleSalida(true);
+				/*DistanciaMinima  distanciaMinima = new DistanciaMinima();
+				
+				String[][] data = distanciaMinima.generarClasificacion( getData( perceptronGui.tablaSetAprendizaje.getModel() ) ); 
 				
 				
 				DefaultTableModel resultModel = new DefaultTableModel(); 
@@ -101,8 +119,22 @@ public class PerceptronController {
 				JScrollPane scrollPane = new JScrollPane(tabla);
 				scrollPane.setBounds(0, 0, 800, 200);
 				
-				windowTable.setContentPane( scrollPane  );
+				windowTable.setContentPane( scrollPane  );*/
 			}
+		});
+		
+		perceptronGui.btnClasificar.addActionListener(new ActionListener() {          
+		    public void actionPerformed(ActionEvent e) {
+		    	perceptronGui.ventanaClasificaciones();
+		    
+		    }
+		});
+		
+		perceptronGui.btnClasificarPrueba.addActionListener(new ActionListener() {          
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    
+		    }
 		});
 	}
 	
