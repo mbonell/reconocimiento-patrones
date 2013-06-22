@@ -1,19 +1,17 @@
 package gui.perceptron;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import javax.swing.JInternalFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import org.math.plot.Plot2DPanel;
-import plot.Cartesian;
+import core.Perceptron;
 
 public class PerceptronController {
 	
+	Perceptron perceptron = new Perceptron();
+
 
 	public void listenerPerceptron(final PerceptronContainer perceptronGui){
 
@@ -55,71 +53,38 @@ public class PerceptronController {
 				perceptronGui.visibleSalida(false);
 				perceptronGui.lblNoEntrenada.setVisible(true);
 				perceptronGui.lblNoEntrenada.setText("<html><b>Entrenando...</b></html>");
+									
 				
-				//TODO: Codigoooo
+				perceptron.setUmbralInicial(Double.valueOf(perceptronGui.txtUmbralInicial.getText()));
+				perceptron.setUmbralFinal(Double.valueOf(perceptronGui.txtUmbralInicial.getText()));
+				perceptron.setRazonAprendizaje(Double.valueOf(perceptronGui.txtRazonAprendizaje.getText()));
+				perceptron.setLimiteEpocas(Integer.valueOf(perceptronGui.txtLimiteEpocasInicial.getText()));
 				
+				perceptron.pesos.put(perceptron.LONGITUD_SEPALO, Double.valueOf(perceptronGui.txtPesoLongitudSepalo.getText()));
+				perceptron.pesos.put(perceptron.ANCHO_SEPALO, Double.valueOf(perceptronGui.txtPesoAnchoSepalo.getText()));
+				perceptron.pesos.put(perceptron.LONGITUD_PETALO, Double.valueOf(perceptronGui.txtPesoLongitudPetalo.getText()));
+				perceptron.pesos.put(perceptron.ANCHO_PETALO, Double.valueOf(perceptronGui.txtPesoAnchoPetalo.getText()));
+				
+				perceptron.entrenar(getData(perceptronGui.tablaSetAprendizaje.getModel()));
+				
+
 				perceptronGui.lblNoEntrenada.setVisible(false);
 				perceptronGui.visibleSalida(true);
-				/*DistanciaMinima  distanciaMinima = new DistanciaMinima();
 				
-				String[][] data = distanciaMinima.generarClasificacion( getData( perceptronGui.tablaSetAprendizaje.getModel() ) ); 
+				//Valores finales
+				DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+				simbolos.setDecimalSeparator('.');
+				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
 				
-				
-				DefaultTableModel resultModel = new DefaultTableModel(); 
-				
-				resultModel.addColumn("Peso");
-				resultModel.addColumn("Diametro");
-				resultModel.addColumn("Euclidiana Béisbol");
-				resultModel.addColumn("Euclidiana Fútbol");
-				resultModel.addColumn("Euclidiana Mínima");
-				resultModel.addColumn("Euclidiana Clase");
-				resultModel.addColumn("Manhattan Béisbol");
-				resultModel.addColumn("Manhattan Fútbol");
-				resultModel.addColumn("Manhattan Mínima");
-				resultModel.addColumn("Manhattan Clase");
+				perceptronGui.lblPesoLongitudSepaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.LONGITUD_SEPALO))+"</b></html>");
+				perceptronGui.lblPesoAnchoSepaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.ANCHO_SEPALO))+"</b></html>");
+				perceptronGui.lblPesoLongitudPetaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.LONGITUD_PETALO))+"</b></html>");
+				perceptronGui.lblPesoAnchoPetaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.ANCHO_PETALO))+"</b></html>");
 
-				
-				Cartesian grafica = new Cartesian();
-				
-				HashMap<String, Color> colors = new HashMap<String, Color>();
-				colors.put( distanciaMinima.BEISBOL , Color.green);
-				colors.put( distanciaMinima.FUTBOL , Color.blue);
-				
-				grafica.addPoint( Color.yellow , (float)distanciaMinima.obtenerPesoBeisbol(), (float)distanciaMinima.obtenerDiametroBesibol() ); 
-				grafica.addPoint( Color.pink , (float)distanciaMinima.obtenerPesoFutbol(), (float)distanciaMinima.obtenerDiametroFutbol() );
-				
-				
-				for(String[] row : data){
-					grafica.addPoint(colors.get( row[ distanciaMinima.DISTANCIA_EUCLIDIANA_CLASE ]  ) , Float.parseFloat(row[ distanciaMinima.PESO ]), Float.parseFloat(row[ distanciaMinima.DIAMETRO ]) );
-					resultModel.addRow(row);
-				}
-				
-				JInternalFrame  windowPlot = distanciaMinimaGui.ventanaResultados();
-				
-				Plot2DPanel plot = grafica.plot();
-				
-				double [] labelFutbol = { distanciaMinima.obtenerPesoFutbol(),distanciaMinima.obtenerDiametroFutbol()-1 };
-				double [] labelBaseball = { distanciaMinima.obtenerPesoBeisbol(),distanciaMinima.obtenerDiametroBesibol()-1 };
-				plot.addLabel( distanciaMinima.FUTBOL , Color.black,labelFutbol );
-				plot.addLabel( distanciaMinima.BEISBOL , Color.black,labelBaseball );
-				
-				plot.setAxisLabel(0, "Peso");
-				plot.setAxisLabel(1, "Diámetro");
-				
-				
-				windowPlot.setContentPane( plot );
-				
-				
-				JInternalFrame  windowTable = distanciaMinimaGui.ventanaResultados();
-				windowTable.setBounds(100, 495, 1100, 200);
-				windowTable.setResizable(true);
-				windowTable.setTitle("Resultados");
-				
-				JTable tabla = new JTable(resultModel);
-				JScrollPane scrollPane = new JScrollPane(tabla);
-				scrollPane.setBounds(0, 0, 800, 200);
-				
-				windowTable.setContentPane( scrollPane  );*/
+				perceptronGui.lblUmbralValor.setText("<html><b>"+formato.format(perceptron.getUmbralFinal())+"</b></html>");
+				perceptronGui.lblEpocasValor.setText("<html><b>"+formato.format(perceptron.getNumeroEpocasFinal())+"</b></html>");
+
+
 			}
 		});
 		
@@ -132,8 +97,14 @@ public class PerceptronController {
 		
 		perceptronGui.btnClasificarPrueba.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
-		    	
-		    
+		    	String[][] clasificados = perceptron.clasificar(getData(perceptronGui.tablaSetPruebas.getModel()));
+				DefaultTableModel resultModel =  (DefaultTableModel) perceptronGui.tablaSetPruebas.getModel();
+				
+				
+				for(int j=0; j<clasificados.length; j++){
+					resultModel.setValueAt(clasificados[j][4], j, 4);
+				}
+
 		    }
 		});
 	}

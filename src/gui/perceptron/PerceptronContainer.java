@@ -1,5 +1,10 @@
 package gui.perceptron;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -11,7 +16,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import core.Perceptron;
+
 public class PerceptronContainer {
+	
+	Perceptron perceptron;
 	
 	JDesktopPane desk;
 	
@@ -76,9 +85,11 @@ public class PerceptronContainer {
 	public final String TITULO_LIMITE_EPOCAS = "Valor límite de épocas";
 	public final String TITULO_NO_ENTRENADA = "Favor de entrenar el perceptrón";
 
+	JScrollPane scrollPanePrueba;
 	
     public void ventanaPerceptron(JDesktopPane desk){
     	
+    	perceptron = new Perceptron();
     	this.desk = desk;
     	iframe = new JInternalFrame("Perceptrón - Clasificación de la flor Iris Setosa", true, true, true, true);
 		iframe.setBounds(100, 10, 950, 540);
@@ -108,6 +119,8 @@ public class PerceptronContainer {
 			model.addColumn(columna);
 		}
 		
+		this.cargarSetAprendizaje();
+		
 		JScrollPane scrollPane = new JScrollPane(tablaSetAprendizaje);
 		scrollPane.setBounds(15, 20, 550, 220);
 		panelSetAprendizaje.add(scrollPane);
@@ -124,6 +137,7 @@ public class PerceptronContainer {
 		panelPesos.setBorder(BorderFactory.createTitledBorder("Pesos "));
 		panelPesos.setBounds(640, 10, 270, 170);
 		panelPesos.setLayout(null);
+		perceptron.inicializarPesos();
 		
 		lblPesoLongitudSepalo = new JLabel(TITULO_LONGITUD_SEPALO);
 		lblPesoLongitudSepalo.setBounds(10, 30, 170, 20);
@@ -131,6 +145,7 @@ public class PerceptronContainer {
 		
 		txtPesoLongitudSepalo = new JTextField();
 		txtPesoLongitudSepalo.setBounds(180, 25, 70, 30);
+		txtPesoLongitudSepalo.setText(Double.toString(perceptron.getPeso(perceptron.LONGITUD_SEPALO)));
 		panelPesos.add(txtPesoLongitudSepalo);
 		
 		lblPesoAnchoSepalo = new JLabel(TITULO_ANCHO_SEPALO);
@@ -139,6 +154,7 @@ public class PerceptronContainer {
 		
 		txtPesoAnchoSepalo = new JTextField();
 		txtPesoAnchoSepalo.setBounds(180, 55, 70, 30);
+		txtPesoAnchoSepalo.setText(Double.toString(perceptron.getPeso(perceptron.ANCHO_SEPALO)));
 		panelPesos.add(txtPesoAnchoSepalo);
 		
 		lblPesoLongitudPetalo = new JLabel(TITULO_LONGITUD_PETALO);
@@ -147,6 +163,7 @@ public class PerceptronContainer {
 		
 		txtPesoLongitudPetalo = new JTextField();
 		txtPesoLongitudPetalo.setBounds(180, 85, 70, 30);
+		txtPesoLongitudPetalo.setText(Double.toString(perceptron.getPeso(perceptron.LONGITUD_PETALO)));
 		panelPesos.add(txtPesoLongitudPetalo);
 		
 		lblPesoAnchoPetalo = new JLabel(TITULO_ANCHO_PETALO);
@@ -155,6 +172,7 @@ public class PerceptronContainer {
 		
 		txtPesoAnchoPetalo = new JTextField();
 		txtPesoAnchoPetalo.setBounds(180, 115, 70, 30);
+		txtPesoAnchoPetalo.setText(Double.toString(perceptron.getPeso(perceptron.ANCHO_PETALO)));
 		panelPesos.add(txtPesoAnchoPetalo);
 		
 
@@ -163,6 +181,9 @@ public class PerceptronContainer {
 		panelUmbral.setBorder(BorderFactory.createTitledBorder("Umbral "));
 		panelUmbral.setBounds(640, 180, 270, 75);
 		panelUmbral.setLayout(null);
+		perceptron.setUmbralInicial(perceptron.getPeso("LONGITUD_SEPALO"));
+		perceptron.setUmbralFinal(perceptron.getPeso("LONGITUD_SEPALO"));
+
 		
 		lblUmbralInicial = new JLabel(TITULO_UMBRAL);
 		lblUmbralInicial.setBounds(10, 30, 170, 20);
@@ -170,6 +191,7 @@ public class PerceptronContainer {
 		
 		txtUmbralInicial = new JTextField();
 		txtUmbralInicial.setBounds(180, 25, 70, 30);
+		txtUmbralInicial.setText(Double.toString(perceptron.getUmbralInicial()));
 		panelUmbral.add(txtUmbralInicial);
 		
 		
@@ -185,6 +207,7 @@ public class PerceptronContainer {
 		
 		txtRazonAprendizaje = new JTextField();
 		txtRazonAprendizaje.setBounds(180, 25, 70, 30);
+		txtRazonAprendizaje.setText(Double.toString(perceptron.getRazonAprendizaje()));
 		panelRazonAprendizaje.add(txtRazonAprendizaje);
 		
 		
@@ -200,6 +223,7 @@ public class PerceptronContainer {
 		
 		txtLimiteEpocasInicial = new JTextField();
 		txtLimiteEpocasInicial.setBounds(180, 25, 70, 30);
+		txtLimiteEpocasInicial.setText(Integer.toString(perceptron.getLimiteEpocas()));
 		panelLimiteEpocas.add(txtLimiteEpocasInicial);
 
 		iframe.add(panelSetAprendizaje);
@@ -319,9 +343,11 @@ public class PerceptronContainer {
 			model.addColumn(columna);
 		}
 		
-		JScrollPane scrollPane = new JScrollPane(tablaSetPruebas);
-		scrollPane.setBounds(15, 20, 670, 220);
-		ventanaResultados.add(scrollPane);
+		this.cargarSetPrueba();
+		
+		scrollPanePrueba = new JScrollPane(tablaSetPruebas);
+		scrollPanePrueba.setBounds(15, 20, 670, 220);
+		ventanaResultados.add(scrollPanePrueba);
 		
 		btnAgregarSetPrueba.setBounds(700, 80, 25, 25);
 		btnEliminarSetPrueba.setBounds(700, 130, 25, 25);
@@ -332,4 +358,78 @@ public class PerceptronContainer {
 		ventanaResultados.add(btnClasificarPrueba);
 
     }
+    
+	private void cargarSetAprendizaje(){
+		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
+		String csvFile = "dataset/iris_aprendizaje.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+	 
+		try {
+	 
+			br = new BufferedReader(new FileReader(csvFile));
+			
+			while ((line = br.readLine()) != null) {
+	 
+				String[] patron = line.split(cvsSplitBy);
+				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4]};
+				temp.addRow(nuevo);
+				
+			}
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Error accediendo al csv");
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	 
+	}
+	
+	private void cargarSetPrueba(){
+		DefaultTableModel temp = (DefaultTableModel) this.tablaSetPruebas.getModel();
+		String csvFile = "dataset/iris_prueba.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+	 
+		try {
+	 
+			br = new BufferedReader(new FileReader(csvFile));
+			
+			while ((line = br.readLine()) != null) {
+	 
+				String[] patron = line.split(cvsSplitBy);
+				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], "-"};
+				temp.addRow(nuevo);
+				
+			}
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Error accediendo al csv prueba");
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	 
+	}
 }
