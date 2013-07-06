@@ -29,6 +29,8 @@ public class DesktopContainer extends JFrame{
 	
 	JMenuItem itemDistanciaMinima = new JMenuItem("Distancia Mínima");
 	JMenuItem itemPerceptron = new JMenuItem("Perceptrón");
+	JMenuItem itemAdaline = new JMenuItem("Adaline");
+
 
 	JMenuItem itemSalir = new JMenuItem("Salir");
 	JMenuItem itemAcerca = new JMenuItem("Prácticas");
@@ -47,6 +49,7 @@ public class DesktopContainer extends JFrame{
 		
 		menuAdmon.add(itemDistanciaMinima);
 		menuAdmon.add(itemPerceptron);
+		menuAdmon.add(itemAdaline);
 		menuAdmon.add(separador);
 		menuAdmon.add(itemSalir);
 		menuAcerca.add(itemAcerca);

@@ -4,16 +4,21 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 
-public class Perceptron {
+public class Adaline {
 	
 
-	public final String LONGITUD_SEPALO = "LONGITUD_SEPALO";
-	public final String ANCHO_SEPALO = "ANCHO_SEPALO";
-	public final String LONGITUD_PETALO = "LONGITUD_PETALO";
-	public final String ANCHO_PETALO = "ANCHO_PETALO";
+	public final String EMBARAZOS 			  = "EMBARAZOS";
+	public final String CONCENTRACION_GLUCOSA = "CONCENTRACION_GLUCOSA";
+	public final String PRESION_ARTERIAL 	  = "PRESION_ARTERIAL";
+	public final String GROSOR_TRICEPS   	  = "GROSOR_TRICEPS";
+	public final String INSULINA      		  = "INSULINA";
+	public final String MASA_CORPORAL 		  = "MASA_CORPORAL";
+	public final String FUNCION 			  = "FUNCION";
+	public final String EDAD 				  = "EDAD";
 	
 	private double razonAprendizaje = 0.5;
 	private int limiteEpocas = 1000;
+	private double errorDeseado = 0.01;
 	private int numeroEpocasFinal;
 	private double umbralInicial;
 	private double umbralFinal;
@@ -56,11 +61,23 @@ public class Perceptron {
 		this.umbralFinal = umbral;
 	}
 	
+	public double getErrorDeseado(){
+		return this.errorDeseado;
+	}
+	
+	public void setErrorDeseado(double error){
+		this.errorDeseado = error;
+	}
+	
 	public void inicializarPesos(){
-		this.pesos.put(LONGITUD_SEPALO, this.generarAletorio());
-		this.pesos.put(ANCHO_SEPALO, this.generarAletorio());
-		this.pesos.put(LONGITUD_PETALO, this.generarAletorio());
-		this.pesos.put(ANCHO_PETALO, this.generarAletorio());
+		this.pesos.put(EMBARAZOS, this.generarAletorio());
+		this.pesos.put(CONCENTRACION_GLUCOSA, this.generarAletorio());
+		this.pesos.put(PRESION_ARTERIAL, this.generarAletorio());
+		this.pesos.put(GROSOR_TRICEPS, this.generarAletorio());
+		this.pesos.put(INSULINA, this.generarAletorio());
+		this.pesos.put(MASA_CORPORAL, this.generarAletorio());
+		this.pesos.put(FUNCION, this.generarAletorio());
+		this.pesos.put(EDAD, this.generarAletorio());
 	}
 	
 	public double getPeso(String llave){
@@ -76,16 +93,28 @@ public class Perceptron {
 		
 		switch (llave) {
 			case 0:
-				peso = this.getPeso(LONGITUD_SEPALO);
+				peso = this.getPeso(EMBARAZOS);
 				break;
 			case 1:
-				peso = this.getPeso(ANCHO_SEPALO);
+				peso = this.getPeso(CONCENTRACION_GLUCOSA);
 				break;
 			case 2:
-				peso = this.getPeso(LONGITUD_PETALO);
+				peso = this.getPeso(PRESION_ARTERIAL);
 				break;
 			case 3:
-				peso = this.getPeso(ANCHO_PETALO);
+				peso = this.getPeso(GROSOR_TRICEPS);
+				break;
+			case 4:
+				peso = this.getPeso(INSULINA);
+				break;
+			case 5:
+				peso = this.getPeso(MASA_CORPORAL);
+				break;
+			case 6:
+				peso = this.getPeso(FUNCION);
+				break;
+			case 7:
+				peso = this.getPeso(EDAD);
 				break;
 
 		}
@@ -96,16 +125,28 @@ public class Perceptron {
 		
 		switch (llave) {
 			case 0:
-				this.setPeso(LONGITUD_SEPALO, valor);
+				this.setPeso(EMBARAZOS, valor);
 				break;
 			case 1:
-				this.setPeso(ANCHO_SEPALO, valor);
+				this.setPeso(CONCENTRACION_GLUCOSA, valor);
 				break;
 			case 2:
-				this.setPeso(LONGITUD_PETALO, valor);
+				this.setPeso(PRESION_ARTERIAL, valor);
 				break;
 			case 3:
-				this.setPeso(ANCHO_PETALO, valor);
+				this.setPeso(GROSOR_TRICEPS, valor);
+				break;
+			case 4:
+				this.setPeso(INSULINA, valor);
+				break;
+			case 5:
+				this.setPeso(MASA_CORPORAL, valor);
+				break;
+			case 6:
+				this.setPeso(FUNCION, valor);
+				break;
+			case 7:
+				this.setPeso(EDAD, valor);
 				break;
 
 		}

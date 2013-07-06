@@ -16,7 +16,7 @@ public class Main {
 	private static final String appName = "Reconocimiento de Patrones";
 	
 	public static void main(String mbm[]) {
-
+/*
 		try {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("com.apple.mrj.application.apple.menu.about.name", appName);
@@ -40,7 +40,7 @@ public class Main {
 		} catch (UnsupportedLookAndFeelException e) {
 			System.out.println("UnsupportedLookAndFeelException: "
 					+ e.getMessage());
-		}
+		}*/
 
 		SwingUtilities.invokeLater(new Runnable() {
 

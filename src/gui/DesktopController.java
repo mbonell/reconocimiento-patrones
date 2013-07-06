@@ -1,4 +1,6 @@
 package gui;
+import gui.adaline.AdalineContainer;
+import gui.adaline.AdalineController;
 import gui.distancia_minima.DistanciaMinimaContainer;
 import gui.distancia_minima.DistanciaMinimaController;
 import gui.perceptron.PerceptronContainer;
@@ -43,6 +45,16 @@ public class DesktopController {
 				
 				perceptronGui.ventanaPerceptron(desk.desk);
 				perceptronController.listenerPerceptron(perceptronGui);
+			}			
+		});
+		
+		desk.itemAdaline.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				AdalineContainer adalineGui = new AdalineContainer();
+				AdalineController adalineController = new AdalineController();
+				
+				adalineGui.ventanaAdaline(desk.desk);
+				adalineController.listenerAdaline(adalineGui);
 			}			
 		});
 		
