@@ -63,8 +63,8 @@ public class AdalineContainer {
 	JLabel lblPesoFuncionValor;
 	JLabel lblPesoEdadValor;
 	
-	JLabel lblUmbralFinal;
-	JLabel lblUmbralValor;
+	JLabel lblErrorFinal;
+	JLabel lblErrorValor;
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
 	
@@ -118,7 +118,7 @@ public class AdalineContainer {
     	adaline = new Adaline();
     	this.desk = desk;
     	iframe = new JInternalFrame("Adaline - Predicción sobre pacientes con posible diabetes", true, true, true, true);
-		iframe.setBounds(50, 10, 1100, 540);
+		iframe.setBounds(50, 10, 1100, 610);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
 		iframe.setVisible(true);
@@ -260,6 +260,7 @@ public class AdalineContainer {
 		panelParametros.add(txtRazonAprendizaje);
 		
 		//Umbral
+		adaline.setUmbralInicial(adaline.getPeso("EMBARAZOS"));
 		lblUmbralInicial = new JLabel(TITULO_UMBRAL);
 		lblUmbralInicial.setBounds(10, 60, 170, 20);
 		panelParametros.add(lblUmbralInicial);
@@ -293,14 +294,15 @@ public class AdalineContainer {
 		iframe.add(panelPesos);
 		iframe.add(panelParametros);
 
+		
 		//Salida
 		panelSalida = new JPanel();
 		panelSalida.setBorder(BorderFactory.createTitledBorder("Salida "));
-		panelSalida.setBounds(10, 280, 620, 180);
+		panelSalida.setBounds(10, 280, 620, 270);
 		panelSalida.setLayout(null);
 		
 		lblNoEntrenada = new JLabel("<html><b>"+TITULO_NO_ENTRENADA+"</b></html>");
-		lblNoEntrenada.setBounds(210, 80, 250, 20);
+		lblNoEntrenada.setBounds(210, 80, 250, 80);
 		panelSalida.add(lblNoEntrenada);
 		
 		//Salida pesos
@@ -309,55 +311,92 @@ public class AdalineContainer {
 		panelSalida.add(lblPesoEmbarazoFinal);
 		
 		lblPesoEmbarazoValor = new JLabel("<html><b>0.0</b></html>");
-		lblPesoEmbarazoValor.setBounds(180, 30, 170, 20);
+		lblPesoEmbarazoValor.setBounds(340, 30, 170, 20);
 		panelSalida.add(lblPesoEmbarazoValor);
 		
 		
 		lblPesoConcentracionGlucosaFinal = new JLabel(TITULO_CONCENTRACION_GLUCOSA);
-		lblPesoConcentracionGlucosaFinal.setBounds(10, 60, 170, 20);
+		lblPesoConcentracionGlucosaFinal.setBounds(10, 60, 540, 20);
 		panelSalida.add(lblPesoConcentracionGlucosaFinal);
 		
 		lblPesoConcentracionGlucosaValor = new JLabel("<html><b>0.0</b></html>");
-		lblPesoConcentracionGlucosaValor.setBounds(180, 60, 170, 20);
+		lblPesoConcentracionGlucosaValor.setBounds(550, 60, 170, 20);
 		panelSalida.add(lblPesoConcentracionGlucosaValor);
 		
 		
 		lblPesoPresionArterialFinal = new JLabel(TITULO_PRESION_ARTERIAL);
-		lblPesoPresionArterialFinal.setBounds(10, 90, 170, 20);
+		lblPesoPresionArterialFinal.setBounds(10, 90, 240, 20);
 		panelSalida.add(lblPesoPresionArterialFinal);
 		
 		lblPesoPresionArterialValor = new JLabel("<html><b>0.0</b></html>");
-		lblPesoPresionArterialValor.setBounds(180, 90, 170, 20);
+		lblPesoPresionArterialValor.setBounds(340, 90, 170, 20);
 		panelSalida.add(lblPesoPresionArterialValor);
 		
 		
 		lblPesoGrosorTricepsFinal = new JLabel(TITULO_GROSOR_TRICEPS);
-		lblPesoGrosorTricepsFinal.setBounds(10, 120, 170, 20);
+		lblPesoGrosorTricepsFinal.setBounds(10, 120, 280, 20);
 		panelSalida.add(lblPesoGrosorTricepsFinal);
 		
 		lblPesoGrosorTricepsValor = new JLabel("<html><b>0.0</b></html>");
-		lblPesoGrosorTricepsValor.setBounds(180, 120, 170, 20);
+		lblPesoGrosorTricepsValor.setBounds(340, 120, 170, 20);
 		panelSalida.add(lblPesoGrosorTricepsValor);
 		
-		//Salida umbral
-		lblUmbralFinal = new JLabel("Umbral");
-		lblUmbralFinal.setBounds(270, 60, 170, 20);
-		panelSalida.add(lblUmbralFinal);
 		
-		lblUmbralValor = new JLabel("<html><b>0.0</b></html>");
-		lblUmbralValor.setBounds(350, 60, 170, 20);
-		panelSalida.add(lblUmbralValor);
+		lblPesoInsulinaFinal = new JLabel(TITULO_INSULINA);
+		lblPesoInsulinaFinal.setBounds(10, 150, 280, 20);
+		panelSalida.add(lblPesoInsulinaFinal);
+		
+		lblPesoInsulinaValor = new JLabel("<html><b>0.0</b></html>");
+		lblPesoInsulinaValor.setBounds(340, 150, 170, 20);
+		panelSalida.add(lblPesoInsulinaValor);
+		
+		
+		lblPesoMasaCorporalFinal = new JLabel(TITULO_MASA_CORPORAL);
+		lblPesoMasaCorporalFinal.setBounds(10, 180, 320, 20);
+		panelSalida.add(lblPesoMasaCorporalFinal);
+		
+		lblPesoMasaCorporalValor = new JLabel("<html><b>0.0</b></html>");
+		lblPesoMasaCorporalValor.setBounds(340, 180, 170, 20);
+		panelSalida.add(lblPesoMasaCorporalValor);
+		
+		
+		lblPesoFuncionFinal = new JLabel(TITULO_FUNCION);
+		lblPesoFuncionFinal.setBounds(10, 210, 320, 20);
+		panelSalida.add(lblPesoFuncionFinal);
+		
+		lblPesoFuncionValor = new JLabel("<html><b>0.0</b></html>");
+		lblPesoFuncionValor.setBounds(340, 210, 170, 20);
+		panelSalida.add(lblPesoFuncionValor);
+		
+		
+		lblPesoEdadFinal = new JLabel(TITULO_EDAD);
+		lblPesoEdadFinal.setBounds(10, 240, 320, 20);
+		panelSalida.add(lblPesoEdadFinal);
+		
+		lblPesoEdadValor = new JLabel("<html><b>0.0</b></html>");
+		lblPesoEdadValor.setBounds(340, 240, 170, 20);
+		panelSalida.add(lblPesoEdadValor);
+		
+		
+		//Salida error deseado
+		lblErrorFinal = new JLabel("Error deseado");
+		lblErrorFinal.setBounds(450, 120, 170, 20);
+		panelSalida.add(lblErrorFinal);
+		
+		lblErrorValor= new JLabel("<html><b>0.0</b></html>");
+		lblErrorValor.setBounds(550, 120, 170, 20);
+		panelSalida.add(lblErrorValor);
 		
 		//Salida epocas
 		lblEpocasFinal = new JLabel("Épocas");
-		lblEpocasFinal.setBounds(270, 90, 170, 20);
+		lblEpocasFinal.setBounds(450, 150, 170, 20);
 		panelSalida.add(lblEpocasFinal);
 		
 		lblEpocasValor = new JLabel("<html><b>0.0</b></html>");
-		lblEpocasValor.setBounds(350, 90, 170, 20);
+		lblEpocasValor.setBounds(550, 150, 170, 20);
 		panelSalida.add(lblEpocasValor);
 		
-		btnClasificar.setBounds(480, 310, 120, 120);
+		btnClasificar.setBounds(450, 470, 170, 60);
 		btnEntrenar.setBounds(915, 330, 150, 80);
 		
 		iframe.add(btnEntrenar);
@@ -374,12 +413,20 @@ public class AdalineContainer {
     	 lblPesoConcentracionGlucosaFinal.setVisible(visible);
     	 lblPesoPresionArterialFinal.setVisible(visible);
     	 lblPesoGrosorTricepsFinal.setVisible(visible);
+    	 lblPesoInsulinaFinal.setVisible(visible);
+    	 lblPesoMasaCorporalFinal.setVisible(visible);
+    	 lblPesoFuncionFinal.setVisible(visible);
+    	 lblPesoEdadFinal.setVisible(visible);
     	 lblPesoEmbarazoValor.setVisible(visible);
     	 lblPesoConcentracionGlucosaValor.setVisible(visible);
     	 lblPesoPresionArterialValor.setVisible(visible);
     	 lblPesoGrosorTricepsValor.setVisible(visible);
-    	 lblUmbralFinal.setVisible(visible);
-    	 lblUmbralValor.setVisible(visible);
+    	 lblPesoInsulinaValor.setVisible(visible);
+    	 lblPesoMasaCorporalValor.setVisible(visible);
+    	 lblPesoFuncionValor.setVisible(visible);
+    	 lblPesoEdadValor.setVisible(visible);
+    	 lblErrorFinal.setVisible(visible);
+    	 lblErrorValor.setVisible(visible);
     	 lblEpocasFinal.setVisible(visible);
     	 lblEpocasValor.setVisible(visible);
     	 btnClasificar.setVisible(visible);
@@ -434,9 +481,25 @@ public class AdalineContainer {
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
-				temp.addRow(nuevo);
+				boolean normalizar = false;
 				
+				if(!normalizar){
+					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
+					temp.addRow(nuevo);
+				}else{
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/13), 
+							 String.valueOf(Double.valueOf(patron[1])/197), 
+							 String.valueOf(Double.valueOf(patron[2])/110),
+							 String.valueOf(Double.valueOf(patron[3])/47),
+							 String.valueOf(Double.valueOf(patron[4])/846),
+						     String.valueOf(Double.valueOf(patron[5])/45.8),
+						     String.valueOf(Double.valueOf(patron[6])/2.288),
+						     String.valueOf(Double.valueOf(patron[7])/60),
+							 patron[8]
+							 };
+					temp.addRow(nuevo);
+				}
+
 			}
 	 
 		} catch (FileNotFoundException e) {
@@ -471,7 +534,7 @@ public class AdalineContainer {
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], "-"};
+				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
 				temp.addRow(nuevo);
 				
 			}

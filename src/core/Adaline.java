@@ -19,9 +19,9 @@ public class Adaline {
 	private double razonAprendizaje = 0.5;
 	private int limiteEpocas = 1000;
 	private double errorDeseado = 0.01;
+	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
 	private double umbralInicial;
-	private double umbralFinal;
 	
 	public HashMap<String, Double> pesos = new HashMap<String, Double>();
 	
@@ -53,12 +53,12 @@ public class Adaline {
 		this.umbralInicial = umbral;
 	}
 	
-	public double getUmbralFinal(){
-		return this.umbralFinal;
+	public double getErrorFinal(){
+		return this.errorDeseadoFinal;
 	}
 	
-	public void setUmbralFinal(double umbral){
-		this.umbralFinal = umbral;
+	public void setErrorFinal(double error){
+		this.errorDeseadoFinal = error;
 	}
 	
 	public double getErrorDeseado(){
@@ -167,28 +167,38 @@ public class Adaline {
 	public void entrenar(String[][] entradas){
 		
 		boolean finalizado = false;
-		int Pw,error, y;
+		int valorActivacion, y;
+		double  error = 0, errorCuadraticoMedio = 0;
 		this.numeroEpocasFinal = 0;
 		
 			while(!finalizado){ 
 				
-				finalizado = true;
 				
 				for(int n = 0; n < entradas.length; n++){
-					Pw = this.desicion(entradas[n]);
+					valorActivacion = this.obtenidaSigmoide(entradas[n]);
 					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
-					error = y - Pw;
-					System.out.println("Entrada[" + n + "] Y: " + y + " Pw: " + Pw);
-						if(error != 0){
-							finalizado = false;
-							this.ajustarPesos(entradas[n], error);
-						}
+					
+					error = y - valorActivacion; //Delta
+					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico medio
+					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
+					
+					System.out.println("Entrada[" + n + "] Y: " + y +
+										", Valor de activacion (net): " + valorActivacion + 
+										", Error cuadratico medio: " + errorCuadraticoMedio +
+										", Error acumulado: " + this.errorDeseadoFinal);
+					
+					
+						this.ajustarPesos(entradas[n], error);
+
+						
 				}
 				
 				this.numeroEpocasFinal++;
 				
-				if(this.numeroEpocasFinal > this.limiteEpocas)
+				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal == this.errorDeseado)
 					finalizado = true;
+				else
+					this.errorDeseadoFinal = 0;
 			}
 		
 		//Pesos finales	
@@ -196,27 +206,32 @@ public class Adaline {
 		System.out.println("Peso 2: " + this.getPesoLlaveEntera(1));
 		System.out.println("Peso 3: " + this.getPesoLlaveEntera(2));
 		System.out.println("Peso 4: " + this.getPesoLlaveEntera(3));
+		System.out.println("Peso 5: " + this.getPesoLlaveEntera(4));
+		System.out.println("Peso 6: " + this.getPesoLlaveEntera(5));
+		System.out.println("Peso 7: " + this.getPesoLlaveEntera(6));
+		System.out.println("Peso 8: " + this.getPesoLlaveEntera(7));
 	}
 	
 	
-	private int desicion(String [] patron){
+	private int obtenidaSigmoide(String [] patron){
 		double sumatoria = 0;		
 		
 		for(int n = 0; n < patron.length-1; n++){
 			sumatoria+=(Double.valueOf(patron[n]) * this.getPesoLlaveEntera(n));
 		}
 		
-		System.out.println("Sumatoria: " + sumatoria);
+		System.out.println("Valor de activacion (x*w): " + sumatoria);
 		
-		if(sumatoria >= this.umbralFinal) //TODO: Comparacion contra el umbal o contra 0?, cuando se actualiza el umbral?
+		if(sumatoria >= 0) 
 			return 1;
 		else
-			return 0;
+			return -1;
 	}
 	
-	private void ajustarPesos(String [] patron, int error){
-		for(int n = 0; n < patron.length-1; n++){ //TODO: No deberia considerarse la clase esperada?
+	private void ajustarPesos(String [] patron, double error){
+		for(int n = 0; n < patron.length-1; n++){ 
 			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * Double.valueOf(patron[n]));
+			//System.out.println(n + " " + this.getPesoLlaveEntera(n));
 		}
 	}
 	
@@ -230,9 +245,9 @@ public class Adaline {
 			}
 			
 			if(sumatoria >= 0) //TODO: Si es contra 0? y el umbral?
-				entradasClasificar[n][4] = "1";
+				entradasClasificar[n][8] = "1";
 			else
-				entradasClasificar[n][4] = "0";				
+				entradasClasificar[n][8] = "0";				
 			
 		}
 		

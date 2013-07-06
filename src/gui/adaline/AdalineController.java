@@ -35,7 +35,7 @@ public class AdalineController {
 		adalineGui.btnAgregarSetPrueba.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
 		    	DefaultTableModel temp = (DefaultTableModel) adalineGui.tablaSetPruebas.getModel();
-				Object nuevo[]= {"0","0", "0", "0", "-"};
+				Object nuevo[]= {"0","0", "0", "0", "0", "0", "0", "0", "-"};
 				temp.addRow(nuevo);
 		    }
 		});
@@ -56,7 +56,6 @@ public class AdalineController {
 									
 				
 				adaline.setUmbralInicial(Double.valueOf(adalineGui.txtUmbralInicial.getText()));
-				adaline.setUmbralFinal(Double.valueOf(adalineGui.txtUmbralInicial.getText()));
 				adaline.setRazonAprendizaje(Double.valueOf(adalineGui.txtRazonAprendizaje.getText()));
 				adaline.setLimiteEpocas(Integer.valueOf(adalineGui.txtLimiteEpocasInicial.getText()));
 				adaline.setErrorDeseado(Double.valueOf(adalineGui.txtErrorDeseado.getText()));
@@ -71,9 +70,10 @@ public class AdalineController {
 				adaline.pesos.put(adaline.FUNCION, Double.valueOf(adalineGui.txtPesoFuncion.getText()));
 				adaline.pesos.put(adaline.EDAD, Double.valueOf(adalineGui.txtPesoEdad.getText()));
 				
+				
 				adaline.entrenar(getData(adalineGui.tablaSetAprendizaje.getModel()));
 				
-
+				
 				adalineGui.lblNoEntrenada.setVisible(false);
 				adalineGui.visibleSalida(true);
 				
@@ -82,13 +82,18 @@ public class AdalineController {
 				simbolos.setDecimalSeparator('.');
 				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
 				
-				//adalineGui.lblPesoLongitudSepaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.LONGITUD_SEPALO))+"</b></html>");
-				//adalineGui.lblPesoAnchoSepaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.ANCHO_SEPALO))+"</b></html>");
-				//adalineGui.lblPesoLongitudPetaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.LONGITUD_PETALO))+"</b></html>");
-				//adalineGui.lblPesoAnchoPetaloValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.ANCHO_PETALO))+"</b></html>");
+				adalineGui.lblPesoEmbarazoValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.EMBARAZOS))+"</b></html>");
+				adalineGui.lblPesoConcentracionGlucosaValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.CONCENTRACION_GLUCOSA))+"</b></html>");
+				adalineGui.lblPesoPresionArterialValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.PRESION_ARTERIAL))+"</b></html>");
+				adalineGui.lblPesoGrosorTricepsValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.GROSOR_TRICEPS))+"</b></html>");
+				adalineGui.lblPesoInsulinaValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.INSULINA))+"</b></html>");
+				adalineGui.lblPesoMasaCorporalValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.MASA_CORPORAL))+"</b></html>");
+				adalineGui.lblPesoFuncionValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.FUNCION))+"</b></html>");
+				adalineGui.lblPesoEdadValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.EDAD))+"</b></html>");
 
-				adalineGui.lblUmbralValor.setText("<html><b>"+formato.format(perceptron.getUmbralFinal())+"</b></html>");
-				adalineGui.lblEpocasValor.setText("<html><b>"+formato.format(perceptron.getNumeroEpocasFinal())+"</b></html>");
+				
+				adalineGui.lblErrorValor.setText("<html><b>"+formato.format(adaline.getErrorFinal())+"</b></html>");
+				adalineGui.lblEpocasValor.setText("<html><b>"+formato.format(adaline.getNumeroEpocasFinal())+"</b></html>");
 
 
 			}
@@ -103,12 +108,12 @@ public class AdalineController {
 		
 		adalineGui.btnClasificarPrueba.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
-		    	String[][] clasificados = perceptron.clasificar(getData(adalineGui.tablaSetPruebas.getModel()));
+		    	String[][] clasificados = adaline.clasificar(getData(adalineGui.tablaSetPruebas.getModel()));
 				DefaultTableModel resultModel =  (DefaultTableModel) adalineGui.tablaSetPruebas.getModel();
 				
 				
 				for(int j=0; j<clasificados.length; j++){
-					resultModel.setValueAt(clasificados[j][4], j, 4);
+					resultModel.setValueAt(clasificados[j][8], j, 8);
 				}
 
 		    }
