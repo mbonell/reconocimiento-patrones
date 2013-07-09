@@ -481,7 +481,7 @@ public class AdalineContainer {
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-				boolean normalizar = false;
+				boolean normalizar = true;
 				
 				if(!normalizar){
 					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
@@ -534,8 +534,27 @@ public class AdalineContainer {
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-				Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
-				temp.addRow(nuevo);
+			boolean normalizar = true;
+				
+				if(!normalizar){
+					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
+					temp.addRow(nuevo);
+				}else{
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/10), 
+							 String.valueOf(Double.valueOf(patron[1])/190), 
+							 String.valueOf(Double.valueOf(patron[2])/92),
+							 String.valueOf(Double.valueOf(patron[3])/48),
+							 String.valueOf(Double.valueOf(patron[4])/510),
+						     String.valueOf(Double.valueOf(patron[5])/44),
+						     String.valueOf(Double.valueOf(patron[6])/1.057),
+						     String.valueOf(Double.valueOf(patron[7])/66),
+							 "-"
+							 };
+					temp.addRow(nuevo);
+				}
+				
+				//Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
+				//temp.addRow(nuevo);
 				
 			}
 	 

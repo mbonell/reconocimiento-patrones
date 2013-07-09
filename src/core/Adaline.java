@@ -17,7 +17,7 @@ public class Adaline {
 	public final String EDAD 				  = "EDAD";
 	
 	private double razonAprendizaje = 0.5;
-	private int limiteEpocas = 1000;
+	private int limiteEpocas = 10000;
 	private double errorDeseado = 0.01;
 	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
@@ -167,8 +167,8 @@ public class Adaline {
 	public void entrenar(String[][] entradas){
 		
 		boolean finalizado = false;
-		int valorActivacion, y;
-		double  error = 0, errorCuadraticoMedio = 0;
+		int y;
+		double  error = 0, errorCuadraticoMedio = 0, valorActivacion = 0;
 		this.numeroEpocasFinal = 0;
 		
 			while(!finalizado){ 
@@ -182,11 +182,10 @@ public class Adaline {
 					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico medio
 					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
 					
-					System.out.println("Entrada[" + n + "] Y: " + y +
+					/*System.out.println("Entrada[" + n + "] Y: " + y +
 										", Valor de activacion (net): " + valorActivacion + 
-										", Error cuadratico medio: " + errorCuadraticoMedio +
-										", Error acumulado: " + this.errorDeseadoFinal);
-					
+										", Error cuadratico medio: " + errorCuadraticoMedio);
+					*/
 					
 						this.ajustarPesos(entradas[n], error);
 
@@ -194,7 +193,8 @@ public class Adaline {
 				}
 				
 				this.numeroEpocasFinal++;
-				
+				this.errorDeseadoFinal /= entradas.length;
+				System.out.println("["+ this.numeroEpocasFinal +"]Error Esperado: " + this.errorDeseadoFinal);
 				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal == this.errorDeseado)
 					finalizado = true;
 				else
@@ -213,38 +213,36 @@ public class Adaline {
 	}
 	
 	
-	private int obtenidaSigmoide(String [] patron){
-		double sumatoria = 0;		
+	private double obtenidaSigmoide(String [] patron){
+		double sumatoria = 0, fy = 0;		
 		
 		for(int n = 0; n < patron.length-1; n++){
 			sumatoria+=(Double.valueOf(patron[n]) * this.getPesoLlaveEntera(n));
 		}
 		
-		System.out.println("Valor de activacion (x*w): " + sumatoria);
+		fy = 1 / (1 + Math.exp(-1 * sumatoria));
 		
-		if(sumatoria >= 0) 
-			return 1;
-		else
-			return -1;
+		//System.out.println("Valor de activacion (x*w) en f(y): " + fy);
+		
+		return fy;
+
 	}
 	
 	private void ajustarPesos(String [] patron, double error){
 		for(int n = 0; n < patron.length-1; n++){ 
-			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * Double.valueOf(patron[n]));
+			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * this.obtenidaSigmoide(patron) * (1-this.obtenidaSigmoide(patron)) * Double.valueOf(patron[n]));
 			//System.out.println(n + " " + this.getPesoLlaveEntera(n));
 		}
 	}
 	
 	public String[][] clasificar(String[][] entradasClasificar){
+		
 		for(int n = 0; n < entradasClasificar.length; n++){
 			
-			double sumatoria = 0;		
+			double fy = 0;		
+			fy = obtenidaSigmoide(entradasClasificar[n]);
 			
-			for(int j = 0; j < entradasClasificar[n].length-1; j++){
-				sumatoria+=(Double.valueOf(entradasClasificar[n][j]) * this.getPesoLlaveEntera(j));
-			}
-			
-			if(sumatoria >= 0) //TODO: Si es contra 0? y el umbral?
+			if(fy >= 0.5) 
 				entradasClasificar[n][8] = "1";
 			else
 				entradasClasificar[n][8] = "0";				
