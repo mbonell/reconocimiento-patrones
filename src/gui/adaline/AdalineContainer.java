@@ -39,7 +39,6 @@ public class AdalineContainer {
 	JLabel lblPesoFuncion;
 	JLabel lblPesoEdad;
 	
-	JLabel lblUmbralInicial;
 	JLabel lblRazonAprendizaje;
 	JLabel lblLimiteEpocasInicial;
 	JLabel lblErrorEsperado;
@@ -68,6 +67,8 @@ public class AdalineContainer {
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
 	
+	JLabel lblEfectividad;
+	
 	JTextField txtPesoEmbarazo;
 	JTextField txtPesoConcentracionGlucosa;
 	JTextField txtPesoPresionArterial;
@@ -77,7 +78,6 @@ public class AdalineContainer {
 	JTextField txtPesoFuncion;
 	JTextField txtPesoEdad;
 
-	JTextField txtUmbralInicial;
 	JTextField txtRazonAprendizaje;
 	JTextField txtLimiteEpocasInicial;
 	JTextField txtErrorDeseado;
@@ -105,7 +105,6 @@ public class AdalineContainer {
 	public final String TITULO_FUNCION = "Función Diabetes pedigree";
 	public final String TITULO_EDAD = "Edad";
 
-	public final String TITULO_UMBRAL = "Valor del umbral";
 	public final String TITULO_RAZON_APRENDIZAJE = "Valor razón de aprendizaje";
 	public final String TITULO_LIMITE_EPOCAS = "Valor límite de épocas";
 	public final String TITULO_ERROR_ESPERADO = "Valor del error deseado";
@@ -259,34 +258,24 @@ public class AdalineContainer {
 		txtRazonAprendizaje.setText(Double.toString(adaline.getRazonAprendizaje()));
 		panelParametros.add(txtRazonAprendizaje);
 		
-		//Umbral
-		adaline.setUmbralInicial(adaline.getPeso("EMBARAZOS"));
-		lblUmbralInicial = new JLabel(TITULO_UMBRAL);
-		lblUmbralInicial.setBounds(10, 60, 170, 20);
-		panelParametros.add(lblUmbralInicial);
-		
-		txtUmbralInicial = new JTextField();
-		txtUmbralInicial.setBounds(180, 55, 70, 30);
-		txtUmbralInicial.setText(Double.toString(adaline.getUmbralInicial()));
-		panelParametros.add(txtUmbralInicial);
 		
 		//Limite epocas
 		lblLimiteEpocasInicial = new JLabel(TITULO_LIMITE_EPOCAS);
-		lblLimiteEpocasInicial.setBounds(10, 90, 170, 20);
+		lblLimiteEpocasInicial.setBounds(10, 60, 170, 20);
 		panelParametros.add(lblLimiteEpocasInicial);
 		
 		txtLimiteEpocasInicial = new JTextField();
-		txtLimiteEpocasInicial.setBounds(180, 85, 70, 30);
+		txtLimiteEpocasInicial.setBounds(180, 55, 70, 30);
 		txtLimiteEpocasInicial.setText(Integer.toString(adaline.getLimiteEpocas()));
 		panelParametros.add(txtLimiteEpocasInicial);
 		
 		//Error esperado
 		lblErrorEsperado = new JLabel(TITULO_ERROR_ESPERADO);
-		lblErrorEsperado.setBounds(10, 120, 150, 20);
+		lblErrorEsperado.setBounds(10, 90, 150, 20);
 		panelParametros.add(lblErrorEsperado);
 		
 		txtErrorDeseado = new JTextField();
-		txtErrorDeseado.setBounds(180, 115, 70, 30);
+		txtErrorDeseado.setBounds(180, 85, 70, 30);
 		txtErrorDeseado.setText(Double.toString(adaline.getErrorDeseado()));
 		panelParametros.add(txtErrorDeseado);
 
@@ -461,9 +450,14 @@ public class AdalineContainer {
 		btnEliminarSetPrueba.setBounds(700, 130, 25, 25);
 		btnClasificarPrueba.setBounds(540, 250, 150, 35);
 		
+		lblEfectividad = new JLabel("");
+		lblEfectividad.setBounds(15, 250, 250, 35);
+		
 		ventanaResultados.add(btnAgregarSetPrueba);
 		ventanaResultados.add(btnEliminarSetPrueba);
 		ventanaResultados.add(btnClasificarPrueba);
+		ventanaResultados.add(lblEfectividad);
+
 
     }
     
@@ -487,14 +481,14 @@ public class AdalineContainer {
 					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
 					temp.addRow(nuevo);
 				}else{
-					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/13), 
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/17), 
 							 String.valueOf(Double.valueOf(patron[1])/197), 
-							 String.valueOf(Double.valueOf(patron[2])/110),
-							 String.valueOf(Double.valueOf(patron[3])/47),
+							 String.valueOf(Double.valueOf(patron[2])/122),
+							 String.valueOf(Double.valueOf(patron[3])/63),
 							 String.valueOf(Double.valueOf(patron[4])/846),
-						     String.valueOf(Double.valueOf(patron[5])/45.8),
-						     String.valueOf(Double.valueOf(patron[6])/2.288),
-						     String.valueOf(Double.valueOf(patron[7])/60),
+						     String.valueOf(Double.valueOf(patron[5])/67.1),
+						     String.valueOf(Double.valueOf(patron[6])/2.42),
+						     String.valueOf(Double.valueOf(patron[7])/81),
 							 patron[8]
 							 };
 					temp.addRow(nuevo);
@@ -540,14 +534,14 @@ public class AdalineContainer {
 					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
 					temp.addRow(nuevo);
 				}else{
-					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/10), 
-							 String.valueOf(Double.valueOf(patron[1])/190), 
-							 String.valueOf(Double.valueOf(patron[2])/92),
-							 String.valueOf(Double.valueOf(patron[3])/48),
-							 String.valueOf(Double.valueOf(patron[4])/510),
-						     String.valueOf(Double.valueOf(patron[5])/44),
-						     String.valueOf(Double.valueOf(patron[6])/1.057),
-						     String.valueOf(Double.valueOf(patron[7])/66),
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/13), 
+							 String.valueOf(Double.valueOf(patron[1])/199), 
+							 String.valueOf(Double.valueOf(patron[2])/114),
+							 String.valueOf(Double.valueOf(patron[3])/99),
+							 String.valueOf(Double.valueOf(patron[4])/600),
+						     String.valueOf(Double.valueOf(patron[5])/57.3),
+						     String.valueOf(Double.valueOf(patron[6])/1.669),
+						     String.valueOf(Double.valueOf(patron[7])/70),
 							 "-"
 							 };
 					temp.addRow(nuevo);
@@ -573,6 +567,46 @@ public class AdalineContainer {
 				}
 			}
 		}
+	 
+	}
+	
+	
+	public String[] obtenerRespuestasCorrectas(int tamaño){
+		String csvFile = "dataset/diabetes_prueba_resultados.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		String respuestas [] = new String [tamaño];
+		int contador = 0;
+		try {
+	 
+			br = new BufferedReader(new FileReader(csvFile));
+			
+			while ((line = br.readLine()) != null) {
+	 
+				String[] patron = line.split(cvsSplitBy);
+				respuestas[contador] = patron[8];
+				contador++;
+				
+			}
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Error accediendo al csv");
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return respuestas;
 	 
 	}
 }

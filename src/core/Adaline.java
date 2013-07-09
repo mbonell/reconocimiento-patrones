@@ -21,7 +21,6 @@ public class Adaline {
 	private double errorDeseado = 0.01;
 	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
-	private double umbralInicial;
 	
 	public HashMap<String, Double> pesos = new HashMap<String, Double>();
 	
@@ -43,14 +42,6 @@ public class Adaline {
 	
 	public int getNumeroEpocasFinal(){
 		return this.numeroEpocasFinal;
-	}
-	
-	public double getUmbralInicial(){
-		return this.umbralInicial;
-	}
-	
-	public void setUmbralInicial(double umbral){
-		this.umbralInicial = umbral;
 	}
 	
 	public double getErrorFinal(){

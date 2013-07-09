@@ -54,6 +54,7 @@ public class PerceptronContainer {
 	JLabel lblUmbralValor;
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
+	JLabel lblEfectividad;
 	
 	JTextField txtPesoLongitudSepalo;
 	JTextField txtPesoAnchoSepalo;
@@ -352,10 +353,14 @@ public class PerceptronContainer {
 		btnAgregarSetPrueba.setBounds(700, 80, 25, 25);
 		btnEliminarSetPrueba.setBounds(700, 130, 25, 25);
 		btnClasificarPrueba.setBounds(540, 250, 150, 35);
+		lblEfectividad = new JLabel("");
+		lblEfectividad.setBounds(15, 250, 250, 35);
 		
 		ventanaResultados.add(btnAgregarSetPrueba);
 		ventanaResultados.add(btnEliminarSetPrueba);
 		ventanaResultados.add(btnClasificarPrueba);
+		ventanaResultados.add(lblEfectividad);
+
 
     }
     
@@ -430,6 +435,46 @@ public class PerceptronContainer {
 				}
 			}
 		}
+	 
+	}
+	
+	
+	public String[] obtenerRespuestasCorrectas(int tamaño){
+		String csvFile = "dataset/iris_prueba_resultados.csv";
+		BufferedReader br = null;
+		String line = "";
+		String cvsSplitBy = ",";
+		String respuestas [] = new String [tamaño];
+		int contador = 0;
+		try {
+	 
+			br = new BufferedReader(new FileReader(csvFile));
+			
+			while ((line = br.readLine()) != null) {
+	 
+				String[] patron = line.split(cvsSplitBy);
+				respuestas[contador] = patron[4];
+				contador++;
+				
+			}
+	 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			System.out.println("Error accediendo al csv");
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return respuestas;
 	 
 	}
 }

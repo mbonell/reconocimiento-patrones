@@ -100,14 +100,30 @@ public class PerceptronController {
 		    	String[][] clasificados = perceptron.clasificar(getData(perceptronGui.tablaSetPruebas.getModel()));
 				DefaultTableModel resultModel =  (DefaultTableModel) perceptronGui.tablaSetPruebas.getModel();
 				
+				DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+				simbolos.setDecimalSeparator('.');
+				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
+				double efectividad  = 0;
+				double porcentaje = 0;
 				
+				//Obtener las respuestas correctas
+				String [] respuestas = perceptronGui.obtenerRespuestasCorrectas(clasificados.length);
+				
+				//Mostrar las clasificaciones realizadas por el perceptron
 				for(int j=0; j<clasificados.length; j++){
 					resultModel.setValueAt(clasificados[j][4], j, 4);
+
+					if(clasificados[j][4].equals(respuestas[j]))
+						efectividad++;
 				}
+				
+				porcentaje = efectividad/clasificados.length;
+				perceptronGui.lblEfectividad.setText("Porcentaje de efectividad: " + formato.format(porcentaje*100) + "%");
 
 		    }
 		});
 	}
+	
 	
 	private String[][] getData( TableModel model ){
 		String[][] result = new String[ model.getRowCount() ][ model.getColumnCount() ];

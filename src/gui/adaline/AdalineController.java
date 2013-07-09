@@ -53,13 +53,10 @@ public class AdalineController {
 				adalineGui.visibleSalida(false);
 				adalineGui.lblNoEntrenada.setVisible(true);
 				adalineGui.lblNoEntrenada.setText("<html><b>Entrenando...</b></html>");
-									
-				
-				adaline.setUmbralInicial(Double.valueOf(adalineGui.txtUmbralInicial.getText()));
+													
 				adaline.setRazonAprendizaje(Double.valueOf(adalineGui.txtRazonAprendizaje.getText()));
 				adaline.setLimiteEpocas(Integer.valueOf(adalineGui.txtLimiteEpocasInicial.getText()));
 				adaline.setErrorDeseado(Double.valueOf(adalineGui.txtErrorDeseado.getText()));
-
 				
 				adaline.pesos.put(adaline.EMBARAZOS, Double.valueOf(adalineGui.txtPesoEmbarazo.getText()));
 				adaline.pesos.put(adaline.CONCENTRACION_GLUCOSA, Double.valueOf(adalineGui.txtPesoConcentracionGlucosa.getText()));
@@ -111,10 +108,24 @@ public class AdalineController {
 		    	String[][] clasificados = adaline.clasificar(getData(adalineGui.tablaSetPruebas.getModel()));
 				DefaultTableModel resultModel =  (DefaultTableModel) adalineGui.tablaSetPruebas.getModel();
 				
+				DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
+				simbolos.setDecimalSeparator('.');
+				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
+				double efectividad  = 0;
+				double porcentaje = 0;
+				
+				//Obtener las respuestas correctas
+				String [] respuestas = adalineGui.obtenerRespuestasCorrectas(clasificados.length);
 				
 				for(int j=0; j<clasificados.length; j++){
 					resultModel.setValueAt(clasificados[j][8], j, 8);
+					
+					if(clasificados[j][8].equals(respuestas[j]))
+						efectividad++;
 				}
+				
+				porcentaje = efectividad/clasificados.length;
+				adalineGui.lblEfectividad.setText("Porcentaje de efectividad: " + formato.format(porcentaje*100) + "%");
 
 		    }
 		});

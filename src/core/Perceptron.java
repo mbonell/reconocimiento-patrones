@@ -146,7 +146,7 @@ public class Perceptron {
 				
 				this.numeroEpocasFinal++;
 				
-				if(this.numeroEpocasFinal > this.limiteEpocas)
+				if(this.numeroEpocasFinal >= this.limiteEpocas)
 					finalizado = true;
 			}
 		
