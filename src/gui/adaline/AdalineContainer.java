@@ -14,11 +14,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import Normalizacion.Normalizacion;
 import core.Adaline;
 
 public class AdalineContainer {
 	
 	Adaline adaline;
+	Normalizacion normalizacion = new Normalizacion();
+	String normalizar = "MAX"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
@@ -467,28 +471,37 @@ public class AdalineContainer {
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
-	 
+		
 		try {
-	 
+	 			
+			double maximo0 = normalizacion.obtenerMaximo(0, csvFile);
+			double maximo1 = normalizacion.obtenerMaximo(1, csvFile);
+			double maximo2 = normalizacion.obtenerMaximo(2, csvFile);
+			double maximo3 = normalizacion.obtenerMaximo(3, csvFile);
+			double maximo4 = normalizacion.obtenerMaximo(4, csvFile);
+			double maximo5 = normalizacion.obtenerMaximo(5, csvFile);
+			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
+			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
+
 			br = new BufferedReader(new FileReader(csvFile));
-			
+
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-				boolean normalizar = true;
 				
-				if(!normalizar){
+				if(normalizar.equals("NO")){
 					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
 					temp.addRow(nuevo);
-				}else{
-					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/17), 
-							 String.valueOf(Double.valueOf(patron[1])/197), 
-							 String.valueOf(Double.valueOf(patron[2])/122),
-							 String.valueOf(Double.valueOf(patron[3])/63),
-							 String.valueOf(Double.valueOf(patron[4])/846),
-						     String.valueOf(Double.valueOf(patron[5])/67.1),
-						     String.valueOf(Double.valueOf(patron[6])/2.42),
-						     String.valueOf(Double.valueOf(patron[7])/81),
+					
+				}else if(normalizar.equals("MAX")){
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/maximo0), 
+							 String.valueOf(Double.valueOf(patron[1])/maximo1), 
+							 String.valueOf(Double.valueOf(patron[2])/maximo2),
+							 String.valueOf(Double.valueOf(patron[3])/maximo3),
+							 String.valueOf(Double.valueOf(patron[4])/maximo4),
+						     String.valueOf(Double.valueOf(patron[5])/maximo5),
+						     String.valueOf(Double.valueOf(patron[6])/maximo6),
+						     String.valueOf(Double.valueOf(patron[7])/maximo7),
 							 patron[8]
 							 };
 					temp.addRow(nuevo);
@@ -523,32 +536,39 @@ public class AdalineContainer {
 	 
 		try {
 	 
+			double maximo0 = normalizacion.obtenerMaximo(0, csvFile);
+			double maximo1 = normalizacion.obtenerMaximo(1, csvFile);
+			double maximo2 = normalizacion.obtenerMaximo(2, csvFile);
+			double maximo3 = normalizacion.obtenerMaximo(3, csvFile);
+			double maximo4 = normalizacion.obtenerMaximo(4, csvFile);
+			double maximo5 = normalizacion.obtenerMaximo(5, csvFile);
+			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
+			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
+			
 			br = new BufferedReader(new FileReader(csvFile));
 			
 			while ((line = br.readLine()) != null) {
 	 
 				String[] patron = line.split(cvsSplitBy);
-			boolean normalizar = true;
 				
-				if(!normalizar){
+				if(normalizar.equals("NO")){
 					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
 					temp.addRow(nuevo);
-				}else{
-					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/13), 
-							 String.valueOf(Double.valueOf(patron[1])/199), 
-							 String.valueOf(Double.valueOf(patron[2])/114),
-							 String.valueOf(Double.valueOf(patron[3])/99),
-							 String.valueOf(Double.valueOf(patron[4])/600),
-						     String.valueOf(Double.valueOf(patron[5])/57.3),
-						     String.valueOf(Double.valueOf(patron[6])/1.669),
-						     String.valueOf(Double.valueOf(patron[7])/70),
+					
+				}else if(normalizar.equals("MAX")){
+					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/maximo0), 
+							 String.valueOf(Double.valueOf(patron[1])/maximo1), 
+							 String.valueOf(Double.valueOf(patron[2])/maximo2),
+							 String.valueOf(Double.valueOf(patron[3])/maximo3),
+							 String.valueOf(Double.valueOf(patron[4])/maximo4),
+						     String.valueOf(Double.valueOf(patron[5])/maximo5),
+						     String.valueOf(Double.valueOf(patron[6])/maximo6),
+						     String.valueOf(Double.valueOf(patron[7])/maximo7),
 							 "-"
 							 };
 					temp.addRow(nuevo);
 				}
 				
-				//Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], "-"};
-				//temp.addRow(nuevo);
 				
 			}
 	 

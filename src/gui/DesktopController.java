@@ -1,6 +1,8 @@
 package gui;
 import gui.adaline.AdalineContainer;
 import gui.adaline.AdalineController;
+import gui.diabetes_perceptron.DiabetesPerceptronContainer;
+import gui.diabetes_perceptron.DiabetesPerceptronController;
 import gui.distancia_minima.DistanciaMinimaContainer;
 import gui.distancia_minima.DistanciaMinimaController;
 import gui.perceptron.PerceptronContainer;
@@ -45,6 +47,16 @@ public class DesktopController {
 				
 				perceptronGui.ventanaPerceptron(desk.desk);
 				perceptronController.listenerPerceptron(perceptronGui);
+			}			
+		});
+		
+		desk.itemPerceptronDiabetes.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				DiabetesPerceptronContainer diabetesPerceptronGui = new DiabetesPerceptronContainer();
+				DiabetesPerceptronController diabetesPerceptronController = new DiabetesPerceptronController();
+				
+				diabetesPerceptronGui.ventanaPrincipal(desk.desk);
+				diabetesPerceptronController.listenerPrincipal(diabetesPerceptronGui);
 			}			
 		});
 		

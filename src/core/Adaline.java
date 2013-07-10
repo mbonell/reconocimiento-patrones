@@ -186,7 +186,7 @@ public class Adaline {
 				this.numeroEpocasFinal++;
 				this.errorDeseadoFinal /= entradas.length;
 				System.out.println("["+ this.numeroEpocasFinal +"]Error Esperado: " + this.errorDeseadoFinal);
-				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal == this.errorDeseado)
+				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
 				else
 					this.errorDeseadoFinal = 0;
