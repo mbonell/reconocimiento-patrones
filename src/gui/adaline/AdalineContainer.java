@@ -22,7 +22,7 @@ public class AdalineContainer {
 	
 	Adaline adaline;
 	Normalizacion normalizacion = new Normalizacion();
-	String normalizar = "MAX"; //MAX - MAX/MIN - NO
+	String normalizar = "MAX/MIN"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
@@ -483,6 +483,15 @@ public class AdalineContainer {
 			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
 			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
 
+			double minimo0 = normalizacion.obtenerMinimo(0, csvFile);
+			double minimo1 = normalizacion.obtenerMinimo(1, csvFile);
+			double minimo2 = normalizacion.obtenerMinimo(2, csvFile);
+			double minimo3 = normalizacion.obtenerMinimo(3, csvFile);
+			double minimo4 = normalizacion.obtenerMinimo(4, csvFile);
+			double minimo5 = normalizacion.obtenerMinimo(5, csvFile);
+			double minimo6 = normalizacion.obtenerMinimo(6, csvFile);
+			double minimo7 = normalizacion.obtenerMinimo(7, csvFile);
+			
 			br = new BufferedReader(new FileReader(csvFile));
 
 			while ((line = br.readLine()) != null) {
@@ -503,6 +512,18 @@ public class AdalineContainer {
 						     String.valueOf(Double.valueOf(patron[6])/maximo6),
 						     String.valueOf(Double.valueOf(patron[7])/maximo7),
 							 patron[8]
+							 };
+					temp.addRow(nuevo);
+				}else if(normalizar.equals("MAX/MIN")){
+					Object nuevo[]= {String.valueOf((double)(Double.valueOf(patron[0])-minimo0)/(double)(maximo0-minimo0)), 
+							 String.valueOf((double)(Double.valueOf(patron[1])-minimo1)/(double)(maximo1-minimo1)), 
+							 String.valueOf((double)(Double.valueOf(patron[2])-minimo2)/(double)(maximo2-minimo2)),
+							 String.valueOf((double)(Double.valueOf(patron[3])-minimo3)/(double)(maximo3-minimo3)),
+							 String.valueOf((double)(Double.valueOf(patron[4])-minimo4)/(double)(maximo4-minimo4)),
+						     String.valueOf((double)(Double.valueOf(patron[5])-minimo5)/(double)(maximo5-minimo5)),
+						     String.valueOf((double)(Double.valueOf(patron[6])-minimo6)/(double)(maximo6-minimo6)),
+						     String.valueOf((double)(Double.valueOf(patron[7])-minimo7)/(double)(maximo7-minimo7)),
+						     patron[8]
 							 };
 					temp.addRow(nuevo);
 				}
@@ -545,6 +566,15 @@ public class AdalineContainer {
 			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
 			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
 			
+			double minimo0 = normalizacion.obtenerMinimo(0, csvFile);
+			double minimo1 = normalizacion.obtenerMinimo(1, csvFile);
+			double minimo2 = normalizacion.obtenerMinimo(2, csvFile);
+			double minimo3 = normalizacion.obtenerMinimo(3, csvFile);
+			double minimo4 = normalizacion.obtenerMinimo(4, csvFile);
+			double minimo5 = normalizacion.obtenerMinimo(5, csvFile);
+			double minimo6 = normalizacion.obtenerMinimo(6, csvFile);
+			double minimo7 = normalizacion.obtenerMinimo(7, csvFile);
+			
 			br = new BufferedReader(new FileReader(csvFile));
 			
 			while ((line = br.readLine()) != null) {
@@ -564,6 +594,18 @@ public class AdalineContainer {
 						     String.valueOf(Double.valueOf(patron[5])/maximo5),
 						     String.valueOf(Double.valueOf(patron[6])/maximo6),
 						     String.valueOf(Double.valueOf(patron[7])/maximo7),
+							 "-"
+							 };
+					temp.addRow(nuevo);
+				}else if(normalizar.equals("MAX/MIN")){
+					Object nuevo[]= {String.valueOf((double)(Double.valueOf(patron[0])-minimo0)/(double)(maximo0-minimo0)), 
+							 String.valueOf((double)(Double.valueOf(patron[1])-minimo1)/(double)(maximo1-minimo1)), 
+							 String.valueOf((double)(Double.valueOf(patron[2])-minimo2)/(double)(maximo2-minimo2)),
+							 String.valueOf((double)(Double.valueOf(patron[3])-minimo3)/(double)(maximo3-minimo3)),
+							 String.valueOf((double)(Double.valueOf(patron[4])-minimo4)/(double)(maximo4-minimo4)),
+						     String.valueOf((double)(Double.valueOf(patron[5])-minimo5)/(double)(maximo5-minimo5)),
+						     String.valueOf((double)(Double.valueOf(patron[6])-minimo6)/(double)(maximo6-minimo6)),
+						     String.valueOf((double)(Double.valueOf(patron[7])-minimo7)/(double)(maximo7-minimo7)),
 							 "-"
 							 };
 					temp.addRow(nuevo);
