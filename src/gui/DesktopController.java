@@ -1,6 +1,8 @@
 package gui;
 import gui.adaline.AdalineContainer;
 import gui.adaline.AdalineController;
+import gui.backpropagation.BackPropagationContainer;
+import gui.backpropagation.BackPropagationController;
 import gui.diabetes_perceptron.DiabetesPerceptronContainer;
 import gui.diabetes_perceptron.DiabetesPerceptronController;
 import gui.distancia_minima.DistanciaMinimaContainer;
@@ -67,6 +69,16 @@ public class DesktopController {
 				
 				adalineGui.ventanaAdaline(desk.desk);
 				adalineController.listenerAdaline(adalineGui);
+			}			
+		});
+		
+		desk.itemBackPropagation.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				BackPropagationContainer BPGui = new BackPropagationContainer();
+				BackPropagationController BPController = new BackPropagationController();
+				
+				BPGui.ventanaPrincipal(desk.desk);
+				BPController.listenerPrincipal(BPGui);
 			}			
 		});
 		

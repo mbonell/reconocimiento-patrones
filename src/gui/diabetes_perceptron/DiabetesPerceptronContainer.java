@@ -1,4 +1,4 @@
-package gui.adaline;
+package gui.diabetes_perceptron;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,16 +14,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import normalizacion.Normalizacion;
+import core.PerceptronDiabetes;
 
-import core.Adaline;
-
-public class AdalineContainer {
+public class DiabetesPerceptronContainer {
 	
-	Adaline adaline;
+	PerceptronDiabetes perceptron;
 	Normalizacion normalizacion = new Normalizacion();
-	String normalizar = "MAX/MIN"; //MAX - MAX/MIN - NO
+	String normalizar = "MAX"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
@@ -46,7 +44,7 @@ public class AdalineContainer {
 	
 	JLabel lblRazonAprendizaje;
 	JLabel lblLimiteEpocasInicial;
-	JLabel lblErrorEsperado;
+	JLabel lblUmbral;
 	JLabel lblNoEntrenada;
 	
 	JLabel lblPesoEmbarazoFinal;
@@ -67,8 +65,8 @@ public class AdalineContainer {
 	JLabel lblPesoFuncionValor;
 	JLabel lblPesoEdadValor;
 	
-	JLabel lblErrorFinal;
-	JLabel lblErrorValor;
+	JLabel lblUmbralFinal;
+	JLabel lblUmbralValor;
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
 	
@@ -85,7 +83,7 @@ public class AdalineContainer {
 
 	JTextField txtRazonAprendizaje;
 	JTextField txtLimiteEpocasInicial;
-	JTextField txtErrorDeseado;
+	JTextField txtUmbral;
 
 	
 	JTable tablaSetAprendizaje;
@@ -112,16 +110,16 @@ public class AdalineContainer {
 
 	public final String TITULO_RAZON_APRENDIZAJE = "Valor razón de aprendizaje";
 	public final String TITULO_LIMITE_EPOCAS = "Valor límite de épocas";
-	public final String TITULO_ERROR_ESPERADO = "Valor del error deseado";
-	public final String TITULO_NO_ENTRENADA = "Favor de entrenar la Adaline";
+	public final String TITULO_UMBRAL = "Umbral";
+	public final String TITULO_NO_ENTRENADA = "Favor de entrenar el Perceptrón";
 
 	JScrollPane scrollPanePrueba;
 	
-    public void ventanaAdaline(JDesktopPane desk){
+    public void ventanaPrincipal(JDesktopPane desk){
     	
-    	adaline = new Adaline();
+    	perceptron = new PerceptronDiabetes();
     	this.desk = desk;
-    	iframe = new JInternalFrame("Adaline - Predicción sobre pacientes con posible diabetes", true, true, true, true);
+    	iframe = new JInternalFrame("Perceptrón - Predicción sobre pacientes con posible diabetes", true, true, true, true);
 		iframe.setBounds(50, 10, 1100, 610);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
@@ -171,7 +169,7 @@ public class AdalineContainer {
 		panelPesos.setBorder(BorderFactory.createTitledBorder("Pesos "));
 		panelPesos.setBounds(640, 10, 425, 270);
 		panelPesos.setLayout(null);
-		adaline.inicializarPesos();
+		perceptron.inicializarPesos();
 		
 		lblPesoEmbarazo = new JLabel(TITULO_EMBARAZOS);
 		lblPesoEmbarazo.setBounds(10, 30, 170, 20);
@@ -179,7 +177,7 @@ public class AdalineContainer {
 		
 		txtPesoEmbarazo = new JTextField();
 		txtPesoEmbarazo.setBounds(340, 25, 70, 30);
-		txtPesoEmbarazo.setText(Double.toString(adaline.getPeso(adaline.EMBARAZOS)));
+		txtPesoEmbarazo.setText(Double.toString(perceptron.getPeso(perceptron.EMBARAZOS)));
 		panelPesos.add(txtPesoEmbarazo);
 		
 		lblPesoConcentracionGlucosa = new JLabel(TITULO_CONCENTRACION_GLUCOSA);
@@ -188,7 +186,7 @@ public class AdalineContainer {
 		
 		txtPesoConcentracionGlucosa = new JTextField();
 		txtPesoConcentracionGlucosa.setBounds(340, 55, 70, 30);
-		txtPesoConcentracionGlucosa.setText(Double.toString(adaline.getPeso(adaline.CONCENTRACION_GLUCOSA)));
+		txtPesoConcentracionGlucosa.setText(Double.toString(perceptron.getPeso(perceptron.CONCENTRACION_GLUCOSA)));
 		panelPesos.add(txtPesoConcentracionGlucosa);
 		
 		lblPesoPresionArterial = new JLabel(TITULO_PRESION_ARTERIAL);
@@ -197,7 +195,7 @@ public class AdalineContainer {
 		
 		txtPesoPresionArterial = new JTextField();
 		txtPesoPresionArterial.setBounds(340, 85, 70, 30);
-		txtPesoPresionArterial.setText(Double.toString(adaline.getPeso(adaline.PRESION_ARTERIAL)));
+		txtPesoPresionArterial.setText(Double.toString(perceptron.getPeso(perceptron.PRESION_ARTERIAL)));
 		panelPesos.add(txtPesoPresionArterial);
 		
 		lblPesoGrosorTriceps = new JLabel(TITULO_GROSOR_TRICEPS);
@@ -206,7 +204,7 @@ public class AdalineContainer {
 		
 		txtPesoGrosorTriceps = new JTextField();
 		txtPesoGrosorTriceps.setBounds(340, 115, 70, 30);
-		txtPesoGrosorTriceps.setText(Double.toString(adaline.getPeso(adaline.GROSOR_TRICEPS)));
+		txtPesoGrosorTriceps.setText(Double.toString(perceptron.getPeso(perceptron.GROSOR_TRICEPS)));
 		panelPesos.add(txtPesoGrosorTriceps);
 		
 		lblPesoInsulina = new JLabel(TITULO_INSULINA);
@@ -215,7 +213,7 @@ public class AdalineContainer {
 		
 		txtPesoInsulina = new JTextField();
 		txtPesoInsulina.setBounds(340, 145, 70, 30);
-		txtPesoInsulina.setText(Double.toString(adaline.getPeso(adaline.INSULINA)));
+		txtPesoInsulina.setText(Double.toString(perceptron.getPeso(perceptron.INSULINA)));
 		panelPesos.add(txtPesoInsulina);
 		
 		lblPesoMasaCorporal = new JLabel(TITULO_MASA_CORPORAL);
@@ -224,7 +222,7 @@ public class AdalineContainer {
 		
 		txtPesoMasaCorporal = new JTextField();
 		txtPesoMasaCorporal.setBounds(340, 175, 70, 30);
-		txtPesoMasaCorporal.setText(Double.toString(adaline.getPeso(adaline.MASA_CORPORAL)));
+		txtPesoMasaCorporal.setText(Double.toString(perceptron.getPeso(perceptron.MASA_CORPORAL)));
 		panelPesos.add(txtPesoMasaCorporal);
 		
 		lblPesoFuncion = new JLabel(TITULO_FUNCION);
@@ -233,7 +231,7 @@ public class AdalineContainer {
 		
 		txtPesoFuncion = new JTextField();
 		txtPesoFuncion.setBounds(340, 205, 70, 30);
-		txtPesoFuncion.setText(Double.toString(adaline.getPeso(adaline.FUNCION)));
+		txtPesoFuncion.setText(Double.toString(perceptron.getPeso(perceptron.FUNCION)));
 		panelPesos.add(txtPesoFuncion);
 		
 		lblPesoEdad = new JLabel(TITULO_EDAD);
@@ -242,7 +240,7 @@ public class AdalineContainer {
 		
 		txtPesoEdad = new JTextField();
 		txtPesoEdad.setBounds(340, 235, 70, 30);
-		txtPesoEdad.setText(Double.toString(adaline.getPeso(adaline.EDAD)));
+		txtPesoEdad.setText(Double.toString(perceptron.getPeso(perceptron.EDAD)));
 		panelPesos.add(txtPesoEdad);
 		
 		
@@ -260,7 +258,7 @@ public class AdalineContainer {
 		
 		txtRazonAprendizaje = new JTextField();
 		txtRazonAprendizaje.setBounds(180, 25, 70, 30);
-		txtRazonAprendizaje.setText(Double.toString(adaline.getRazonAprendizaje()));
+		txtRazonAprendizaje.setText(Double.toString(perceptron.getRazonAprendizaje()));
 		panelParametros.add(txtRazonAprendizaje);
 		
 		
@@ -271,18 +269,20 @@ public class AdalineContainer {
 		
 		txtLimiteEpocasInicial = new JTextField();
 		txtLimiteEpocasInicial.setBounds(180, 55, 70, 30);
-		txtLimiteEpocasInicial.setText(Integer.toString(adaline.getLimiteEpocas()));
+		txtLimiteEpocasInicial.setText(Integer.toString(perceptron.getLimiteEpocas()));
 		panelParametros.add(txtLimiteEpocasInicial);
 		
-		//Error esperado
-		lblErrorEsperado = new JLabel(TITULO_ERROR_ESPERADO);
-		lblErrorEsperado.setBounds(10, 90, 150, 20);
-		panelParametros.add(lblErrorEsperado);
+		//Umbral
+		lblUmbral = new JLabel(TITULO_UMBRAL);
+		lblUmbral.setBounds(10, 90, 150, 20);
+		panelParametros.add(lblUmbral);
+		perceptron.setUmbralInicial(perceptron.getPeso(perceptron.EMBARAZOS));
+		perceptron.setUmbralFinal(perceptron.getPeso(perceptron.EMBARAZOS));
 		
-		txtErrorDeseado = new JTextField();
-		txtErrorDeseado.setBounds(180, 85, 70, 30);
-		txtErrorDeseado.setText(Double.toString(adaline.getErrorDeseado()));
-		panelParametros.add(txtErrorDeseado);
+		txtUmbral = new JTextField();
+		txtUmbral.setBounds(180, 85, 70, 30);
+		txtUmbral.setText(Double.toString(perceptron.getUmbralInicial()));
+		panelParametros.add(txtUmbral);
 
 		iframe.add(panelSetAprendizaje);
 		iframe.add(panelPesos);
@@ -372,14 +372,14 @@ public class AdalineContainer {
 		panelSalida.add(lblPesoEdadValor);
 		
 		
-		//Salida error deseado
-		lblErrorFinal = new JLabel("Error deseado");
-		lblErrorFinal.setBounds(450, 120, 170, 20);
-		panelSalida.add(lblErrorFinal);
+		//Salida umbral
+		lblUmbralFinal = new JLabel("Umbral");
+		lblUmbralFinal.setBounds(450, 120, 170, 20);
+		panelSalida.add(lblUmbralFinal);
 		
-		lblErrorValor= new JLabel("<html><b>0.0</b></html>");
-		lblErrorValor.setBounds(550, 120, 170, 20);
-		panelSalida.add(lblErrorValor);
+		lblUmbralValor= new JLabel("<html><b>0.0</b></html>");
+		lblUmbralValor.setBounds(550, 120, 170, 20);
+		panelSalida.add(lblUmbralValor);
 		
 		//Salida epocas
 		lblEpocasFinal = new JLabel("Épocas");
@@ -419,8 +419,8 @@ public class AdalineContainer {
     	 lblPesoMasaCorporalValor.setVisible(visible);
     	 lblPesoFuncionValor.setVisible(visible);
     	 lblPesoEdadValor.setVisible(visible);
-    	 lblErrorFinal.setVisible(visible);
-    	 lblErrorValor.setVisible(visible);
+    	 lblUmbralFinal.setVisible(visible);
+    	 lblUmbralValor.setVisible(visible);
     	 lblEpocasFinal.setVisible(visible);
     	 lblEpocasValor.setVisible(visible);
     	 btnClasificar.setVisible(visible);
@@ -466,9 +466,11 @@ public class AdalineContainer {
 
     }
     
+
+    
 	private void cargarSetAprendizaje(){
 		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
-		String csvFile = "dataset/diabetes_aprendizaje.csv";
+		String csvFile = "dataset/diabetes_aprendizaje_perceptron.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -483,7 +485,7 @@ public class AdalineContainer {
 			double maximo5 = normalizacion.obtenerMaximo(5, csvFile);
 			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
 			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
-
+			
 			double minimo0 = normalizacion.obtenerMinimo(0, csvFile);
 			double minimo1 = normalizacion.obtenerMinimo(1, csvFile);
 			double minimo2 = normalizacion.obtenerMinimo(2, csvFile);
@@ -524,7 +526,7 @@ public class AdalineContainer {
 						     String.valueOf((double)(Double.valueOf(patron[5])-minimo5)/(double)(maximo5-minimo5)),
 						     String.valueOf((double)(Double.valueOf(patron[6])-minimo6)/(double)(maximo6-minimo6)),
 						     String.valueOf((double)(Double.valueOf(patron[7])-minimo7)/(double)(maximo7-minimo7)),
-						     patron[8]
+							 patron[8]
 							 };
 					temp.addRow(nuevo);
 				}

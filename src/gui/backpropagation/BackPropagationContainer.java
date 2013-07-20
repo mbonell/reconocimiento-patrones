@@ -1,4 +1,4 @@
-package gui.adaline;
+package gui.backpropagation;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,16 +14,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import normalizacion.Normalizacion;
+import core.BackPropagation;
 
-import core.Adaline;
-
-public class AdalineContainer {
+public class BackPropagationContainer {
 	
-	Adaline adaline;
+	BackPropagation bp;
 	Normalizacion normalizacion = new Normalizacion();
-	String normalizar = "MAX/MIN"; //MAX - MAX/MIN - NO
+	String normalizar = "MAX"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
@@ -31,18 +29,12 @@ public class AdalineContainer {
 	JInternalFrame ventanaResultados;
 
 	JPanel panelSetAprendizaje;
-	JPanel panelPesos;
+	JPanel panelArquitectura;
 	JPanel panelParametros;
 	JPanel panelSalida;
 
-	JLabel lblPesoEmbarazo;
-	JLabel lblPesoConcentracionGlucosa;
-	JLabel lblPesoPresionArterial;
-	JLabel lblPesoGrosorTriceps;
-	JLabel lblPesoInsulina;
-	JLabel lblPesoMasaCorporal;
-	JLabel lblPesoFuncion;
-	JLabel lblPesoEdad;
+	JLabel lblCapas;
+	JLabel lblNeuronas;
 	
 	JLabel lblRazonAprendizaje;
 	JLabel lblLimiteEpocasInicial;
@@ -67,21 +59,15 @@ public class AdalineContainer {
 	JLabel lblPesoFuncionValor;
 	JLabel lblPesoEdadValor;
 	
-	JLabel lblErrorFinal;
-	JLabel lblErrorValor;
+	JLabel lblUmbralFinal;
+	JLabel lblUmbralValor;
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
 	
 	JLabel lblEfectividad;
 	
-	JTextField txtPesoEmbarazo;
-	JTextField txtPesoConcentracionGlucosa;
-	JTextField txtPesoPresionArterial;
-	JTextField txtPesoGrosorTriceps;
-	JTextField txtPesoInsulina;
-	JTextField txtPesoMasaCorporal;
-	JTextField txtPesoFuncion;
-	JTextField txtPesoEdad;
+	JTextField txtCapas;
+	JTextField txtNeuronas;
 
 	JTextField txtRazonAprendizaje;
 	JTextField txtLimiteEpocasInicial;
@@ -113,16 +99,20 @@ public class AdalineContainer {
 	public final String TITULO_RAZON_APRENDIZAJE = "Valor razón de aprendizaje";
 	public final String TITULO_LIMITE_EPOCAS = "Valor límite de épocas";
 	public final String TITULO_ERROR_ESPERADO = "Valor del error deseado";
-	public final String TITULO_NO_ENTRENADA = "Favor de entrenar la Adaline";
+	public final String TITULO_NO_ENTRENADA = "Favor de entrenar la red";
+	
+	public final String TITULO_CAPAS = "No. Capas ocultas";
+	public final String TITULO_NEURONAS = "No. Neuronas";
+
 
 	JScrollPane scrollPanePrueba;
 	
-    public void ventanaAdaline(JDesktopPane desk){
+    public void ventanaPrincipal(JDesktopPane desk){
     	
-    	adaline = new Adaline();
+    	bp = new BackPropagation();
     	this.desk = desk;
-    	iframe = new JInternalFrame("Adaline - Predicción sobre pacientes con posible diabetes", true, true, true, true);
-		iframe.setBounds(50, 10, 1100, 610);
+    	iframe = new JInternalFrame("BackPropagation - Predicción sobre pacientes con posible diabetes", true, true, true, true);
+		iframe.setBounds(50, 10, 950, 610);
 		iframe.setResizable(false);
 		iframe.setMaximizable(false);
 		iframe.setVisible(true);
@@ -166,91 +156,35 @@ public class AdalineContainer {
 		panelSetAprendizaje.add(btnEliminarSetAprendizaje);
 		
 		
-		//Pesos
-		panelPesos = new JPanel();
-		panelPesos.setBorder(BorderFactory.createTitledBorder("Pesos "));
-		panelPesos.setBounds(640, 10, 425, 270);
-		panelPesos.setLayout(null);
-		adaline.inicializarPesos();
+		//Arquitectura
+		panelArquitectura = new JPanel();
+		panelArquitectura.setBorder(BorderFactory.createTitledBorder("Arquitectura "));
+		panelArquitectura.setBounds(640, 10, 270, 100);
+		panelArquitectura.setLayout(null);
 		
-		lblPesoEmbarazo = new JLabel(TITULO_EMBARAZOS);
-		lblPesoEmbarazo.setBounds(10, 30, 170, 20);
-		panelPesos.add(lblPesoEmbarazo);
+		lblCapas = new JLabel(TITULO_CAPAS);
+		lblCapas.setBounds(10, 30, 170, 20);
+		panelArquitectura.add(lblCapas);
 		
-		txtPesoEmbarazo = new JTextField();
-		txtPesoEmbarazo.setBounds(340, 25, 70, 30);
-		txtPesoEmbarazo.setText(Double.toString(adaline.getPeso(adaline.EMBARAZOS)));
-		panelPesos.add(txtPesoEmbarazo);
+		txtCapas = new JTextField();
+		txtCapas.setBounds(180, 25, 70, 30);
+		txtCapas.setText(Integer.toString(bp.getNumeroCapasOcultas()));
+		panelArquitectura.add(txtCapas);
 		
-		lblPesoConcentracionGlucosa = new JLabel(TITULO_CONCENTRACION_GLUCOSA);
-		lblPesoConcentracionGlucosa.setBounds(10, 60, 320, 20);
-		panelPesos.add(lblPesoConcentracionGlucosa);
+		lblNeuronas = new JLabel(TITULO_NEURONAS);
+		lblNeuronas.setBounds(10, 60, 320, 20);
+		panelArquitectura.add(lblNeuronas);
 		
-		txtPesoConcentracionGlucosa = new JTextField();
-		txtPesoConcentracionGlucosa.setBounds(340, 55, 70, 30);
-		txtPesoConcentracionGlucosa.setText(Double.toString(adaline.getPeso(adaline.CONCENTRACION_GLUCOSA)));
-		panelPesos.add(txtPesoConcentracionGlucosa);
-		
-		lblPesoPresionArterial = new JLabel(TITULO_PRESION_ARTERIAL);
-		lblPesoPresionArterial.setBounds(10, 90, 220, 20);
-		panelPesos.add(lblPesoPresionArterial);
-		
-		txtPesoPresionArterial = new JTextField();
-		txtPesoPresionArterial.setBounds(340, 85, 70, 30);
-		txtPesoPresionArterial.setText(Double.toString(adaline.getPeso(adaline.PRESION_ARTERIAL)));
-		panelPesos.add(txtPesoPresionArterial);
-		
-		lblPesoGrosorTriceps = new JLabel(TITULO_GROSOR_TRICEPS);
-		lblPesoGrosorTriceps.setBounds(10, 120, 280, 20);
-		panelPesos.add(lblPesoGrosorTriceps);
-		
-		txtPesoGrosorTriceps = new JTextField();
-		txtPesoGrosorTriceps.setBounds(340, 115, 70, 30);
-		txtPesoGrosorTriceps.setText(Double.toString(adaline.getPeso(adaline.GROSOR_TRICEPS)));
-		panelPesos.add(txtPesoGrosorTriceps);
-		
-		lblPesoInsulina = new JLabel(TITULO_INSULINA);
-		lblPesoInsulina.setBounds(10, 150, 260, 20);
-		panelPesos.add(lblPesoInsulina);
-		
-		txtPesoInsulina = new JTextField();
-		txtPesoInsulina.setBounds(340, 145, 70, 30);
-		txtPesoInsulina.setText(Double.toString(adaline.getPeso(adaline.INSULINA)));
-		panelPesos.add(txtPesoInsulina);
-		
-		lblPesoMasaCorporal = new JLabel(TITULO_MASA_CORPORAL);
-		lblPesoMasaCorporal.setBounds(10, 180, 330, 20);
-		panelPesos.add(lblPesoMasaCorporal);
-		
-		txtPesoMasaCorporal = new JTextField();
-		txtPesoMasaCorporal.setBounds(340, 175, 70, 30);
-		txtPesoMasaCorporal.setText(Double.toString(adaline.getPeso(adaline.MASA_CORPORAL)));
-		panelPesos.add(txtPesoMasaCorporal);
-		
-		lblPesoFuncion = new JLabel(TITULO_FUNCION);
-		lblPesoFuncion.setBounds(10, 210, 330, 20);
-		panelPesos.add(lblPesoFuncion);
-		
-		txtPesoFuncion = new JTextField();
-		txtPesoFuncion.setBounds(340, 205, 70, 30);
-		txtPesoFuncion.setText(Double.toString(adaline.getPeso(adaline.FUNCION)));
-		panelPesos.add(txtPesoFuncion);
-		
-		lblPesoEdad = new JLabel(TITULO_EDAD);
-		lblPesoEdad.setBounds(10, 240, 330, 20);
-		panelPesos.add(lblPesoEdad);
-		
-		txtPesoEdad = new JTextField();
-		txtPesoEdad.setBounds(340, 235, 70, 30);
-		txtPesoEdad.setText(Double.toString(adaline.getPeso(adaline.EDAD)));
-		panelPesos.add(txtPesoEdad);
-		
+		txtNeuronas = new JTextField();
+		txtNeuronas.setBounds(180, 55, 70, 30);
+		txtNeuronas.setText(Integer.toString(bp.getNumeroNeuronasPorCapa()));
+		panelArquitectura.add(txtNeuronas);
 		
 
 		//Parametros
 		panelParametros = new JPanel();
 		panelParametros.setBorder(BorderFactory.createTitledBorder("Parámetros "));
-		panelParametros.setBounds(640, 280, 270, 180);
+		panelParametros.setBounds(640, 140, 270, 140);
 		panelParametros.setLayout(null);
 		
 		//Razon de aprendizaje
@@ -260,7 +194,7 @@ public class AdalineContainer {
 		
 		txtRazonAprendizaje = new JTextField();
 		txtRazonAprendizaje.setBounds(180, 25, 70, 30);
-		txtRazonAprendizaje.setText(Double.toString(adaline.getRazonAprendizaje()));
+		txtRazonAprendizaje.setText(Double.toString(bp.getRazonAprendizaje()));
 		panelParametros.add(txtRazonAprendizaje);
 		
 		
@@ -271,7 +205,7 @@ public class AdalineContainer {
 		
 		txtLimiteEpocasInicial = new JTextField();
 		txtLimiteEpocasInicial.setBounds(180, 55, 70, 30);
-		txtLimiteEpocasInicial.setText(Integer.toString(adaline.getLimiteEpocas()));
+		txtLimiteEpocasInicial.setText(Integer.toString(bp.getLimiteEpocas()));
 		panelParametros.add(txtLimiteEpocasInicial);
 		
 		//Error esperado
@@ -281,11 +215,11 @@ public class AdalineContainer {
 		
 		txtErrorDeseado = new JTextField();
 		txtErrorDeseado.setBounds(180, 85, 70, 30);
-		txtErrorDeseado.setText(Double.toString(adaline.getErrorDeseado()));
+		txtErrorDeseado.setText(Double.toString(bp.getErrorDeseado()));
 		panelParametros.add(txtErrorDeseado);
 
 		iframe.add(panelSetAprendizaje);
-		iframe.add(panelPesos);
+		iframe.add(panelArquitectura);
 		iframe.add(panelParametros);
 
 		
@@ -372,14 +306,14 @@ public class AdalineContainer {
 		panelSalida.add(lblPesoEdadValor);
 		
 		
-		//Salida error deseado
-		lblErrorFinal = new JLabel("Error deseado");
-		lblErrorFinal.setBounds(450, 120, 170, 20);
-		panelSalida.add(lblErrorFinal);
+		//Salida umbral
+		lblUmbralFinal = new JLabel("Umbral");
+		lblUmbralFinal.setBounds(450, 120, 170, 20);
+		panelSalida.add(lblUmbralFinal);
 		
-		lblErrorValor= new JLabel("<html><b>0.0</b></html>");
-		lblErrorValor.setBounds(550, 120, 170, 20);
-		panelSalida.add(lblErrorValor);
+		lblUmbralValor= new JLabel("<html><b>0.0</b></html>");
+		lblUmbralValor.setBounds(550, 120, 170, 20);
+		panelSalida.add(lblUmbralValor);
 		
 		//Salida epocas
 		lblEpocasFinal = new JLabel("Épocas");
@@ -391,7 +325,7 @@ public class AdalineContainer {
 		panelSalida.add(lblEpocasValor);
 		
 		btnClasificar.setBounds(450, 470, 170, 60);
-		btnEntrenar.setBounds(915, 330, 150, 80);
+		btnEntrenar.setBounds(640, 320, 270, 50);
 		
 		iframe.add(btnEntrenar);
 		iframe.add(btnClasificar);
@@ -419,8 +353,8 @@ public class AdalineContainer {
     	 lblPesoMasaCorporalValor.setVisible(visible);
     	 lblPesoFuncionValor.setVisible(visible);
     	 lblPesoEdadValor.setVisible(visible);
-    	 lblErrorFinal.setVisible(visible);
-    	 lblErrorValor.setVisible(visible);
+    	 lblUmbralFinal.setVisible(visible);
+    	 lblUmbralValor.setVisible(visible);
     	 lblEpocasFinal.setVisible(visible);
     	 lblEpocasValor.setVisible(visible);
     	 btnClasificar.setVisible(visible);
@@ -466,9 +400,11 @@ public class AdalineContainer {
 
     }
     
+
+    
 	private void cargarSetAprendizaje(){
 		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
-		String csvFile = "dataset/diabetes_aprendizaje.csv";
+		String csvFile = "dataset/diabetes_aprendizaje_perceptron.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -483,7 +419,7 @@ public class AdalineContainer {
 			double maximo5 = normalizacion.obtenerMaximo(5, csvFile);
 			double maximo6 = normalizacion.obtenerMaximo(6, csvFile);
 			double maximo7 = normalizacion.obtenerMaximo(7, csvFile);
-
+			
 			double minimo0 = normalizacion.obtenerMinimo(0, csvFile);
 			double minimo1 = normalizacion.obtenerMinimo(1, csvFile);
 			double minimo2 = normalizacion.obtenerMinimo(2, csvFile);
@@ -500,11 +436,13 @@ public class AdalineContainer {
 				String[] patron = line.split(cvsSplitBy);
 				
 				if(normalizar.equals("NO")){
-					Object nuevo[]= {patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
+					Object nuevo[]= {"-1", patron[0], patron[1], patron[2], patron[3], patron[4], patron[5], patron[6], patron[7], patron[8]};
 					temp.addRow(nuevo);
 					
 				}else if(normalizar.equals("MAX")){
-					Object nuevo[]= {String.valueOf(Double.valueOf(patron[0])/maximo0), 
+					Object nuevo[]= {
+							 "-1",
+							 String.valueOf(Double.valueOf(patron[0])/maximo0), 
 							 String.valueOf(Double.valueOf(patron[1])/maximo1), 
 							 String.valueOf(Double.valueOf(patron[2])/maximo2),
 							 String.valueOf(Double.valueOf(patron[3])/maximo3),
@@ -516,7 +454,9 @@ public class AdalineContainer {
 							 };
 					temp.addRow(nuevo);
 				}else if(normalizar.equals("MAX/MIN")){
-					Object nuevo[]= {String.valueOf((double)(Double.valueOf(patron[0])-minimo0)/(double)(maximo0-minimo0)), 
+					Object nuevo[]= {
+							 "-1",
+							 String.valueOf((double)(Double.valueOf(patron[0])-minimo0)/(double)(maximo0-minimo0)), 
 							 String.valueOf((double)(Double.valueOf(patron[1])-minimo1)/(double)(maximo1-minimo1)), 
 							 String.valueOf((double)(Double.valueOf(patron[2])-minimo2)/(double)(maximo2-minimo2)),
 							 String.valueOf((double)(Double.valueOf(patron[3])-minimo3)/(double)(maximo3-minimo3)),
@@ -524,7 +464,7 @@ public class AdalineContainer {
 						     String.valueOf((double)(Double.valueOf(patron[5])-minimo5)/(double)(maximo5-minimo5)),
 						     String.valueOf((double)(Double.valueOf(patron[6])-minimo6)/(double)(maximo6-minimo6)),
 						     String.valueOf((double)(Double.valueOf(patron[7])-minimo7)/(double)(maximo7-minimo7)),
-						     patron[8]
+							 patron[8]
 							 };
 					temp.addRow(nuevo);
 				}
