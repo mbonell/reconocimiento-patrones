@@ -2,10 +2,8 @@ package core;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class BackPropagation {
 	
@@ -30,7 +28,16 @@ public class BackPropagation {
 	private int numeroEntradas = 8;
 	
 	public HashMap<String, Double>[][] pesos;
-	public double [][]salidasRed;
+	public String [][]salidasPorCapa;
+	private double [] pesosAdaline;
+	
+	public void setSalidasPorCapa(int capa, int neurona, String valor){
+		this.salidasPorCapa[capa][neurona] = valor;
+	}
+	
+	public String getSalidasPorCapa(int capa, int neurona){
+		return this.salidasPorCapa[capa][neurona];
+	}
 	
 	public void setNumeroCapasOcultas(int numeroCapasOcultas){
 		this.numeroCapasOcultas = numeroCapasOcultas;
@@ -88,6 +95,7 @@ public class BackPropagation {
 		this.errorDeseado = error;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void inicializarPesos(){
 		pesos =  (HashMap<String,Double>[][]) new HashMap [this.getNumeroCapasOcultas()][this.getNumeroNeuronasPorCapa()];
 		
@@ -109,8 +117,22 @@ public class BackPropagation {
 				}
 		}
 	          
-	      
-
+	}
+	
+	public void inicializarPesosAdaline(){
+		this.pesosAdaline =  new double [this.getNumeroNeuronasPorCapa()];
+		
+			for(int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){	
+				this.pesosAdaline[i] = this.generarAletorio();
+			}	          
+	}
+	
+	public double getPesoAdaline(int neurona){
+		return this.pesosAdaline[neurona];
+	}
+	
+	public void setPesoAdaline(int neurona, double valor){
+		this.pesosAdaline[neurona] = valor;
 	}
 	
 	public double getPeso(int capa, int neurona, String llave){
@@ -213,24 +235,28 @@ public class BackPropagation {
 			while(!finalizado){ 
 				
 				
-				for(int n = 0; n < entradas.length; n++){
+				//for(int n = 0; n < entradas.length; n++){
+				for(int n = 0; n < 1; n++){
 					
-					//Calcular todos los n (salidas de cada neurona de cada capa) dada una entrada
-					System.out.println("ENTRADA " + (n+1) + "-------------------------");
-					this.calcularSalidaRed(entradas[n]);
+					System.out.println("ENTRADA " + (n+1) + " ------------------------------------------");
 					
-					//TODO: Si calculo todas las n de las capas, neuronas en que momento evaluo el error?
+					//Calcular todos los n (a) (salidas de cada neurona de cada capa) dada una entrada
+					this.feedForward(Arrays.copyOfRange(entradas[n], 0, entradas[n].length-1));
 					
-					//y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
+					//Ejecutar el Adaline con la salida del feed y los pesos asignados
+					valorActivacion = this.obtenidaAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1]);
+					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
 					
 					error = y - valorActivacion; //Delta
 					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico medio
 					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
 					
+					//TODO: Ajusto backward??
+					this.ajustarPesosAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1], error);
 					
-						//this.ajustarPesos(entradas[n], error);
+					//TODO: Repartir el error (sensibilidad)??
+					this.backward();
 
-						
 				}
 				
 				this.numeroEpocasFinal++;
@@ -244,27 +270,46 @@ public class BackPropagation {
 					this.errorDeseadoFinal = 0;
 			}
 		
-		//Pesos finales	
-			/*
-		System.out.println("Peso 1: " + this.getPesoLlaveEntera(0));
-		System.out.println("Peso 2: " + this.getPesoLlaveEntera(1));
-		System.out.println("Peso 3: " + this.getPesoLlaveEntera(2));
-		System.out.println("Peso 4: " + this.getPesoLlaveEntera(3));
-		System.out.println("Peso 5: " + this.getPesoLlaveEntera(4));
-		System.out.println("Peso 6: " + this.getPesoLlaveEntera(5));
-		System.out.println("Peso 7: " + this.getPesoLlaveEntera(6));
-		System.out.println("Peso 8: " + this.getPesoLlaveEntera(7));*/
+		//TODO: Pesos finales	
+
 	}
 	
 	
+	private double obtenidaAdaline(String [] salidasNeuronas){
+		double sumatoria = 0, fy = 0;		
+		
+		//System.out.println("Salida Adaline");
+		for(int i = 0; i < salidasNeuronas.length; i++){
+			sumatoria+=(Double.valueOf(salidasNeuronas[i]) * this.getPesoAdaline(i));
+			 //System.out.println(Double.valueOf(salidasNeuronas[i]) + "*" + this.getPesoAdaline(i));
 
+		}
+		
+		fy = 1 / (1 + Math.exp(-1 * sumatoria));
+		
+		System.out.println("Valor de activacion (a*w) en f(n): " + fy);
+		
+		return fy;
+
+	}
+	
+	private void ajustarPesosAdaline(String [] salidasNeuronas, double error){
+		System.out.println("Ajuste de pesos Adaline");
+		for(int i = 0; i < salidasNeuronas.length; i++){ 
+			this.setPesoAdaline(i, this.getPesoAdaline(i) + this.razonAprendizaje * error * this.obtenidaAdaline(salidasNeuronas) * (1-this.obtenidaAdaline(salidasNeuronas)) * Double.valueOf(salidasNeuronas[i]));
+			System.out.println(i + " " + this.getPesoAdaline(i));
+		}
+	}
 	
 	private double obtenerSalidaNeurona(String [] entradas, int capa, int neurona){
 		double sumatoria = 0, salidaNeurona = 0;		
-		
-		for(int j = 0; j < entradas.length-1; j++){
+
+		for(int j = 0; j < entradas.length; j++){
 			sumatoria+=(Double.valueOf(entradas[j]) * this.getPesoLlaveEntera(capa, neurona, j));
+			 //System.out.println(Double.valueOf(entradas[j]) + "*" + this.getPesoLlaveEntera(capa, neurona, j));
 		}
+		
+		//System.out.println("N["+capa+"]["+neurona+"]: " + sumatoria);
 		
 		salidaNeurona = 1 / (1 + Math.exp(-1 * sumatoria));
 		
@@ -272,31 +317,37 @@ public class BackPropagation {
 
 	}
 	
-	private void calcularSalidaRed(String [] entradas){
+	private void feedForward(String [] entradas){
 		
 		double valorActivacion = 0;
+		String [] a;
 		
 		for(int m = 0; m < this.getNumeroCapasOcultas(); m++){
-			System.out.println("CAPA " + (m+1));
+			System.out.println("CAPA OCULTA " + (m+1) + " **************************");
+
+			
 			for (int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){
 				System.out.println("NEURONA " + (i+1));
 				
-				valorActivacion = this.obtenerSalidaNeurona(entradas, m, i);
-				System.out.println("N: " + valorActivacion);
-				//TODO: Salida deseada, error, ajuste de pesos, valor de activacion
+				if(m == 0){
+					a = entradas;
+				}else{
+					a = this.salidasPorCapa[m-1];
+				}
 				
-				//TODO: Pero si tengo 15 entradas entonces tendre 15 diferentes sets de N (m,i) ??
+				valorActivacion = this.obtenerSalidaNeurona(a, m, i);
+				System.out.println("A["+m+"]["+i+"]: " + valorActivacion);
+				
+				//Guardar salida de la neurona (a)
+				this.setSalidasPorCapa(m, i, String.valueOf(valorActivacion));
+								
 			}
 		}
-		
-		
-		
+				
 	}
-	private void ajustarPesos(String [] patron, double error){
-		for(int n = 0; n < patron.length-1; n++){ 
-			//this.setPesoLlaveEntera(0,0, n, this.getPesoLlaveEntera(0,0, n) + this.razonAprendizaje * error * this.obtenidaSigmoide(patron) * (1-this.obtenidaSigmoide(patron)) * Double.valueOf(patron[n]));
-			//System.out.println(n + " " + this.getPesoLlaveEntera(n));
-		}
+	
+	private void backward(){
+		
 	}
 	
 	public String[][] clasificar(String[][] entradasClasificar){

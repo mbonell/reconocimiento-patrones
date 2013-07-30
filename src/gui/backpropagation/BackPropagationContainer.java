@@ -86,7 +86,8 @@ public class BackPropagationContainer {
 	JButton btnClasificarPrueba = new JButton("Iniciar clasificación");
 
 	
-	String nombreCaracteristicas [] = new String[9];
+	String nombreCaracteristicas [] = new String[10];
+	public final String TITULO_THRESHOLD = "THRESHOLD";
 	public final String TITULO_EMBARAZOS = "Embarazos";
 	public final String TITULO_CONCENTRACION_GLUCOSA = "Conc. de glucosa en plasma a 2 horas en una prueba de tolerancia oral a la glucosa";
 	public final String TITULO_PRESION_ARTERIAL = "Presión arterial diastólica (mm Hg)";
@@ -119,15 +120,16 @@ public class BackPropagationContainer {
 		this.desk.add(iframe);
 		iframe.setLayout(null);		
 		
-		nombreCaracteristicas[0] = TITULO_EMBARAZOS;
-		nombreCaracteristicas[1] = TITULO_CONCENTRACION_GLUCOSA;
-		nombreCaracteristicas[2] = TITULO_PRESION_ARTERIAL;
-		nombreCaracteristicas[3] = TITULO_GROSOR_TRICEPS;
-		nombreCaracteristicas[4] = TITULO_INSULINA;
-		nombreCaracteristicas[5] = TITULO_MASA_CORPORAL;
-		nombreCaracteristicas[6] = TITULO_FUNCION;
-		nombreCaracteristicas[7] = TITULO_EDAD;
-		nombreCaracteristicas[8] = "Clase";
+		nombreCaracteristicas[0] = TITULO_THRESHOLD;
+		nombreCaracteristicas[1] = TITULO_EMBARAZOS;
+		nombreCaracteristicas[2] = TITULO_CONCENTRACION_GLUCOSA;
+		nombreCaracteristicas[3] = TITULO_PRESION_ARTERIAL;
+		nombreCaracteristicas[4] = TITULO_GROSOR_TRICEPS;
+		nombreCaracteristicas[5] = TITULO_INSULINA;
+		nombreCaracteristicas[6] = TITULO_MASA_CORPORAL;
+		nombreCaracteristicas[7] = TITULO_FUNCION;
+		nombreCaracteristicas[8] = TITULO_EDAD;
+		nombreCaracteristicas[9] = "Clase";
 				
 		//Set de aprendizaje
 		panelSetAprendizaje = new JPanel();
