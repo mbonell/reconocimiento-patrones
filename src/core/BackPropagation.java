@@ -29,6 +29,8 @@ public class BackPropagation {
 	
 	public HashMap<String, Double>[][] pesos;
 	public String [][]salidasPorCapa;
+	public double [][]sensibilidades;
+	private double sensibilidadAdaline = 0;
 	private double [] pesosAdaline;
 	
 	public void setSalidasPorCapa(int capa, int neurona, String valor){
@@ -37,6 +39,14 @@ public class BackPropagation {
 	
 	public String getSalidasPorCapa(int capa, int neurona){
 		return this.salidasPorCapa[capa][neurona];
+	}
+	
+	public double getSensibilidades(int capa, int neurona){
+		return this.sensibilidades[capa][neurona];
+	}
+	
+	public void setSensibilidades(int capa, int neurona, double valor){
+		this.sensibilidades[capa][neurona] = valor;
 	}
 	
 	public void setNumeroCapasOcultas(int numeroCapasOcultas){
@@ -247,15 +257,19 @@ public class BackPropagation {
 					valorActivacion = this.obtenidaAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1]);
 					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
 					
-					error = y - valorActivacion; //Delta
-					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico medio
-					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
+					//Calculo del error
+					error = y - valorActivacion;
+					System.out.println("Error: " + error);
+					//this.ajustarPesosAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1], error); 
 					
-					//TODO: Ajusto backward??
-					this.ajustarPesosAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1], error);
+					//Calcular sensibilidad (backward)
+					this.calcularSensibilidad(valorActivacion, error);
 					
 					//TODO: Repartir el error (sensibilidad)??
-					this.backward();
+					//this.ajustarPesos();
+					
+					//TODO: errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico s * a
+					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
 
 				}
 				
@@ -264,10 +278,10 @@ public class BackPropagation {
 				
 				System.out.println("["+ this.numeroEpocasFinal +"] Error Esperado: " + this.errorDeseadoFinal);
 				
-				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
+				//if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
-				else
-					this.errorDeseadoFinal = 0;
+				//else
+					//this.errorDeseadoFinal = 0;
 			}
 		
 		//TODO: Pesos finales	
@@ -276,7 +290,7 @@ public class BackPropagation {
 	
 	
 	private double obtenidaAdaline(String [] salidasNeuronas){
-		double sumatoria = 0, fy = 0;		
+		double sumatoria = 0, fn = 0;		
 		
 		//System.out.println("Salida Adaline");
 		for(int i = 0; i < salidasNeuronas.length; i++){
@@ -285,11 +299,11 @@ public class BackPropagation {
 
 		}
 		
-		fy = 1 / (1 + Math.exp(-1 * sumatoria));
+		fn = 1 / (1 + Math.exp(-1 * sumatoria));
 		
-		System.out.println("Valor de activacion (a*w) en f(n): " + fy);
+		System.out.println("Valor de activacion (a*w) en f(n): " + fn);
 		
-		return fy;
+		return fn;
 
 	}
 	
@@ -346,8 +360,34 @@ public class BackPropagation {
 				
 	}
 	
-	private void backward(){
+	private void calcularSensibilidad(double valorActivacion, double error){
 		
+		//Derivada de la funcion de activacion y(1-y)
+		double derivadaAdaline = valorActivacion * (1-valorActivacion);
+		this.sensibilidadAdaline = -2 * derivadaAdaline * error;
+		System.out.println("S Adaline = " + this.sensibilidadAdaline);
+		
+		double sensibilidad = 0;
+		
+			for(int m = this.getNumeroCapasOcultas()-1; m >= 0; m--){
+
+				for (int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){
+					
+					sensibilidad = 0;
+					double derivada = Double.valueOf(this.getSalidasPorCapa(m, i)) * (1 - Double.valueOf(this.getSalidasPorCapa(m, i)));
+					//System.out.println("f' =" + Double.valueOf(this.getSalidasPorCapa(m, i)) + "*" + (1 - Double.valueOf(this.getSalidasPorCapa(m, i))));
+						
+						for(int peso = 0; peso < this.getNumeroNeuronasPorCapa(); peso++){
+							sensibilidad += derivada * this.getPesoLlaveEntera(m, i, peso) * this.sensibilidadAdaline;
+							//System.out.println("Sensibilidad: " + derivada + "*" + this.getPesoLlaveEntera(m, i, peso) + "*" + this.sensibilidadAdaline);
+							//System.out.println("Sensibilidad: " + derivada * this.getPesoLlaveEntera(m, i, peso) * this.sensibilidadAdaline);
+						}
+						
+					this.setSensibilidades(m, i, sensibilidad);
+					System.out.println("S["+m+"]["+i+"] = " + sensibilidad);
+				}
+				
+			}
 	}
 	
 	public String[][] clasificar(String[][] entradasClasificar){

@@ -68,7 +68,7 @@ public class BackPropagationController {
 				//Inicializar los pesos segun las capas, neuronas, entradas
 				bp.inicializarPesos();
 				bp.salidasPorCapa = new String[bp.getNumeroCapasOcultas()][bp.getNumeroNeuronasPorCapa()];
-				
+				bp.sensibilidades = new double[bp.getNumeroCapasOcultas()][bp.getNumeroNeuronasPorCapa()];
 				//Inicializar pesos para la neurona de salida (Adaline)
 				bp.inicializarPesosAdaline();
 				
