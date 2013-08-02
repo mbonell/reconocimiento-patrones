@@ -244,12 +244,13 @@ public class BackPropagation {
 		int y = 0;
 		double  error = 0, errorCuadraticoMedio = 0, valorActivacion = 0;
 		this.numeroEpocasFinal = 0;
+		this.errores.clear();
 		
 			while(!finalizado){ 
 				
 				
-				//for(int n = 0; n < entradas.length; n++){
-				for(int n = 0; n < 10; n++){
+				for(int n = 0; n < entradas.length; n++){
+				//for(int n = 0; n < 8; n++){
 					
 					System.out.println("ENTRADA " + (n+1) + " ------------------------------------------");
 					
@@ -260,6 +261,7 @@ public class BackPropagation {
 					valorActivacion = this.obtenidaAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1]);
 					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
 					System.out.println("Clase esperada " + y);
+					
 					//Calculo del error de neurona final
 					error = y - valorActivacion;
 					System.out.println("Error: " + error);
@@ -276,8 +278,8 @@ public class BackPropagation {
 				}
 				
 				this.numeroEpocasFinal++;
-				//this.errorDeseadoFinal /= entradas.length;
-				this.errorDeseadoFinal /= 10;
+				this.errorDeseadoFinal /= entradas.length;
+				//this.errorDeseadoFinal /= 8;
 				
 				//Guardar el error para la grafica
 				this.errores.add(this.errorDeseadoFinal);
