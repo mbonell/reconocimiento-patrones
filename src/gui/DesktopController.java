@@ -9,6 +9,9 @@ import gui.distancia_minima.DistanciaMinimaContainer;
 import gui.distancia_minima.DistanciaMinimaController;
 import gui.perceptron.PerceptronContainer;
 import gui.perceptron.PerceptronController;
+import gui.quickpropagation.QuickPropagationContainer;
+import gui.quickpropagation.QuickPropagationController;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -79,6 +82,16 @@ public class DesktopController {
 				
 				BPGui.ventanaPrincipal(desk.desk);
 				BPController.listenerPrincipal(BPGui);
+			}			
+		});
+		
+		desk.itemQuickPropagation.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				QuickPropagationContainer QPGui = new QuickPropagationContainer();
+				QuickPropagationController QPController = new QuickPropagationController();
+				
+				QPGui.ventanaPrincipal(desk.desk);
+				QPController.listenerPrincipal(QPGui);
 			}			
 		});
 		

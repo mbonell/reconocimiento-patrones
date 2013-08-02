@@ -32,6 +32,8 @@ public class DesktopContainer extends JFrame{
 	JMenuItem itemPerceptronDiabetes = new JMenuItem("Perceptrón (Diabetes)");
 	JMenuItem itemAdaline = new JMenuItem("Adaline");
 	JMenuItem itemBackPropagation = new JMenuItem("BackPropagation");
+	JMenuItem itemQuickPropagation = new JMenuItem("QuickPropagation");
+
 
 	JMenuItem itemSalir = new JMenuItem("Salir");
 	JMenuItem itemAcerca = new JMenuItem("Prácticas");
@@ -53,6 +55,7 @@ public class DesktopContainer extends JFrame{
 		menuAdmon.add(itemPerceptronDiabetes);
 		menuAdmon.add(itemAdaline);
 		menuAdmon.add(itemBackPropagation);
+		menuAdmon.add(itemQuickPropagation);
 		menuAdmon.add(separador);
 		menuAdmon.add(itemSalir);
 		menuAcerca.add(itemAcerca);

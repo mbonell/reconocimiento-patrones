@@ -23,7 +23,7 @@ public class BackPropagationController {
 		bpGui.btnAgregarSetAprendizaje.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
 		    	DefaultTableModel temp = (DefaultTableModel) bpGui.tablaSetAprendizaje.getModel();
-				Object nuevo[]= {"0","0", "0", "0", "0", "0", "0", "0", "0"};
+				Object nuevo[]= {"0","0", "0", "0", "0", "0", "0", "0", "0","0"};
 				temp.addRow(nuevo);
 		    }
 		});
