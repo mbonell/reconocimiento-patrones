@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
@@ -14,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.math.plot.Plot2DPanel;
 import normalizacion.Normalizacion;
 import core.BackPropagation;
 
@@ -21,12 +23,14 @@ public class BackPropagationContainer {
 	
 	BackPropagation bp;
 	Normalizacion normalizacion = new Normalizacion();
-	String normalizar = "MAX"; //MAX - MAX/MIN - NO
+	String normalizar = "MAX/MIN"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
 	JInternalFrame iframe;
 	JInternalFrame ventanaResultados;
+	JInternalFrame ventanaGrafica;
+
 
 	JPanel panelSetAprendizaje;
 	JPanel panelArquitectura;
@@ -59,8 +63,8 @@ public class BackPropagationContainer {
 	JLabel lblPesoFuncionValor;
 	JLabel lblPesoEdadValor;
 	
-	JLabel lblUmbralFinal;
-	JLabel lblUmbralValor;
+	JLabel lblErrorFinal;
+	JLabel lblErrorValor;
 	JLabel lblEpocasFinal;
 	JLabel lblEpocasValor;
 	
@@ -79,6 +83,7 @@ public class BackPropagationContainer {
 	
 	JButton btnEntrenar = new JButton("Iniciar entrenamiento");
 	JButton btnClasificar = new JButton("Clasificar patrón");
+	JButton btnError = new JButton("Ver gráfica de errores");
 	JButton btnAgregarSetAprendizaje = new JButton("+");
 	JButton btnEliminarSetAprendizaje = new JButton("-");
 	JButton btnAgregarSetPrueba = new JButton("+");
@@ -308,29 +313,31 @@ public class BackPropagationContainer {
 		panelSalida.add(lblPesoEdadValor);
 		
 		
-		//Salida umbral
-		lblUmbralFinal = new JLabel("Umbral");
-		lblUmbralFinal.setBounds(450, 120, 170, 20);
-		panelSalida.add(lblUmbralFinal);
+		//Salida error
+		lblErrorFinal = new JLabel("Error");
+		lblErrorFinal.setBounds(300, 120, 170, 20);
+		panelSalida.add(lblErrorFinal);
 		
-		lblUmbralValor= new JLabel("<html><b>0.0</b></html>");
-		lblUmbralValor.setBounds(550, 120, 170, 20);
-		panelSalida.add(lblUmbralValor);
+		lblErrorValor= new JLabel("<html><b>0.0</b></html>");
+		lblErrorValor.setBounds(400, 120, 250, 20);
+		panelSalida.add(lblErrorValor);
 		
 		//Salida epocas
 		lblEpocasFinal = new JLabel("Épocas");
-		lblEpocasFinal.setBounds(450, 150, 170, 20);
+		lblEpocasFinal.setBounds(300, 150, 170, 20);
 		panelSalida.add(lblEpocasFinal);
 		
 		lblEpocasValor = new JLabel("<html><b>0.0</b></html>");
-		lblEpocasValor.setBounds(550, 150, 170, 20);
+		lblEpocasValor.setBounds(400, 150, 170, 20);
 		panelSalida.add(lblEpocasValor);
 		
 		btnClasificar.setBounds(450, 470, 170, 60);
+		btnError.setBounds(250, 470, 170, 60);
 		btnEntrenar.setBounds(640, 320, 270, 50);
 		
 		iframe.add(btnEntrenar);
 		iframe.add(btnClasificar);
+		iframe.add(btnError);
 		iframe.add(panelSalida);
 		
 		visibleSalida(false);
@@ -355,11 +362,12 @@ public class BackPropagationContainer {
     	 lblPesoMasaCorporalValor.setVisible(visible);
     	 lblPesoFuncionValor.setVisible(visible);
     	 lblPesoEdadValor.setVisible(visible);
-    	 lblUmbralFinal.setVisible(visible);
-    	 lblUmbralValor.setVisible(visible);
+    	 lblErrorFinal.setVisible(visible);
+    	 lblErrorValor.setVisible(visible);
     	 lblEpocasFinal.setVisible(visible);
     	 lblEpocasValor.setVisible(visible);
     	 btnClasificar.setVisible(visible);
+    	 btnError.setVisible(visible);
     }
     
     
@@ -376,6 +384,9 @@ public class BackPropagationContainer {
 		tablaSetPruebas = new JTable(new DefaultTableModel());
 		
 		DefaultTableModel model = (DefaultTableModel) tablaSetPruebas.getModel();
+		
+		String nombreCaracteristicas [] = Arrays.copyOfRange(this.nombreCaracteristicas, 1, this.nombreCaracteristicas.length);
+
 		
 		for(String columna : nombreCaracteristicas ){
 			model.addColumn(columna);
@@ -402,11 +413,22 @@ public class BackPropagationContainer {
 
     }
     
+    
+    public void ventanaGraficaErrores(Plot2DPanel plot ){
+    	ventanaGrafica = new JInternalFrame("Gráfica del valor del error por época", true, true, true, true);
+    	ventanaGrafica.setBounds(100, 500, 770, 350);
+    	ventanaGrafica.setResizable(false);
+    	ventanaGrafica.setVisible(true);
+    	this.desk.add(ventanaGrafica);
+    	ventanaGrafica.setLayout(null);
+			
+		ventanaGrafica.setContentPane(plot);
 
+    }
     
 	private void cargarSetAprendizaje(){
 		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
-		String csvFile = "dataset/diabetes_aprendizaje_perceptron.csv";
+		String csvFile = "dataset/diabetes_aprendizaje_backpropagation.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";

@@ -16,13 +16,13 @@ public class Cartesian {
 	
 	private float minX = 0;
 	private float maxX = 0;
-	private float minY = 0;
-	private float maxY = 0;
+	private double minY = 0;
+	private double maxY = 0;
 	
 	private Plot2DPanel plot = new Plot2DPanel();
 	
 	
-	public void addPoint(Color c, float x, float y){
+	public void addPoint(Color c, float x, double y){
 		this.addPoint(c, new Point(x, y) );
 	}
 	

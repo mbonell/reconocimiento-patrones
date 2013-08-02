@@ -3,9 +3,9 @@ package plot.cartesian;
 public class Point {
 
 	private float x = 0;
-	private float y = 0;
+	private double y = 0;
 	
-	public Point(float lx, float ly){
+	public Point(float lx, double ly){
 		this.x = lx;
 		this.y = ly;
 	}
@@ -14,7 +14,7 @@ public class Point {
 		return this.x;
 	}
 	
-	public float getY(){
+	public double getY(){
 		return this.y;
 	}
 }

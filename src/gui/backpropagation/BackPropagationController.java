@@ -1,11 +1,16 @@
 package gui.backpropagation;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import org.math.plot.Plot2DPanel;
+
+import plot.Cartesian;
 import core.BackPropagation;
 
 public class BackPropagationController {
@@ -73,7 +78,7 @@ public class BackPropagationController {
 				bp.inicializarPesosAdaline();
 				
 				//Imprimir pesos iniciales
-				
+				/*
 				for(int m = 0; m<bp.getNumeroCapasOcultas(); m++){
 					System.out.println("CAPA OCULTA " + m);
 					for (int i = 0; i < bp.getNumeroNeuronasPorCapa(); ++i){
@@ -84,40 +89,33 @@ public class BackPropagationController {
 						}
 					
 					}
-				}
+				}*/
 				
 				
 				//Imprimir pesos Adaline
-				
+				/*
 				System.out.println("Adaline");
 				for(int j = 0; j<bp.getNumeroNeuronasPorCapa(); j++){
 					System.out.println("Peso " + j + ": =>" + bp.getPesoAdaline(j));
-				}
+				}*/
 				
 				bp.entrenar(getData(bpGui.tablaSetAprendizaje.getModel()));
 				
 				
 				bpGui.lblNoEntrenada.setVisible(false);
-				bpGui.visibleSalida(true);
-				
-				//Valores finales
-				/*DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
-				simbolos.setDecimalSeparator('.');
-				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
-				
-				bpGui.lblPesoEmbarazoValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.EMBARAZOS))+"</b></html>");
-				bpGui.lblPesoConcentracionGlucosaValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.CONCENTRACION_GLUCOSA))+"</b></html>");
-				bpGui.lblPesoPresionArterialValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.PRESION_ARTERIAL))+"</b></html>");
-				bpGui.lblPesoGrosorTricepsValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.GROSOR_TRICEPS))+"</b></html>");
-				bpGui.lblPesoInsulinaValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.INSULINA))+"</b></html>");
-				bpGui.lblPesoMasaCorporalValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.MASA_CORPORAL))+"</b></html>");
-				bpGui.lblPesoFuncionValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.FUNCION))+"</b></html>");
-				bpGui.lblPesoEdadValor.setText("<html><b>"+formato.format(perceptron.getPeso(perceptron.EDAD))+"</b></html>");
+				bpGui.lblErrorFinal.setVisible(true);
+				bpGui.lblErrorValor.setVisible(true);
+				bpGui.lblEpocasValor.setVisible(true);
+				bpGui.lblEpocasFinal.setVisible(true);
+				bpGui.btnClasificar.setVisible(true);
+				bpGui.btnError.setVisible(true);
 
 				
-				bpGui.lblUmbralValor.setText("<html><b>"+formato.format(perceptron.getUmbralFinal())+"</b></html>");
-				bpGui.lblEpocasValor.setText("<html><b>"+formato.format(perceptron.getNumeroEpocasFinal())+"</b></html>");
-				*/
+				//Valores finales
+				bpGui.lblEpocasValor.setText("<html><b>"+bp.getNumeroEpocasFinal()+"</b></html>");
+				bpGui.lblErrorValor.setText("<html><b>"+bp.getErrorFinal()+"</b></html>");
+
+				
 
 			}
 		});
@@ -125,6 +123,25 @@ public class BackPropagationController {
 		bpGui.btnClasificar.addActionListener(new ActionListener() {          
 		    public void actionPerformed(ActionEvent e) {
 		    	bpGui.ventanaClasificaciones();
+		    
+		    }
+		});
+		
+		bpGui.btnError.addActionListener(new ActionListener() {          
+		    public void actionPerformed(ActionEvent e) {
+				Cartesian grafica = new Cartesian();
+				
+				for(int i = 0; i < bp.getNumeroEpocasFinal(); i++){
+
+					grafica.addPoint(Color.red, (float)i+1, Double.valueOf(bp.errores.get(i)));
+				}
+				
+		    	Plot2DPanel plot = grafica.plot();
+			
+				plot.setAxisLabel(0, "Época");
+				plot.setAxisLabel(1, "Error");
+				
+		    	bpGui.ventanaGraficaErrores(plot);
 		    
 		    }
 		});
