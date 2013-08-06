@@ -78,7 +78,7 @@ public class BackPropagationController {
 				bp.inicializarPesosAdaline();
 				
 				//Imprimir pesos iniciales
-				/*
+				
 				for(int m = 0; m<bp.getNumeroCapasOcultas(); m++){
 					System.out.println("CAPA OCULTA " + m);
 					for (int i = 0; i < bp.getNumeroNeuronasPorCapa(); ++i){
@@ -89,15 +89,15 @@ public class BackPropagationController {
 						}
 					
 					}
-				}*/
+				}
 				
 				
 				//Imprimir pesos Adaline
-				/*
+				
 				System.out.println("Adaline");
 				for(int j = 0; j<bp.getNumeroNeuronasPorCapa(); j++){
 					System.out.println("Peso " + j + ": =>" + bp.getPesoAdaline(j));
-				}*/
+				}
 				
 				bp.entrenar(getData(bpGui.tablaSetAprendizaje.getModel()));
 				
