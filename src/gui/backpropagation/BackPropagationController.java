@@ -95,7 +95,7 @@ public class BackPropagationController {
 				//Imprimir pesos Adaline
 				
 				System.out.println("Adaline");
-				for(int j = 0; j<bp.getNumeroNeuronasPorCapa(); j++){
+				for(int j = 0; j<bp.getNumeroNeuronasPorCapa()+1; j++){
 					System.out.println("Peso " + j + ": =>" + bp.getPesoAdaline(j));
 				}
 				

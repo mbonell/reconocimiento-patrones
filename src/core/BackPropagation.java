@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import com.sun.xml.internal.rngom.ast.builder.GrammarSection.Combine;
+
 public class BackPropagation {
 	
 	public final String THRESHOLD 			  = "THRESHOLD";
@@ -133,9 +135,9 @@ public class BackPropagation {
 	}
 	
 	public void inicializarPesosAdaline(){
-		this.pesosAdaline =  new double [this.getNumeroNeuronasPorCapa()];
+		this.pesosAdaline =  new double [this.getNumeroNeuronasPorCapa()+1];
 		
-			for(int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){	
+			for(int i = 0; i < this.getNumeroNeuronasPorCapa()+1; ++i){	
 				this.pesosAdaline[i] = this.generarAletorio();
 			}	          
 	}
@@ -286,10 +288,10 @@ public class BackPropagation {
 				
 				System.out.println("["+ this.numeroEpocasFinal +"] Error Esperado: " + this.errorDeseadoFinal);
 				
-				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
+				//if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
-				else
-					this.errorDeseadoFinal = 0;
+				//else
+					//this.errorDeseadoFinal = 0;
 			}
 		
 	}
@@ -298,7 +300,13 @@ public class BackPropagation {
 	private double obtenidaAdaline(String [] salidasNeuronas){
 		double sumatoria = 0, fn = 0;		
 		
-		//System.out.println("Salida Adaline");
+		//Agregar entrada umbral
+		String umbral [] = {"-1"};
+		String[] temp = new String[salidasNeuronas.length+1];
+		System.arraycopy(umbral, 0, temp, 0, umbral.length);
+		System.arraycopy(salidasNeuronas, 0, temp, umbral.length, salidasNeuronas.length);
+		salidasNeuronas = temp;
+		
 		for(int i = 0; i < salidasNeuronas.length; i++){
 			sumatoria+=(Double.valueOf(salidasNeuronas[i]) * this.getPesoAdaline(i));
 			 System.out.println(Double.valueOf(salidasNeuronas[i]) + "*" + this.getPesoAdaline(i));
@@ -340,7 +348,7 @@ public class BackPropagation {
 	private void feedForward(String [] entradas){
 		
 		double valorActivacion = 0;
-		String [] a;
+		String [] a = null;
 		
 		for(int m = 0; m < this.getNumeroCapasOcultas(); m++){
 			System.out.println("CAPA OCULTA " + (m+1) + " **************************");
@@ -352,7 +360,15 @@ public class BackPropagation {
 				if(m == 0){
 					a = entradas;
 				}else{
-					a = this.salidasPorCapa[m-1];
+					
+					//Agregar entrada umbral
+					String umbral [] = {"-1"};
+					String[] temp = new String[this.salidasPorCapa[m-1].length+1];
+					System.arraycopy(umbral, 0, temp, 0, umbral.length);
+					System.arraycopy(this.salidasPorCapa[m-1], 0, temp, umbral.length, this.salidasPorCapa[m-1].length);
+					
+					a = temp;
+
 				}
 				
 				valorActivacion = this.obtenerSalidaNeurona(a, m, i);
