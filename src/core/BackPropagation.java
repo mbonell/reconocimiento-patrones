@@ -26,7 +26,7 @@ public class BackPropagation {
 	private int numeroEpocasFinal;
 	
 	private int numeroCapasOcultas = 2;
-	private int numeroNeuronasPorCapa = 4;
+	private int numeroNeuronasPorCapa = 8;
 	private int numeroEntradas = 8;
 	
 	public HashMap<String, Double>[][] pesos;
