@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sun.xml.internal.rngom.ast.builder.GrammarSection.Combine;
-
 public class BackPropagation {
 	
 	public final String THRESHOLD 			  = "THRESHOLD";
@@ -22,13 +20,13 @@ public class BackPropagation {
 	public final String EDAD 				  = "EDAD";
 	
 	private double razonAprendizaje = 0.5;
-	private int limiteEpocas = 10000;
-	private double errorDeseado = 0.01;
+	private int limiteEpocas = 50000;
+	private double errorDeseado = 0.00001;
 	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
 	
 	private int numeroCapasOcultas = 2;
-	private int numeroNeuronasPorCapa = 2;
+	private int numeroNeuronasPorCapa = 4;
 	private int numeroEntradas = 8;
 	
 	public HashMap<String, Double>[][] pesos;
@@ -251,8 +249,8 @@ public class BackPropagation {
 			while(!finalizado){ 
 				
 				
-				//for(int n = 0; n < entradas.length; n++){
-				for(int n = 0; n < 2; n++){
+				for(int n = 0; n < entradas.length; n++){
+				//for(int n = 0; n < 2; n++){
 					
 					System.out.println("ENTRADA " + (n+1) + " ------------------------------------------");
 					
@@ -280,18 +278,18 @@ public class BackPropagation {
 				}
 				
 				this.numeroEpocasFinal++;
-				//this.errorDeseadoFinal /= entradas.length;
-				this.errorDeseadoFinal /= 2;
+				this.errorDeseadoFinal /= entradas.length;
+				//this.errorDeseadoFinal /= 2;
 				
 				//Guardar el error para la grafica
 				this.errores.add(this.errorDeseadoFinal);
 				
 				System.out.println("["+ this.numeroEpocasFinal +"] Error Esperado: " + this.errorDeseadoFinal);
 				
-				//if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
+				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
-				//else
-					//this.errorDeseadoFinal = 0;
+				else
+					this.errorDeseadoFinal = 0;
 			}
 		
 	}
@@ -309,7 +307,7 @@ public class BackPropagation {
 		
 		for(int i = 0; i < salidasNeuronas.length; i++){
 			sumatoria+=(Double.valueOf(salidasNeuronas[i]) * this.getPesoAdaline(i));
-			 System.out.println(Double.valueOf(salidasNeuronas[i]) + "*" + this.getPesoAdaline(i));
+			 //System.out.println(Double.valueOf(salidasNeuronas[i]) + "*" + this.getPesoAdaline(i));
 
 		}
 		
@@ -334,10 +332,10 @@ public class BackPropagation {
 
 		for(int j = 0; j < entradas.length; j++){
 			sumatoria+=(Double.valueOf(entradas[j]) * this.getPesoLlaveEntera(capa, neurona, j));
-			 System.out.println(Double.valueOf(entradas[j]) + "*" + this.getPesoLlaveEntera(capa, neurona, j));
+			 //System.out.println(Double.valueOf(entradas[j]) + "*" + this.getPesoLlaveEntera(capa, neurona, j));
 		}
 		
-		System.out.println("N["+capa+"]["+neurona+"]: " + sumatoria);
+		//System.out.println("N["+capa+"]["+neurona+"]: " + sumatoria);
 		
 		salidaNeurona = 1 / (1 + Math.exp(-1 * sumatoria));
 		
@@ -351,11 +349,11 @@ public class BackPropagation {
 		String [] a = null;
 		
 		for(int m = 0; m < this.getNumeroCapasOcultas(); m++){
-			System.out.println("CAPA OCULTA " + (m+1) + " **************************");
+			//System.out.println("CAPA OCULTA " + (m+1) + " **************************");
 
 			
 			for (int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){
-				System.out.println("NEURONA " + (i+1));
+				//System.out.println("NEURONA " + (i+1));
 				
 				if(m == 0){
 					a = entradas;
@@ -372,7 +370,7 @@ public class BackPropagation {
 				}
 				
 				valorActivacion = this.obtenerSalidaNeurona(a, m, i);
-				System.out.println("A["+m+"]["+i+"]: " + valorActivacion);
+				//System.out.println("A["+m+"]["+i+"]: " + valorActivacion);
 				
 				//Guardar salida de la neurona (a)
 				this.setSalidasPorCapa(m, i, String.valueOf(valorActivacion));
@@ -386,9 +384,9 @@ public class BackPropagation {
 		
 		//Derivada de la funcion de activacion y(1-y)
 		double derivadaAdaline = valorActivacion * (1-valorActivacion);
-		System.out.println("Derivada Adaline = " + valorActivacion + "*" + "(1-" + valorActivacion + ")");
+		//System.out.println("Derivada Adaline = " + valorActivacion + "*" + "(1-" + valorActivacion + ")");
 		this.sensibilidadAdaline = -2 * derivadaAdaline * error;
-		System.out.println("S[" + this.getNumeroCapasOcultas() + "] Adaline = " + this.sensibilidadAdaline);
+		//System.out.println("S[" + this.getNumeroCapasOcultas() + "] Adaline = " + this.sensibilidadAdaline);
 		int pesosRecorrer = 0;
 		
 		double sensibilidad = 0;
@@ -397,39 +395,32 @@ public class BackPropagation {
 			for(int m = this.getNumeroCapasOcultas()-1; m >= 0; m--){
 
 				for (int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){
-					System.out.println("M: " + m);
+					//System.out.println("M: " + m);
 					sensibilidad = 0;
 					double derivada = Double.valueOf(this.getSalidasPorCapa(m, i)) * (1 - Double.valueOf(this.getSalidasPorCapa(m, i)));
-					System.out.println("f' =" + Double.valueOf(this.getSalidasPorCapa(m, i)) + "*" + "(1 - " + Double.valueOf(this.getSalidasPorCapa(m, i))+")");
+					//System.out.println("f' =" + Double.valueOf(this.getSalidasPorCapa(m, i)) + "*" + "(1 - " + Double.valueOf(this.getSalidasPorCapa(m, i))+")");
 						
 					 sensibilidadAdelante = (m == this.getNumeroCapasOcultas()-1) ? this.sensibilidadAdaline : this.getSensibilidades(m+1, i);
-					
-						//La capa oculta 1 (0) recibe 9 entradas (8 y 1 thres) por lo que recorre 9 pesos
-						if(m == 0)
-							pesosRecorrer = numeroEntradasIniciales;
-						if(m == this.getNumeroCapasOcultas()-1)
-							pesosRecorrer = this.pesosAdaline.length;
-						else
-							pesosRecorrer = this.getNumeroNeuronasPorCapa();
+					 pesosRecorrer = this.getNumeroNeuronasPorCapa();
 							
-						for(int peso = 0; peso < pesosRecorrer; peso++){ 
+						for(int peso = 1; peso <= pesosRecorrer; peso++){ 
 							
 							if(m == this.getNumeroCapasOcultas()-1){
 								//Pesos Adaline
 								sensibilidad += derivada * this.getPesoAdaline(peso) * sensibilidadAdelante;
-								System.out.println("Sensibilidad a: " + derivada + "*" + this.getPesoAdaline(peso) + "*" + sensibilidadAdelante);
-								System.out.println("Sensibilidad a: " + derivada * this.getPesoAdaline(peso) * sensibilidadAdelante);
+								//System.out.println("Sensibilidad a: " + derivada + "*" + this.getPesoAdaline(peso) + "*" + sensibilidadAdelante);
+								//System.out.println("Sensibilidad a: " + derivada * this.getPesoAdaline(peso) * sensibilidadAdelante);
 							}else{
 								//Pesos normales
 								sensibilidad += derivada * this.getPesoLlaveEntera(m+1, i, peso) * sensibilidadAdelante;
-								System.out.println("Sensibilidad: " + derivada + "*" + this.getPesoLlaveEntera(m+1, i, peso) + "*" + sensibilidadAdelante);
-								System.out.println("Sensibilidad: " + derivada * this.getPesoLlaveEntera(m+1, i, peso) * sensibilidadAdelante);
+								//System.out.println("Sensibilidad: " + derivada + "*" + this.getPesoLlaveEntera(m+1, i, peso) + "*" + sensibilidadAdelante);
+								//System.out.println("Sensibilidad: " + derivada * this.getPesoLlaveEntera(m+1, i, peso) * sensibilidadAdelante);
 							}
 							
 						}
 						
 					this.setSensibilidades(m, i, sensibilidad);
-					System.out.println("S["+m+"]["+i+"] = " + sensibilidad);
+					//System.out.println("S["+m+"]["+i+"] = " + sensibilidad);
 				}
 				
 			}
@@ -448,14 +439,21 @@ public class BackPropagation {
 					entradasRecorrer = numeroEntradasIniciales;
 					a = entradas;
 				}else{
-					entradasRecorrer = this.getNumeroNeuronasPorCapa();
-					a = this.salidasPorCapa[m-1];
+					entradasRecorrer = this.getNumeroNeuronasPorCapa() + 1;
+					
+					//Agregar entrada umbral
+					String umbral [] = {"-1"};
+					String[] temp = new String[this.salidasPorCapa[m-1].length+1];
+					System.arraycopy(umbral, 0, temp, 0, umbral.length);
+					System.arraycopy(this.salidasPorCapa[m-1], 0, temp, umbral.length, this.salidasPorCapa[m-1].length);
+					
+					a = temp;
 				}
 				
 				for(int j = 0; j < entradasRecorrer; j++){
-					System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
+					//System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
 					this.setPesoLlaveEntera(m ,i, j, this.getPesoLlaveEntera(m, i, j) + (-1 * this.razonAprendizaje) * this.getSensibilidades(m, i) * Double.valueOf(a[j]));
-					System.out.println("Peso [" + m + "][" + i + "][" + j + "]: " + this.getPesoLlaveEntera(m, i, j));
+					//System.out.println("Peso [" + m + "][" + i + "][" + j + "]: " + this.getPesoLlaveEntera(m, i, j));
 				}
 			}
 		}
@@ -464,10 +462,17 @@ public class BackPropagation {
 		int m = this.getNumeroCapasOcultas();
 		String[] entradaCapaAdaline = this.salidasPorCapa[m-1];
 		
+		//Agregar entrada umbral
+		String umbral [] = {"-1"};
+		String[] temp = new String[entradaCapaAdaline.length+1];
+		System.arraycopy(umbral, 0, temp, 0, umbral.length);
+		System.arraycopy(entradaCapaAdaline, 0, temp, umbral.length, entradaCapaAdaline.length);
+		entradaCapaAdaline = temp;
+		
 		for(int i = 0; i < entradaCapaAdaline.length; i++){ 
-			System.out.println(this.getPesoAdaline(i) + " + " + (-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[i]));
+			//System.out.println(this.getPesoAdaline(i) + " + " + (-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[i]));
 			this.setPesoAdaline(i, this.getPesoAdaline(i) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[i]));
-			System.out.println("Peso [" + m + "][" + i + "][0]: " + this.getPesoAdaline(i));
+			//System.out.println("Peso [" + m + "][" + i + "][0]: " + this.getPesoAdaline(i));
 			
 		}
 		
@@ -479,7 +484,15 @@ public class BackPropagation {
 		for(int n = 0; n < entradasClasificar.length; n++){
 			
 			double fy = 0;	
-			this.feedForward(Arrays.copyOfRange(entradasClasificar[n], 0, entradasClasificar[n].length-1));
+			
+			String umbral [] = {"-1"};
+			String[] temp = new String[Arrays.copyOfRange(entradasClasificar[n], 0, entradasClasificar[n].length-1).length+1];
+			System.arraycopy(umbral, 0, temp, 0, umbral.length);
+			System.arraycopy(Arrays.copyOfRange(entradasClasificar[n], 0, entradasClasificar[n].length-1), 0, temp, umbral.length, Arrays.copyOfRange(entradasClasificar[n], 0, entradasClasificar[n].length-1).length);
+			
+			entradasClasificar[n] = temp;
+			this.feedForward(entradasClasificar[n]);
+			
 			fy = this.obtenidaAdaline(this.salidasPorCapa[this.getNumeroCapasOcultas() - 1]);
 			
 			if(fy >= 0.9) 

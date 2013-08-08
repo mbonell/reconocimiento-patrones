@@ -211,7 +211,7 @@ public class BackPropagationContainer {
 		panelParametros.add(lblLimiteEpocasInicial);
 		
 		txtLimiteEpocasInicial = new JTextField();
-		txtLimiteEpocasInicial.setBounds(180, 55, 70, 30);
+		txtLimiteEpocasInicial.setBounds(170, 55, 80, 30);
 		txtLimiteEpocasInicial.setText(Integer.toString(bp.getLimiteEpocas()));
 		panelParametros.add(txtLimiteEpocasInicial);
 		
@@ -221,7 +221,7 @@ public class BackPropagationContainer {
 		panelParametros.add(lblErrorEsperado);
 		
 		txtErrorDeseado = new JTextField();
-		txtErrorDeseado.setBounds(180, 85, 70, 30);
+		txtErrorDeseado.setBounds(170, 85, 80, 30);
 		txtErrorDeseado.setText(Double.toString(bp.getErrorDeseado()));
 		panelParametros.add(txtErrorDeseado);
 
