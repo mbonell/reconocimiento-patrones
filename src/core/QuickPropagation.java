@@ -21,7 +21,7 @@ public class QuickPropagation {
 	
 	private double razonAprendizaje = 0.5;
 	private int limiteEpocas = 50000;
-	private double errorDeseado = 0.00001;
+	private double errorDeseado = 0.01;
 	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
 	
@@ -278,14 +278,14 @@ public class QuickPropagation {
 	
 	public void entrenar(String[][] entradas){
 		
-		boolean finalizado = false, primeraIteracion = true;
+		boolean finalizado = false, primeraEpoca = true;
 		int y = 0;
 		double  error = 0, errorCuadraticoMedio = 0, valorActivacion = 0;
 		this.numeroEpocasFinal = 0;
 		this.errores.clear();
 		
-			while(!finalizado){ 
-				
+			//while(!finalizado){ 
+			 while(this.numeroEpocasFinal <6){	
 				
 				//for(int n = 0; n < entradas.length; n++){
 				for(int n = 0; n < 2; n++){
@@ -308,13 +308,14 @@ public class QuickPropagation {
 					this.calcularSensibilidad(valorActivacion, error, entradas[n].length-1);
 					
 					//Ajuste de pesos, mando el numero de elementos por entrada y la entrada inicial
-					this.ajustarPesos(entradas[n].length-1, Arrays.copyOfRange(entradas[n], 0, entradas[n].length-1), primeraIteracion);
+					this.ajustarPesos(entradas[n].length-1, Arrays.copyOfRange(entradas[n], 0, entradas[n].length-1), primeraEpoca);
 					
 					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico
 					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
-					primeraIteracion = false;
+					
 				}
 				
+				primeraEpoca = false;
 				this.numeroEpocasFinal++;
 				//this.errorDeseadoFinal /= entradas.length;
 				this.errorDeseadoFinal /= 2;
@@ -324,10 +325,10 @@ public class QuickPropagation {
 				
 				System.out.println("["+ this.numeroEpocasFinal +"] Error Esperado: " + this.errorDeseadoFinal);
 				
-				//if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
+				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
-				//else
-				//	this.errorDeseadoFinal = 0;
+				else
+					this.errorDeseadoFinal = 0;
 			}
 		
 	}
@@ -464,7 +465,7 @@ public class QuickPropagation {
 			}
 	}
 	
-	private void ajustarPesos(int numeroEntradasIniciales, String [] entradas, boolean primeraIteracion){
+	private void ajustarPesos(int numeroEntradasIniciales, String [] entradas, boolean primeraEpoca){
 		System.out.println("*** Ajuste de pesos ***");
 		int entradasRecorrer = 0;
 		String [] a;
@@ -496,7 +497,7 @@ public class QuickPropagation {
 					Eactual = (Eactual == -0) ? 0 : Eactual;
 					System.out.println(Eactual);
 					
-					if(!primeraIteracion){
+					if(!primeraEpoca){
 						
 						//Obtener el gradiente del error E(t-1)
 						double Eanterior = this.getGradienteErrorAnterior(m, i, j);
@@ -517,10 +518,11 @@ public class QuickPropagation {
 						
 					}else{
 						System.out.println("Primera iteracion!!");
-						System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
+						System.out.println((-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
 						
 						//Obtener el incremento del peso actual +W(t)
 						Wactual = (-1 * this.razonAprendizaje) * this.getSensibilidades(m, i) * Double.valueOf(a[j]);
+						Wactual = (Wactual == -0) ? 0 : Wactual;
 						System.out.println("+W(t): " + Wactual);
 
 						//Actualizar peso
@@ -547,40 +549,53 @@ public class QuickPropagation {
 		System.arraycopy(umbral, 0, temp, 0, umbral.length);
 		System.arraycopy(entradaCapaAdaline, 0, temp, umbral.length, entradaCapaAdaline.length);
 		entradaCapaAdaline = temp;
+		double WactualA = 0;
 		
 		for(int j = 0; j < entradaCapaAdaline.length; j++){ 
 			
 			//Obtener el gradiente del error E(t)
-			double Eactual = this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[j]);
-			Eactual = (Eactual == -0) ? 0 : Eactual;
+			double EactualA = this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[j]);
+			EactualA = (EactualA == -0) ? 0 : EactualA;
 			System.out.println("E(t): " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[j]));
-			System.out.println(Eactual);
+			System.out.println(EactualA);
 			
-			//Obtener el gradiente del error E(t-1)
-			double Eanterior = this.getGradienteErrorAdalineAnterior(j);
-			System.out.println("E(t-1): " + this.getGradienteErrorAdalineAnterior(j));
+			if(!primeraEpoca){
+				//Obtener el gradiente del error E(t-1)
+				double EanteriorA = this.getGradienteErrorAdalineAnterior(j);
+				System.out.println("E(t-1): " + this.getGradienteErrorAdalineAnterior(j));
+	
+				//Obtener el incremento del peso anterior +W(t-1)
+				double WanteriorA = this.getIncrementoPesosAdalineAnterior(j);
+				System.out.println("+W(t-1): " + this.getIncrementoPesosAdalineAnterior(j));
+				
+				//Obtener el incremento del peso actual +W(t)
+				WactualA = (EactualA/(EanteriorA - EactualA)) * WanteriorA;
+				WactualA = (WactualA == -0) ? 0 : WactualA;
+				System.out.println("+W(t): " + WactualA);
+				
+				//Actualizar peso
+				this.setPesoAdaline(j, this.getPesoAdaline(j) + WactualA);
 
-			//Obtener el incremento del peso anterior +W(t-1)
-			double Wanterior = this.getIncrementoPesosAdalineAnterior(j);
-			System.out.println("+W(t-1): " + this.getIncrementoPesosAdalineAnterior(j));
+			}else{
+				System.out.println("Primera iteracion Adaline!!");
+				System.out.println((-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[j]));
+				
+				//Obtener el incremento del peso actual +W(t)
+				WactualA = (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[j]);
+				WactualA = (WactualA == -0) ? 0 : WactualA;
+				System.out.println("+W(t): " + WactualA);
+				
+				//Actualizar peso
+				this.setPesoAdaline(j, this.getPesoAdaline(j) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[j]));
+				
+			}
 			
-			//Obtener el incremento del peso actual +W(t)
-			Wactual = (Eactual/(Eanterior - Eactual)) * Wanterior;
-			Wactual = (Wactual == -0) ? 0 : Wactual;
-			System.out.println("+W(t): " + Wactual);
-			
-			//Actualizar peso
-			this.setPesoAdaline(j, this.getPesoAdaline(j) + Wactual);
 			System.out.println("Peso [" + m + "][" + j + "]: " + this.getPesoAdaline(j));
 			
 			//Almacenar los valores de E(t) y +W(t) para la siguiente iteracion
-			this.setGradienteErrorAdalineAnterior(j, Eactual);
-			this.setIncrementoPesosAdalineAnterior(j, Wactual);
+			this.setGradienteErrorAdalineAnterior(j, EactualA);
+			this.setIncrementoPesosAdalineAnterior(j, WactualA);
 			
-			
-			//System.out.println(this.getPesoAdaline(i) + " + " + (-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[i]));
-			//this.setPesoAdaline(i, this.getPesoAdaline(i) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[i]));
-			//System.out.println("Peso [" + m + "][" + i + "][0]: " + this.getPesoAdaline(i));
 			
 		}
 		
