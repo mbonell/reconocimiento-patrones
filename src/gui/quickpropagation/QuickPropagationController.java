@@ -72,6 +72,13 @@ public class QuickPropagationController {
 				qp.inicializarPesos();
 				qp.salidasPorCapa = new String[qp.getNumeroCapasOcultas()][qp.getNumeroNeuronasPorCapa()];
 				qp.sensibilidades = new double[qp.getNumeroCapasOcultas()][qp.getNumeroNeuronasPorCapa()];
+				
+				//Crear las matrices de gradientes de error y pesos anterior
+				qp.gradienteErrorAnterior  = new double[qp.getNumeroCapasOcultas()][qp.getNumeroNeuronasPorCapa()][qp.getNumeroEntradas()+1];
+				qp.incrementoPesosAnterior = new double[qp.getNumeroCapasOcultas()][qp.getNumeroNeuronasPorCapa()][qp.getNumeroEntradas()+1];
+				qp.gradienteErrorAdalineAnterior  = new double [qp.getNumeroNeuronasPorCapa()+1];
+				qp.incrementoPesosAdalineAnterior = new double [qp.getNumeroNeuronasPorCapa()+1];
+				
 				//Inicializar pesos para la neurona de salida (Adaline)
 				qp.inicializarPesosAdaline();
 				

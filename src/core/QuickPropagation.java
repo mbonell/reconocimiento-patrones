@@ -26,7 +26,7 @@ public class QuickPropagation {
 	private int numeroEpocasFinal;
 	
 	private int numeroCapasOcultas = 2;
-	private int numeroNeuronasPorCapa = 8;
+	private int numeroNeuronasPorCapa = 2;
 	private int numeroEntradas = 8;
 	
 	public HashMap<String, Double>[][] pesos;
@@ -35,6 +35,12 @@ public class QuickPropagation {
 	public double [][]sensibilidades;
 	private double sensibilidadAdaline = 0;
 	private double [] pesosAdaline;
+	
+	public double [][][]gradienteErrorAnterior;
+	public double [] gradienteErrorAdalineAnterior;
+	public double [][][]incrementoPesosAnterior;
+	public double [] incrementoPesosAdalineAnterior;
+
 	
 	public void setSalidasPorCapa(int capa, int neurona, String valor){
 		this.salidasPorCapa[capa][neurona] = valor;
@@ -50,6 +56,38 @@ public class QuickPropagation {
 	
 	public void setSensibilidades(int capa, int neurona, double valor){
 		this.sensibilidades[capa][neurona] = valor;
+	}
+	
+	public double getGradienteErrorAnterior(int capa, int neurona, int entrada){
+		return this.gradienteErrorAnterior[capa][neurona][entrada];
+	}
+	
+	public void setGradienteErrorAnterior(int capa, int neurona, int entrada, double valor){
+		this.gradienteErrorAnterior[capa][neurona][entrada] = valor;
+	}
+	
+	public double getGradienteErrorAdalineAnterior(int entrada){
+		return this.gradienteErrorAdalineAnterior[entrada];
+	}
+	
+	public void setGradienteErrorAdalineAnterior(int entrada, double valor){
+		this.gradienteErrorAdalineAnterior[entrada] = valor;
+	}
+	
+	public double getIncrementoPesosAnterior(int capa, int neurona, int entrada){
+		return this.incrementoPesosAnterior[capa][neurona][entrada];
+	}
+	
+	public void setIncrementoPesosAnterior(int capa, int neurona, int entrada, double valor){
+		this.incrementoPesosAnterior[capa][neurona][entrada] = valor;
+	}
+	
+	public double getIncrementoPesosAdalineAnterior(int entrada){
+		return this.incrementoPesosAdalineAnterior[entrada];
+	}
+	
+	public void setIncrementoPesosAdalineAnterior(int entrada, double valor){
+		this.incrementoPesosAdalineAnterior[entrada] = valor;
 	}
 	
 	public void setNumeroCapasOcultas(int numeroCapasOcultas){
@@ -240,7 +278,7 @@ public class QuickPropagation {
 	
 	public void entrenar(String[][] entradas){
 		
-		boolean finalizado = false;
+		boolean finalizado = false, primeraIteracion = true;
 		int y = 0;
 		double  error = 0, errorCuadraticoMedio = 0, valorActivacion = 0;
 		this.numeroEpocasFinal = 0;
@@ -249,8 +287,8 @@ public class QuickPropagation {
 			while(!finalizado){ 
 				
 				
-				for(int n = 0; n < entradas.length; n++){
-				//for(int n = 0; n < 2; n++){
+				//for(int n = 0; n < entradas.length; n++){
+				for(int n = 0; n < 2; n++){
 					
 					System.out.println("ENTRADA " + (n+1) + " ------------------------------------------");
 					
@@ -270,26 +308,26 @@ public class QuickPropagation {
 					this.calcularSensibilidad(valorActivacion, error, entradas[n].length-1);
 					
 					//Ajuste de pesos, mando el numero de elementos por entrada y la entrada inicial
-					this.ajustarPesos(entradas[n].length-1, Arrays.copyOfRange(entradas[n], 0, entradas[n].length-1));
+					this.ajustarPesos(entradas[n].length-1, Arrays.copyOfRange(entradas[n], 0, entradas[n].length-1), primeraIteracion);
 					
 					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico
 					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
-
+					primeraIteracion = false;
 				}
 				
 				this.numeroEpocasFinal++;
-				this.errorDeseadoFinal /= entradas.length;
-				//this.errorDeseadoFinal /= 2;
+				//this.errorDeseadoFinal /= entradas.length;
+				this.errorDeseadoFinal /= 2;
 				
 				//Guardar el error para la grafica
 				this.errores.add(this.errorDeseadoFinal);
 				
 				System.out.println("["+ this.numeroEpocasFinal +"] Error Esperado: " + this.errorDeseadoFinal);
 				
-				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
+				//if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
-				else
-					this.errorDeseadoFinal = 0;
+				//else
+				//	this.errorDeseadoFinal = 0;
 			}
 		
 	}
@@ -386,7 +424,7 @@ public class QuickPropagation {
 		double derivadaAdaline = valorActivacion * (1-valorActivacion);
 		//System.out.println("Derivada Adaline = " + valorActivacion + "*" + "(1-" + valorActivacion + ")");
 		this.sensibilidadAdaline = -2 * derivadaAdaline * error;
-		//System.out.println("S[" + this.getNumeroCapasOcultas() + "] Adaline = " + this.sensibilidadAdaline);
+		System.out.println("S[" + this.getNumeroCapasOcultas() + "] Adaline = " + this.sensibilidadAdaline);
 		int pesosRecorrer = 0;
 		
 		double sensibilidad = 0;
@@ -420,16 +458,17 @@ public class QuickPropagation {
 						}
 						
 					this.setSensibilidades(m, i, sensibilidad);
-					//System.out.println("S["+m+"]["+i+"] = " + sensibilidad);
+					System.out.println("S["+m+"]["+i+"] = " + sensibilidad);
 				}
 				
 			}
 	}
 	
-	private void ajustarPesos(int numeroEntradasIniciales, String [] entradas){
+	private void ajustarPesos(int numeroEntradasIniciales, String [] entradas, boolean primeraIteracion){
 		System.out.println("*** Ajuste de pesos ***");
 		int entradasRecorrer = 0;
 		String [] a;
+		double Wactual = 0;
 		
 		for(int m = 0; m < this.getNumeroCapasOcultas(); m++){
 			for(int i = 0; i < this.getNumeroNeuronasPorCapa(); i++){
@@ -446,14 +485,54 @@ public class QuickPropagation {
 					String[] temp = new String[this.salidasPorCapa[m-1].length+1];
 					System.arraycopy(umbral, 0, temp, 0, umbral.length);
 					System.arraycopy(this.salidasPorCapa[m-1], 0, temp, umbral.length, this.salidasPorCapa[m-1].length);
-					
 					a = temp;
 				}
 				
 				for(int j = 0; j < entradasRecorrer; j++){
-					//System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
-					this.setPesoLlaveEntera(m ,i, j, this.getPesoLlaveEntera(m, i, j) + (-1 * this.razonAprendizaje) * this.getSensibilidades(m, i) * Double.valueOf(a[j]));
-					//System.out.println("Peso [" + m + "][" + i + "][" + j + "]: " + this.getPesoLlaveEntera(m, i, j));
+					
+					//Obtener el gradiente del error E(t)
+					double Eactual = this.getSensibilidades(m, i) * Double.valueOf(a[j]);
+					System.out.println("E(t): " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
+					Eactual = (Eactual == -0) ? 0 : Eactual;
+					System.out.println(Eactual);
+					
+					if(!primeraIteracion){
+						
+						//Obtener el gradiente del error E(t-1)
+						double Eanterior = this.getGradienteErrorAnterior(m, i, j);
+						System.out.println("E(t-1): " + this.getGradienteErrorAnterior(m, i, j));
+	
+						//Obtener el incremento del peso anterior +W(t-1)
+						double Wanterior = this.getIncrementoPesosAnterior(m, i, j);
+						System.out.println("+W(t-1): " + this.getIncrementoPesosAnterior(m, i, j));
+						
+						//Obtener el incremento del peso actual +W(t)
+						Wactual = (Eactual/(Eanterior - Eactual)) * Wanterior;
+						Wactual = (Wactual == -0) ? 0 : Wactual;
+						System.out.println("+W(t): " + "( " + Eactual + "/(" + Eanterior +" - " + Eactual +")) * " + Wanterior);
+						System.out.println("+W(t): " + Wactual);
+						
+						//Actualizar peso
+						this.setPesoLlaveEntera(m ,i, j, this.getPesoLlaveEntera(m, i, j) + Wactual);
+						
+					}else{
+						System.out.println("Primera iteracion!!");
+						System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
+						
+						//Obtener el incremento del peso actual +W(t)
+						Wactual = (-1 * this.razonAprendizaje) * this.getSensibilidades(m, i) * Double.valueOf(a[j]);
+						System.out.println("+W(t): " + Wactual);
+
+						//Actualizar peso
+						this.setPesoLlaveEntera(m ,i, j, this.getPesoLlaveEntera(m, i, j) + Wactual);
+					}
+					
+					System.out.println("Peso [" + m + "][" + i + "][" + j + "]: " + this.getPesoLlaveEntera(m, i, j));
+
+					//Almacenar los valores de E(t) y +W(t) para la siguiente iteracion
+					this.setGradienteErrorAnterior(m, i, j, Eactual);
+					this.setIncrementoPesosAnterior(m, i, j, Wactual);
+					
 				}
 			}
 		}
@@ -469,9 +548,38 @@ public class QuickPropagation {
 		System.arraycopy(entradaCapaAdaline, 0, temp, umbral.length, entradaCapaAdaline.length);
 		entradaCapaAdaline = temp;
 		
-		for(int i = 0; i < entradaCapaAdaline.length; i++){ 
+		for(int j = 0; j < entradaCapaAdaline.length; j++){ 
+			
+			//Obtener el gradiente del error E(t)
+			double Eactual = this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[j]);
+			Eactual = (Eactual == -0) ? 0 : Eactual;
+			System.out.println("E(t): " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[j]));
+			System.out.println(Eactual);
+			
+			//Obtener el gradiente del error E(t-1)
+			double Eanterior = this.getGradienteErrorAdalineAnterior(j);
+			System.out.println("E(t-1): " + this.getGradienteErrorAdalineAnterior(j));
+
+			//Obtener el incremento del peso anterior +W(t-1)
+			double Wanterior = this.getIncrementoPesosAdalineAnterior(j);
+			System.out.println("+W(t-1): " + this.getIncrementoPesosAdalineAnterior(j));
+			
+			//Obtener el incremento del peso actual +W(t)
+			Wactual = (Eactual/(Eanterior - Eactual)) * Wanterior;
+			Wactual = (Wactual == -0) ? 0 : Wactual;
+			System.out.println("+W(t): " + Wactual);
+			
+			//Actualizar peso
+			this.setPesoAdaline(j, this.getPesoAdaline(j) + Wactual);
+			System.out.println("Peso [" + m + "][" + j + "]: " + this.getPesoAdaline(j));
+			
+			//Almacenar los valores de E(t) y +W(t) para la siguiente iteracion
+			this.setGradienteErrorAdalineAnterior(j, Eactual);
+			this.setIncrementoPesosAdalineAnterior(j, Wactual);
+			
+			
 			//System.out.println(this.getPesoAdaline(i) + " + " + (-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[i]));
-			this.setPesoAdaline(i, this.getPesoAdaline(i) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[i]));
+			//this.setPesoAdaline(i, this.getPesoAdaline(i) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[i]));
 			//System.out.println("Peso [" + m + "][" + i + "][0]: " + this.getPesoAdaline(i));
 			
 		}
