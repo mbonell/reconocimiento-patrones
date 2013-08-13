@@ -167,14 +167,14 @@ public class Perceptron {
 		
 		System.out.println("Sumatoria: " + sumatoria);
 		
-		if(sumatoria >= this.umbralFinal) //TODO: Comparacion contra el umbal o contra 0?, cuando se actualiza el umbral?
+		if(sumatoria >= this.umbralFinal)
 			return 1;
 		else
 			return 0;
 	}
 	
 	private void ajustarPesos(String [] patron, int error){
-		for(int n = 0; n < patron.length-1; n++){ //TODO: No deberia considerarse la clase esperada?
+		for(int n = 0; n < patron.length-1; n++){
 			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * Double.valueOf(patron[n]));
 		}
 	}
@@ -188,7 +188,7 @@ public class Perceptron {
 				sumatoria+=(Double.valueOf(entradasClasificar[n][j]) * this.getPesoLlaveEntera(j));
 			}
 			
-			if(sumatoria >= 0) //TODO: Si es contra 0? y el umbral?
+			if(sumatoria >= 0) 
 				entradasClasificar[n][4] = "1";
 			else
 				entradasClasificar[n][4] = "0";				

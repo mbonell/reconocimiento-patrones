@@ -169,7 +169,6 @@ public class PerceptronDiabetes {
 					Pw = this.desicion(entradas[n]);
 					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
 					error = y - Pw;
-					//System.out.println("Entrada[" + n + "] Y: " + y + " Pw: " + Pw);
 						if(error != 0){
 							finalizado = false;
 							this.ajustarPesos(entradas[n], error);
@@ -203,16 +202,15 @@ public class PerceptronDiabetes {
 			sumatoria+=(Double.valueOf(patron[n]) * this.getPesoLlaveEntera(n));
 		}
 		
-		//System.out.println("Sumatoria: " + sumatoria);
 		
-		if(sumatoria >= this.umbralFinal) //TODO: Comparacion contra el umbal o contra 0?, cuando se actualiza el umbral?
+		if(sumatoria >= this.umbralFinal) 
 			return 1;
 		else
 			return 0;
 	}
 	
 	private void ajustarPesos(String [] patron, int error){
-		for(int n = 0; n < patron.length-1; n++){ //TODO: No deberia considerarse la clase esperada?
+		for(int n = 0; n < patron.length-1; n++){
 			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * Double.valueOf(patron[n]));
 		}
 	}
@@ -226,7 +224,7 @@ public class PerceptronDiabetes {
 				sumatoria+=(Double.valueOf(entradasClasificar[n][j]) * this.getPesoLlaveEntera(j));
 			}
 			
-			if(sumatoria >= 0) //TODO: Si es contra 0? y el umbral?
+			if(sumatoria >= 0)
 				entradasClasificar[n][entradasClasificar[n].length-1] = "1";
 			else
 				entradasClasificar[n][entradasClasificar[n].length-1] = "0";				

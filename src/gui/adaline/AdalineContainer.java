@@ -373,21 +373,21 @@ public class AdalineContainer {
 		
 		
 		//Salida error deseado
-		lblErrorFinal = new JLabel("Error deseado");
-		lblErrorFinal.setBounds(450, 120, 170, 20);
+		lblErrorFinal = new JLabel("Error");
+		lblErrorFinal.setBounds(420, 120, 170, 20);
 		panelSalida.add(lblErrorFinal);
 		
 		lblErrorValor= new JLabel("<html><b>0.0</b></html>");
-		lblErrorValor.setBounds(550, 120, 170, 20);
+		lblErrorValor.setBounds(460, 120, 200, 20);
 		panelSalida.add(lblErrorValor);
 		
 		//Salida epocas
 		lblEpocasFinal = new JLabel("Épocas");
-		lblEpocasFinal.setBounds(450, 150, 170, 20);
+		lblEpocasFinal.setBounds(420, 150, 170, 20);
 		panelSalida.add(lblEpocasFinal);
 		
 		lblEpocasValor = new JLabel("<html><b>0.0</b></html>");
-		lblEpocasValor.setBounds(550, 150, 170, 20);
+		lblEpocasValor.setBounds(520, 150, 170, 20);
 		panelSalida.add(lblEpocasValor);
 		
 		btnClasificar.setBounds(450, 470, 170, 60);
@@ -468,7 +468,8 @@ public class AdalineContainer {
     
 	private void cargarSetAprendizaje(){
 		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
-		String csvFile = "dataset/diabetes_aprendizaje.csv";
+		String csvFile = "dataset/diabetes_aprendizaje_backpropagation.csv";
+
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";

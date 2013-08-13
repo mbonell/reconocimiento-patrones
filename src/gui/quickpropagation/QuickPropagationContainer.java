@@ -23,7 +23,7 @@ public class QuickPropagationContainer {
 	
 	QuickPropagation qp;
 	Normalizacion normalizacion = new Normalizacion();
-	String normalizar = "MAX/MIN"; //MAX - MAX/MIN - NO
+	String normalizar = "MAX"; //MAX - MAX/MIN - NO
 	
 	JDesktopPane desk;
 	
@@ -321,7 +321,7 @@ public class QuickPropagationContainer {
     
 	private void cargarSetAprendizaje(){
 		DefaultTableModel temp = (DefaultTableModel) this.tablaSetAprendizaje.getModel();
-		String csvFile = "dataset/diabetes_aprendizaje_backpropagation.csv";
+		String csvFile = "dataset/diabetes_aprendizaje_quickpropagation.csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";

@@ -250,7 +250,6 @@ public class BackPropagation {
 				
 				
 				for(int n = 0; n < entradas.length; n++){
-				//for(int n = 0; n < 2; n++){
 					
 					System.out.println("ENTRADA " + (n+1) + " ------------------------------------------");
 					
@@ -279,7 +278,6 @@ public class BackPropagation {
 				
 				this.numeroEpocasFinal++;
 				this.errorDeseadoFinal /= entradas.length;
-				//this.errorDeseadoFinal /= 2;
 				
 				//Guardar el error para la grafica
 				this.errores.add(this.errorDeseadoFinal);
@@ -307,20 +305,15 @@ public class BackPropagation {
 		
 		for(int i = 0; i < salidasNeuronas.length; i++){
 			sumatoria+=(Double.valueOf(salidasNeuronas[i]) * this.getPesoAdaline(i));
-			 //System.out.println(Double.valueOf(salidasNeuronas[i]) + "*" + this.getPesoAdaline(i));
-
 		}
 		
 		fn = 1 / (1 + Math.exp(-1 * sumatoria));
-		
-		System.out.println("Valor de activacion Adaline: " + fn);
-		
+				
 		return fn;
 
 	}
 	
 	public void ajustarPesosAdaline(String [] salidasNeuronas, double error){
-		//System.out.println("Ajuste de pesos Adaline");
 		for(int i = 0; i < salidasNeuronas.length; i++){ 
 			this.setPesoAdaline(i, this.getPesoAdaline(i) + this.razonAprendizaje * error * this.obtenidaAdaline(salidasNeuronas) * (1-this.obtenidaAdaline(salidasNeuronas)) * Double.valueOf(salidasNeuronas[i]));
 			System.out.println(i + " " + this.getPesoAdaline(i));
@@ -332,7 +325,6 @@ public class BackPropagation {
 
 		for(int j = 0; j < entradas.length; j++){
 			sumatoria+=(Double.valueOf(entradas[j]) * this.getPesoLlaveEntera(capa, neurona, j));
-			 //System.out.println(Double.valueOf(entradas[j]) + "*" + this.getPesoLlaveEntera(capa, neurona, j));
 		}
 		
 		//System.out.println("N["+capa+"]["+neurona+"]: " + sumatoria);
@@ -384,7 +376,6 @@ public class BackPropagation {
 		
 		//Derivada de la funcion de activacion y(1-y)
 		double derivadaAdaline = valorActivacion * (1-valorActivacion);
-		//System.out.println("Derivada Adaline = " + valorActivacion + "*" + "(1-" + valorActivacion + ")");
 		this.sensibilidadAdaline = -2 * derivadaAdaline * error;
 		//System.out.println("S[" + this.getNumeroCapasOcultas() + "] Adaline = " + this.sensibilidadAdaline);
 		int pesosRecorrer = 0;
@@ -395,10 +386,8 @@ public class BackPropagation {
 			for(int m = this.getNumeroCapasOcultas()-1; m >= 0; m--){
 
 				for (int i = 0; i < this.getNumeroNeuronasPorCapa(); ++i){
-					//System.out.println("M: " + m);
 					sensibilidad = 0;
 					double derivada = Double.valueOf(this.getSalidasPorCapa(m, i)) * (1 - Double.valueOf(this.getSalidasPorCapa(m, i)));
-					//System.out.println("f' =" + Double.valueOf(this.getSalidasPorCapa(m, i)) + "*" + "(1 - " + Double.valueOf(this.getSalidasPorCapa(m, i))+")");
 						
 					 sensibilidadAdelante = (m == this.getNumeroCapasOcultas()-1) ? this.sensibilidadAdaline : this.getSensibilidades(m+1, i);
 					 pesosRecorrer = this.getNumeroNeuronasPorCapa();
@@ -408,13 +397,9 @@ public class BackPropagation {
 							if(m == this.getNumeroCapasOcultas()-1){
 								//Pesos Adaline
 								sensibilidad += derivada * this.getPesoAdaline(peso) * sensibilidadAdelante;
-								//System.out.println("Sensibilidad a: " + derivada + "*" + this.getPesoAdaline(peso) + "*" + sensibilidadAdelante);
-								//System.out.println("Sensibilidad a: " + derivada * this.getPesoAdaline(peso) * sensibilidadAdelante);
 							}else{
 								//Pesos normales
 								sensibilidad += derivada * this.getPesoLlaveEntera(m+1, i, peso) * sensibilidadAdelante;
-								//System.out.println("Sensibilidad: " + derivada + "*" + this.getPesoLlaveEntera(m+1, i, peso) + "*" + sensibilidadAdelante);
-								//System.out.println("Sensibilidad: " + derivada * this.getPesoLlaveEntera(m+1, i, peso) * sensibilidadAdelante);
 							}
 							
 						}
@@ -451,9 +436,7 @@ public class BackPropagation {
 				}
 				
 				for(int j = 0; j < entradasRecorrer; j++){
-					//System.out.println(this.getPesoLlaveEntera(m, i, j) + " + " + (-1 * this.razonAprendizaje) + " * " + this.getSensibilidades(m, i) + "*" + Double.valueOf(a[j]));
 					this.setPesoLlaveEntera(m ,i, j, this.getPesoLlaveEntera(m, i, j) + (-1 * this.razonAprendizaje) * this.getSensibilidades(m, i) * Double.valueOf(a[j]));
-					//System.out.println("Peso [" + m + "][" + i + "][" + j + "]: " + this.getPesoLlaveEntera(m, i, j));
 				}
 			}
 		}
@@ -470,9 +453,7 @@ public class BackPropagation {
 		entradaCapaAdaline = temp;
 		
 		for(int i = 0; i < entradaCapaAdaline.length; i++){ 
-			//System.out.println(this.getPesoAdaline(i) + " + " + (-1 * this.razonAprendizaje) + " * " + this.sensibilidadAdaline + "*" + Double.valueOf(entradaCapaAdaline[i]));
 			this.setPesoAdaline(i, this.getPesoAdaline(i) + (-1 * this.razonAprendizaje) * this.sensibilidadAdaline * Double.valueOf(entradaCapaAdaline[i]));
-			//System.out.println("Peso [" + m + "][" + i + "][0]: " + this.getPesoAdaline(i));
 			
 		}
 		

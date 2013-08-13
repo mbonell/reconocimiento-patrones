@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Adaline {
 	
-
+	public final String THRESHOLD 			  = "THRESHOLD";
 	public final String EMBARAZOS 			  = "EMBARAZOS";
 	public final String CONCENTRACION_GLUCOSA = "CONCENTRACION_GLUCOSA";
 	public final String PRESION_ARTERIAL 	  = "PRESION_ARTERIAL";
@@ -17,8 +17,8 @@ public class Adaline {
 	public final String EDAD 				  = "EDAD";
 	
 	private double razonAprendizaje = 0.5;
-	private int limiteEpocas = 10000;
-	private double errorDeseado = 0.01;
+	private int limiteEpocas = 80000;
+	private double errorDeseado = 0.0001;
 	private double errorDeseadoFinal;
 	private int numeroEpocasFinal;
 	
@@ -61,6 +61,7 @@ public class Adaline {
 	}
 	
 	public void inicializarPesos(){
+		this.pesos.put(THRESHOLD, this.generarAletorio());
 		this.pesos.put(EMBARAZOS, this.generarAletorio());
 		this.pesos.put(CONCENTRACION_GLUCOSA, this.generarAletorio());
 		this.pesos.put(PRESION_ARTERIAL, this.generarAletorio());
@@ -79,32 +80,35 @@ public class Adaline {
 		return this.pesos.put(llave,valor);
 	}
 	
-	private double getPesoLlaveEntera(int llave){
+	public double getPesoLlaveEntera(int llave){
 		double peso = 0;
 		
 		switch (llave) {
 			case 0:
-				peso = this.getPeso(EMBARAZOS);
+				peso = this.getPeso(THRESHOLD);
 				break;
 			case 1:
-				peso = this.getPeso(CONCENTRACION_GLUCOSA);
+				peso = this.getPeso(EMBARAZOS);
 				break;
 			case 2:
-				peso = this.getPeso(PRESION_ARTERIAL);
+				peso = this.getPeso(CONCENTRACION_GLUCOSA);
 				break;
 			case 3:
-				peso = this.getPeso(GROSOR_TRICEPS);
+				peso = this.getPeso(PRESION_ARTERIAL);
 				break;
 			case 4:
-				peso = this.getPeso(INSULINA);
+				peso = this.getPeso(GROSOR_TRICEPS);
 				break;
 			case 5:
-				peso = this.getPeso(MASA_CORPORAL);
+				peso = this.getPeso(INSULINA);
 				break;
 			case 6:
-				peso = this.getPeso(FUNCION);
+				peso = this.getPeso(MASA_CORPORAL);
 				break;
 			case 7:
+				peso = this.getPeso(FUNCION);
+				break;
+			case 8:
 				peso = this.getPeso(EDAD);
 				break;
 
@@ -116,34 +120,37 @@ public class Adaline {
 		
 		switch (llave) {
 			case 0:
-				this.setPeso(EMBARAZOS, valor);
+				this.setPeso(THRESHOLD, valor);
 				break;
 			case 1:
-				this.setPeso(CONCENTRACION_GLUCOSA, valor);
+				this.setPeso(EMBARAZOS, valor);
 				break;
 			case 2:
-				this.setPeso(PRESION_ARTERIAL, valor);
+				this.setPeso(CONCENTRACION_GLUCOSA, valor);
 				break;
 			case 3:
-				this.setPeso(GROSOR_TRICEPS, valor);
+				this.setPeso(PRESION_ARTERIAL, valor);
 				break;
 			case 4:
-				this.setPeso(INSULINA, valor);
+				this.setPeso(GROSOR_TRICEPS, valor);
 				break;
 			case 5:
-				this.setPeso(MASA_CORPORAL, valor);
+				this.setPeso(INSULINA, valor);
 				break;
 			case 6:
-				this.setPeso(FUNCION, valor);
+				this.setPeso(MASA_CORPORAL, valor);
 				break;
 			case 7:
+				this.setPeso(FUNCION, valor);
+				break;
+			case 8:
 				this.setPeso(EDAD, valor);
 				break;
 
 		}
 	}
 	
-	private double generarAletorio(){
+	public double generarAletorio(){
 		DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
 		simbolos.setDecimalSeparator('.');
 		DecimalFormat formato = new DecimalFormat("#.##",simbolos);
@@ -166,19 +173,16 @@ public class Adaline {
 				
 				
 				for(int n = 0; n < entradas.length; n++){
-					valorActivacion = this.obtenidaSigmoide(entradas[n]);
+					
+					valorActivacion = this.obtenidaSigmoide(entradas[n]); //Valor de activacion
 					y = Integer.valueOf(entradas[n][entradas[n].length-1]); //Clase esperada
 					
-					error = y - valorActivacion; //Delta
+					error = y - valorActivacion; //Error
 					errorCuadraticoMedio = Math.pow(error, 2); //Error cuadratico medio
 					this.errorDeseadoFinal +=errorCuadraticoMedio; //Error acumulado
 					
-					/*System.out.println("Entrada[" + n + "] Y: " + y +
-										", Valor de activacion (net): " + valorActivacion + 
-										", Error cuadratico medio: " + errorCuadraticoMedio);
-					*/
-					
-						this.ajustarPesos(entradas[n], error);
+					//Ajuste de pesos
+					this.ajustarPesos(entradas[n], error, valorActivacion);
 
 						
 				}
@@ -186,43 +190,46 @@ public class Adaline {
 				this.numeroEpocasFinal++;
 				this.errorDeseadoFinal /= entradas.length;
 				System.out.println("["+ this.numeroEpocasFinal +"]Error Esperado: " + this.errorDeseadoFinal);
+				
 				if(this.numeroEpocasFinal >= this.limiteEpocas || this.errorDeseadoFinal <= this.errorDeseado)
 					finalizado = true;
 				else
 					this.errorDeseadoFinal = 0;
 			}
-		
-		//Pesos finales	
-		System.out.println("Peso 1: " + this.getPesoLlaveEntera(0));
-		System.out.println("Peso 2: " + this.getPesoLlaveEntera(1));
-		System.out.println("Peso 3: " + this.getPesoLlaveEntera(2));
-		System.out.println("Peso 4: " + this.getPesoLlaveEntera(3));
-		System.out.println("Peso 5: " + this.getPesoLlaveEntera(4));
-		System.out.println("Peso 6: " + this.getPesoLlaveEntera(5));
-		System.out.println("Peso 7: " + this.getPesoLlaveEntera(6));
-		System.out.println("Peso 8: " + this.getPesoLlaveEntera(7));
+
 	}
 	
 	
 	private double obtenidaSigmoide(String [] patron){
 		double sumatoria = 0, fy = 0;		
 		
+		//Agregar entrada umbral
+		String umbral [] = {"-1"};
+		String[] temp = new String[patron.length+1];
+		System.arraycopy(umbral, 0, temp, 0, umbral.length);
+		System.arraycopy(patron, 0, temp, umbral.length, patron.length);
+		patron = temp;
+		
 		for(int n = 0; n < patron.length-1; n++){
 			sumatoria+=(Double.valueOf(patron[n]) * this.getPesoLlaveEntera(n));
 		}
 		
 		fy = 1 / (1 + Math.exp(-1 * sumatoria));
-		
-		//System.out.println("Valor de activacion (x*w) en f(y): " + fy);
-		
 		return fy;
 
 	}
 	
-	private void ajustarPesos(String [] patron, double error){
+	private void ajustarPesos(String [] patron, double error, double valorActivacion){
+		
+		//Agregar entrada umbral
+		String umbral [] = {"-1"};
+		String[] temp = new String[patron.length+1];
+		System.arraycopy(umbral, 0, temp, 0, umbral.length);
+		System.arraycopy(patron, 0, temp, umbral.length, patron.length);
+		patron = temp;
+		
 		for(int n = 0; n < patron.length-1; n++){ 
-			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * this.obtenidaSigmoide(patron) * (1-this.obtenidaSigmoide(patron)) * Double.valueOf(patron[n]));
-			//System.out.println(n + " " + this.getPesoLlaveEntera(n));
+			this.setPesoLlaveEntera(n, this.getPesoLlaveEntera(n) + this.razonAprendizaje * error * valorActivacion * (1-valorActivacion) * Double.valueOf(patron[n]));
 		}
 	}
 	
@@ -233,7 +240,7 @@ public class Adaline {
 			double fy = 0;		
 			fy = obtenidaSigmoide(entradasClasificar[n]);
 			
-			if(fy >= 0.5) 
+			if(fy >= 0.9) 
 				entradasClasificar[n][8] = "1";
 			else
 				entradasClasificar[n][8] = "0";				

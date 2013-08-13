@@ -81,28 +81,7 @@ public class QuickPropagationController {
 				
 				//Inicializar pesos para la neurona de salida (Adaline)
 				qp.inicializarPesosAdaline();
-				
-				//Imprimir pesos iniciales
-				
-				for(int m = 0; m<qp.getNumeroCapasOcultas(); m++){
-					System.out.println("CAPA OCULTA " + m);
-					for (int i = 0; i < qp.getNumeroNeuronasPorCapa(); ++i){
-						System.out.println("NEURONA " + i);
-						for(int j = 0; j<=qp.getNumeroEntradas(); j++){
-							
-							System.out.println("Peso " + j + ": =>" + qp.getPesoLlaveEntera(m, i, j));
-						}
-					
-					}
-				}
-				
-				
-				//Imprimir pesos Adaline
-				
-				System.out.println("Adaline");
-				for(int j = 0; j<qp.getNumeroNeuronasPorCapa()+1; j++){
-					System.out.println("Peso " + j + ": =>" + qp.getPesoAdaline(j));
-				}
+			
 				
 				qp.entrenar(getData(qpGui.tablaSetAprendizaje.getModel()));
 				

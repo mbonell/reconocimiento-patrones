@@ -58,6 +58,7 @@ public class AdalineController {
 				adaline.setLimiteEpocas(Integer.valueOf(adalineGui.txtLimiteEpocasInicial.getText()));
 				adaline.setErrorDeseado(Double.valueOf(adalineGui.txtErrorDeseado.getText()));
 				
+				adaline.pesos.put(adaline.THRESHOLD, adaline.generarAletorio());
 				adaline.pesos.put(adaline.EMBARAZOS, Double.valueOf(adalineGui.txtPesoEmbarazo.getText()));
 				adaline.pesos.put(adaline.CONCENTRACION_GLUCOSA, Double.valueOf(adalineGui.txtPesoConcentracionGlucosa.getText()));
 				adaline.pesos.put(adaline.PRESION_ARTERIAL, Double.valueOf(adalineGui.txtPesoPresionArterial.getText()));
@@ -77,7 +78,7 @@ public class AdalineController {
 				//Valores finales
 				DecimalFormatSymbols simbolos = new DecimalFormatSymbols();
 				simbolos.setDecimalSeparator('.');
-				DecimalFormat formato = new DecimalFormat("#####.##",simbolos);
+				DecimalFormat formato = new DecimalFormat("#####.#####",simbolos);
 				
 				adalineGui.lblPesoEmbarazoValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.EMBARAZOS))+"</b></html>");
 				adalineGui.lblPesoConcentracionGlucosaValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.CONCENTRACION_GLUCOSA))+"</b></html>");
@@ -89,7 +90,7 @@ public class AdalineController {
 				adalineGui.lblPesoEdadValor.setText("<html><b>"+formato.format(adaline.getPeso(adaline.EDAD))+"</b></html>");
 
 				
-				adalineGui.lblErrorValor.setText("<html><b>"+formato.format(adaline.getErrorFinal())+"</b></html>");
+				adalineGui.lblErrorValor.setText("<html><b>"+adaline.getErrorFinal()+"</b></html>");
 				adalineGui.lblEpocasValor.setText("<html><b>"+formato.format(adaline.getNumeroEpocasFinal())+"</b></html>");
 
 
