@@ -20,5 +20,6 @@ Categoriza pelotas de béisbol y de fútbol dados sus respectivos valores de p
 | ----------|------------- |
 | 	420     |  	21.5       |
 
-####NormasLas normas que fueron aplicadas en el algoritmo son: 
-1. Distancia Euclidiana2. Distancia Manhattan
+####NormasLas normas que fueron aplicadas en el algoritmo son:
+1. Distancia Euclidiana
+2. Distancia Manhattan
