@@ -18,4 +18,8 @@ Categoriza pelotas de béisbol y de fútbol dados sus respectivos valores de p
 ######Fútbol
 | Peso (g)  | Diámetro (cm)|
 | ----------|------------- |
-| 	420     |  	21.5       |
+| 	420     |  	21.5       |
+
+#####NormasLas normas que fueron aplicadas en el algoritmo son: 
+1. Distancia Euclidiana o norma 2.2. Distancia Manhattan o norma 1.
+
