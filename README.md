@@ -12,7 +12,6 @@ Patrones idealesLos valores son aproximados a los reglamentados por la Major Le
 | Béisbol  				   | Fútbol					  |
 | ------------------------ | ------------------------ |
 | Peso (g)  | Diámetro (cm)| Peso (g) | Diámetro (cm) |
-| --------- | -------------| ---------| --------------|
 | 142  		| 		7  	   | 	420   | 	21.5      |
 
 
