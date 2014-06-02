@@ -67,3 +67,28 @@ Todos estos valores a pesar de que son inicializados al arrancar el programa, pu
 
 ####Set de pruebas
 El set de pruebas utilizado en la práctica se encuentra en la carpeta del proyecto **dataset/diabetes_prueba.csv** donde se usaron un total de 268 patrones.
+
+###Adaline
+------
+El objetivo del programa es predecir si una mujer tiene diabetes o no respecto a ciertas características que revisaremos más adelante con un Adaline. El set de datos utilizado para esta práctica se obtuvo del repositorio de maquinas de aprendizaje de la UC Irvine. [http://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes]
+
+####Normalización de datos
+La normalización de datos de aprendizaje y clasificación se dio a través del método: Min-Max.
+
+####Set de aprendizaje
+En la siguiente lista se muestran las características usadas como entradas para describir los datos físicos/médicos de las mujeres. El set total de aprendizaje se encuentra dentro de la carpeta del proyecto **dataset/diabetes_aprendizaje_backpropagation.csv** y se compone de 10 patrones de entrenamiento.
+
+1. Embarazos
+2. Conc. de glucosa en plasma a 2 horas en una prueba de tolerancia oral a la glucosa
+3. Presión arterial diastólica (mm Hg)
+4. Grosor del pliegue cutáneo del tríceps (mm)
+5. Insulina en suero 2 horas (mu U / ml)
+6. Índice de masa corporal (peso (kg)/(altura (m)) ^2)
+7. Función Diabetes pedigree
+8. Edad
+
+Para la inicialización de los pesos se usaron cantidades aleatorias que van desde 0.1 hasta 0.9. La razón de aprendizaje es inicializada en 0.5, se estableció un límite para el número máximo de épocas permitidas para el aprendizaje (80,000 épocas) y se definió un error deseado de 0.0001.
+Todos estos valores a pesar de que son inicializados al arrancar el programa, pueden ser cambiados (son parametrizables) desde la interfaz del usuario para facilitar las pruebas en la Adaline.
+
+####Set de pruebas
+El set de pruebas utilizado en la práctica se encuentra en la carpeta del proyecto dataset/diabetes_prueba.csv donde se usaron un total de 268 patrones.
