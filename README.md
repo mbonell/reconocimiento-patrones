@@ -33,5 +33,8 @@ El objetivo del programa es clasificar las flores de Iris tipo Setosa de entre o
 ####Set de aprendizaje
 En la siguiente tabla se muestran las características usadas como entradas para describir a las flores, el set total de aprendizaje se encuentra dentro de la carpeta del proyecto **dataset/iris_aprendizaje.csv**
 
-| Peso (g)  | Diámetro (cm)| Peso (g)  | Diámetro (cm)|
-| ----------|------------- |-----------|------------- |
+| Longitud del Sépalo(cm) | Ancho del Sépalo(cm) | Longitud del Pétalo (cm) | Ancho del Pétalo(cm) |
+| ------------------------|--------------------- |--------------------------|--------------------- |
+
+Para la inicialización de los pesos se usaron cantidades aleatorias que van desde 0.1 hasta 0.9, el valor del umbral es tomado del valor del primer peso. La razón de aprendizaje es inicializada en 0.5 y se estableció un límite para el número máximo de épocas permitidas para el aprendizaje (1000 épocas).
+Todos estos valores a pesar de que son inicializados al arrancar el programa, pueden ser cambiados (son parametrizables) desde la interfaz del usuario para facilitar las pruebas en el perceptrón.
