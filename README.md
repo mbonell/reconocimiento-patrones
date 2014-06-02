@@ -25,3 +25,13 @@ Categoriza pelotas de béisbol y de fútbol dados sus respectivos valores de p
 
 1. Distancia Euclidiana
 2. Distancia Manhattan
+
+###Perceptrón
+------
+El objetivo del programa es clasificar las flores de Iris tipo Setosa de entre otras flores de Iris (Versicolor y Virginica) dados sus respectivos valores respecto a la longitud y ancho del sépalo y pétalo con un perceptrón simple.
+
+####Set de aprendizaje
+En la siguiente tabla se muestran las características usadas como entradas para describir a las flores, el set total de aprendizaje se encuentra dentro de la carpeta del proyecto **dataset/iris_aprendizaje.csv**
+
+| Peso (g)  | Diámetro (cm)| Peso (g)  | Diámetro (cm)|
+| ----------|------------- |-----------|------------- |
