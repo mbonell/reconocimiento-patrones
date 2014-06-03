@@ -95,7 +95,7 @@ El set de pruebas utilizado en la práctica se encuentra en la carpeta del proy
 
 ###Multi-Layer Network (Backpropagation)
 ------
-El objetivo del programa es predecir si una mujer tiene diabetes o no respecto a ciertas características que revisaremos más adelante con una red neuronal tipo Backpropagation. El set de datos utilizado para esta práctica se obtuvo del repositorio de maquinas de aprendizaje de la UC Irvine. [http://archive.ics.uci.edu/ml/datasets/Pima +Indians+Diabetes]
+El objetivo del programa es predecir si una mujer tiene diabetes o no respecto a ciertas características que revisaremos más adelante con una red neuronal tipo Backpropagation. El set de datos utilizado para esta práctica se obtuvo del repositorio de maquinas de aprendizaje de la UC Irvine. [http://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes]
 
 ####Normalización de datos
 La normalización de datos de aprendizaje y clasificación se dio a través del método: Min-Max.
@@ -122,7 +122,7 @@ El set de pruebas utilizado en la práctica se encuentra en la carpeta del proy
 
 ###Multi-Layer Network (Quickpropagation)
 ------
-El objetivo del programa es predecir si una mujer tiene diabetes o no respecto a ciertas características que revisaremos más adelante con una red neuronal tipo Quickpropagation. El set de datos utilizado para esta práctica se obtuvo del repositorio de maquinas de aprendizaje de la UC Irvine. [http://archive.ics.uci.edu/ml/datasets/Pima +Indians+Diabetes]
+El objetivo del programa es predecir si una mujer tiene diabetes o no respecto a ciertas características que revisaremos más adelante con una red neuronal tipo Quickpropagation. El set de datos utilizado para esta práctica se obtuvo del repositorio de maquinas de aprendizaje de la UC Irvine. [http://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes]
 
 ####Normalización de datos
 La normalización de datos de aprendizaje y clasificación se dio a través del método: Maximos.
